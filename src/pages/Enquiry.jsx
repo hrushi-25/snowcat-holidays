@@ -72,7 +72,32 @@ I would like to enquire about a journey. Here are my details:
 • Custom Message: ${formData.message || 'No additional message.'}`;
   };
 
-  const handleWhatsAppSubmit = (e) => {
+  // Sends the enquiry to the Django backend so it's saved permanently,
+  // regardless of whether the visitor actually completes the WhatsApp/email handoff.
+  const saveEnquiryToBackend = async () => {
+    try {
+      await fetch(`${import.meta.env.VITE_API_URL}/api/enquiries/`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.name,
+          phone: formData.phone,
+          email: formData.email,
+          destination: formData.destination,
+          travel_date: formData.travelDate || null,
+          travelers: formData.travelers,
+          budget: formData.budget,
+          mode_of_travel: formData.modeOfTravel,
+          message: formData.message,
+        }),
+      });
+    } catch (err) {
+      console.error('Failed to save enquiry to backend', err);
+      // Deliberately not blocking the WhatsApp/email handoff below if this fails.
+    }
+  };
+
+  const handleWhatsAppSubmit = async (e) => {
     e.preventDefault();
     if (!formData.name || !formData.phone || !formData.destination) {
       addToast('Please fill in your Name, Phone, and Destination.', 'error');
@@ -82,6 +107,9 @@ I would like to enquire about a journey. Here are my details:
       addToast('Please select a mode of travel.', 'error');
       return;
     }
+
+    await saveEnquiryToBackend();
+
     const messageText = buildEnquiryMessage();
     const url = `https://wa.me/917887778652?text=${encodeURIComponent(messageText)}`;
     addToast('Opening WhatsApp with your enquiry...', 'success');
@@ -89,7 +117,7 @@ I would like to enquire about a journey. Here are my details:
     setSubmitted(true);
   };
 
-  const handleEmailSubmit = (e) => {
+  const handleEmailSubmit = async (e) => {
     e.preventDefault();
     if (!formData.name || !formData.email || !formData.destination) {
       addToast('Please fill in your Name, Email, and Destination.', 'error');
@@ -99,6 +127,9 @@ I would like to enquire about a journey. Here are my details:
       addToast('Please select a mode of travel.', 'error');
       return;
     }
+
+    await saveEnquiryToBackend();
+
     const messageText = buildEnquiryMessage();
     const subject = `Enquiry: Custom Trip to ${formData.destination} - ${formData.name}`;
     const url = `mailto:snowcatholidays@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(messageText)}`;

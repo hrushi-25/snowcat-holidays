@@ -14,24 +14,37 @@ export default function OwnerLogin() {
 
   // If already logged in, redirect straight to dashboard
   useEffect(() => {
-    const isLoggedIn = sessionStorage.getItem('snowcat_auth') === 'true';
+    const isLoggedIn = !!localStorage.getItem('access_token');
     if (isLoggedIn) {
       navigate('/owner/dashboard');
     }
   }, [navigate]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
 
-    // Verification against user requested credentials
-    if (username === 'shabbir' && password === 'shabbir@567') {
-      sessionStorage.setItem('snowcat_auth', 'true');
-      addToast('Welcome back, Shabbir!', 'success');
+    try {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/login/`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password }),
+      });
+
+      if (!res.ok) {
+        setError('Invalid username or password. Please try again.');
+        addToast('Invalid login credentials', 'error');
+        return;
+      }
+
+      const data = await res.json();
+      localStorage.setItem('access_token', data.access);
+      localStorage.setItem('refresh_token', data.refresh);
+      addToast('Welcome back!', 'success');
       navigate('/owner/dashboard');
-    } else {
-      setError('Invalid username or password. Please try again.');
-      addToast('Invalid login credentials', 'error');
+    } catch (err) {
+      setError('Could not reach the server. Please try again.');
+      addToast('Login failed — server unreachable', 'error');
     }
   };
 

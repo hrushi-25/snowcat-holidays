@@ -25,7 +25,7 @@ export default function PackageCard({ pkg }) {
       whileHover={shouldReduceMotion ? {} : { y: -6, boxShadow: '0 12px 30px rgba(11, 45, 72, 0.1)' }}
       transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
     >
-      <Link to={`/package/${pkg.id}`} className="card-image-link">
+      <Link to={`/package/${pkg.slug}`} className="card-image-link">
         <div className="card-image-container">
           <img src={mainImage} alt={pkg.name} className="card-image" loading="lazy" />
           {pkg.isFeatured && (
@@ -47,7 +47,7 @@ export default function PackageCard({ pkg }) {
           <span className="card-duration">{pkg.days} Days / {pkg.nights} Nights</span>
         </div>
 
-        <Link to={`/package/${pkg.id}`} className="card-title-link">
+        <Link to={`/package/${pkg.slug}`} className="card-title-link">
           <h3 className="card-title">{pkg.name}</h3>
         </Link>
 
@@ -65,7 +65,7 @@ export default function PackageCard({ pkg }) {
             <span className="price-sub">per person</span>
           </div>
           
-          <Link to={`/package/${pkg.id}`} aria-label={`View details for ${pkg.name}`}>
+          <Link to={`/package/${pkg.slug}`} aria-label={`View details for ${pkg.name}`}>
             <motion.div
               className="card-action-btn"
               whileHover={{ scale: 1.08, backgroundColor: 'var(--accent-teal-hover)' }}

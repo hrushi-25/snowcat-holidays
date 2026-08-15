@@ -21,7 +21,7 @@ export default function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/explore" element={<Home />} />
-              <Route path="/package/:id" element={<PackageDetail />} />
+              <Route path="/package/:slug" element={<PackageDetail />} />
               <Route path="/enquire" element={<Enquiry />} />
               <Route path="/owner" element={<OwnerLogin />} />
               <Route path="/owner/dashboard" element={<OwnerDashboard />} />

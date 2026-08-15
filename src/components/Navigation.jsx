@@ -35,7 +35,7 @@ export default function Navigation() {
           <Link to="/" className="logo-container">
             <span className="curated-label">CURATED JOURNEYS</span>
             <div className="brand-name">
-              snowcat<span> holidays</span>
+              Snowcat<span> holidays</span>
             </div>
           </Link>
           

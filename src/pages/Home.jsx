@@ -45,6 +45,7 @@ export default function Home() {
   const activePackages = useMemo(() => {
     return packages.filter(pkg => pkg && pkg.isActive);
   }, [packages]);
+  console.log('activePackages:', activePackages);
 
   // Static reviews data
   const reviews = [
@@ -273,9 +274,9 @@ export default function Home() {
 
                 return (
                   <motion.div
-                    key={pkg.id}
+                    key={pkg.slug}
                     className="carousel-card-trending"
-                    onClick={() => navigate(`/package/${pkg.id}`)}
+                    onClick={() => navigate(`/package/${pkg.slug}`)}
                     whileHover={{ y: -6, scale: 1.015 }}
                     whileTap={{ scale: 0.98 }}
                     transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
@@ -482,6 +483,29 @@ export default function Home() {
           </div>
         </Reveal>
       </section>
+
+      {/* Official Footer Section */}
+      <footer className="footer-section container">
+        <div className="footer-content">
+          <div className="footer-brand">
+            <span className="curated-label">CURATED JOURNEYS</span>
+            <div className="brand-name">
+              Snowcat<span> holidays</span>
+            </div>
+            <p className="footer-tagline">Curated journeys thoughtfully planned for life-long memories.</p>
+          </div>
+          <div className="footer-links">
+            <Link to="/">Home</Link>
+            <Link to="/explore">Explore</Link>
+            <Link to="/enquire">Enquire</Link>
+            <Link to="/owner">Owner Portal</Link>
+          </div>
+        </div>
+        <div className="footer-bottom">
+          <span>© {new Date().getFullYear()} Snowcat Holidays. All rights reserved.</span>
+          <span>Trust The Cat</span>
+        </div>
+      </footer>
 
       <style>{`
         /* Mobile Header */
@@ -1583,6 +1607,67 @@ export default function Home() {
           .review-card {
             flex: 0 0 35%;
           }
+        /* Footer Styles */
+        .footer-section {
+          padding-top: 40px;
+          padding-bottom: 40px;
+          margin-top: 50px;
+          border-top: 1px solid var(--border-color);
+        }
+
+        .footer-content {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          flex-wrap: wrap;
+          gap: 24px;
+          margin-bottom: 30px;
+        }
+
+        .footer-brand {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+        }
+
+        .footer-logo-img {
+          height: 48px;
+          width: auto;
+          object-fit: contain;
+        }
+
+        .footer-tagline {
+          font-size: 14px;
+          color: var(--text-secondary);
+          margin: 0;
+          max-width: 340px;
+        }
+
+        .footer-links {
+          display: flex;
+          gap: 24px;
+          align-items: center;
+        }
+
+        .footer-links a {
+          font-size: 14px;
+          font-weight: 600;
+          color: var(--text-secondary);
+          transition: color var(--transition-fast);
+        }
+
+        .footer-links a:hover {
+          color: var(--accent-teal);
+        }
+
+        .footer-bottom {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          font-size: 12px;
+          color: var(--text-muted);
+          border-top: 1px solid rgba(226, 236, 239, 0.6);
+          padding-top: 20px;
         }
       `}</style>
     </div>

@@ -43,7 +43,7 @@ export default function OwnerDashboard() {
 
   // Authentication check
   useEffect(() => {
-    const isLoggedIn = sessionStorage.getItem('snowcat_auth') === 'true';
+    const isLoggedIn = !!localStorage.getItem('access_token');
     if (!isLoggedIn) {
       navigate('/owner');
     }
@@ -82,7 +82,8 @@ export default function OwnerDashboard() {
   const featuredCount = packages.filter(p => p.isFeatured).length;
 
   const handleLogout = () => {
-    sessionStorage.removeItem('snowcat_auth');
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
     navigate('/owner');
   };
 
@@ -176,7 +177,7 @@ export default function OwnerDashboard() {
 
   // Open full-screen editor in EDIT mode
   const openEditMode = (pkg) => {
-    setEditingId(pkg.id);
+    setEditingId(pkg.slug);
     setName(pkg.name);
     setDestination(pkg.destination);
     setDaysNightsText(`${pkg.days} Days / ${pkg.nights} Nights`);
@@ -219,7 +220,7 @@ export default function OwnerDashboard() {
     setImageUrls(prev => [...prev, url]);
   };
 
-  const handleSavePackageSubmit = (e) => {
+  const handleSavePackageSubmit = async (e) => {
     e.preventDefault();
     if (!name || !destination || !price || !daysNightsText) {
       addToast('Please fill in required fields: Name, Destination, Days/nights, and Price.', 'error');
@@ -271,24 +272,27 @@ export default function OwnerDashboard() {
       isActive
     };
 
-    if (editingId) {
-      updatePackage({ ...payload, id: editingId });
-      addToast(`Updated package "${name}" successfully.`, 'success');
-    } else {
-      addPackage(payload);
-      addToast(`Created package "${name}" successfully.`, 'success');
+    try {
+      if (editingId) {
+        await updatePackage({ ...payload, slug: editingId });
+        addToast(`Updated package "${name}" successfully.`, 'success');
+      } else {
+        await addPackage(payload);
+        addToast(`Created package "${name}" successfully.`, 'success');
+      }
+      setShowEditor(false);
+    } catch (err) {
+      addToast(err.message || 'Something went wrong saving the package.', 'error');
     }
-
-    setShowEditor(false);
   };
 
   const handleCancelEditor = () => {
     setShowEditor(false);
   };
 
-  const handleConfirmDelete = (id, title) => {
+  const handleConfirmDelete = (slug, title) => {
     if (window.confirm(`Are you sure you want to permanently delete "${title}"?`)) {
-      deletePackage(id);
+      deletePackage(slug);
       addToast(`Deleted package "${title}".`, 'info');
     }
   };
@@ -636,7 +640,7 @@ export default function OwnerDashboard() {
                       <AnimatePresence>
                         {packages.map((pkg) => (
                           <motion.tr
-                            key={pkg.id}
+                            key={pkg.slug}
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, height: 0 }}
@@ -663,7 +667,7 @@ export default function OwnerDashboard() {
                             <td>
                               <button
                                 onClick={() => {
-                                  togglePackageActive(pkg.id);
+                                  togglePackageActive(pkg);
                                   addToast(`Status changed for ${pkg.name}`, 'info');
                                 }}
                                 className={`status-badge-btn ${pkg.isActive ? 'active' : 'inactive'}`}
@@ -684,7 +688,7 @@ export default function OwnerDashboard() {
                                   <Edit size={16} />
                                 </button>
                                 <button
-                                  onClick={() => handleConfirmDelete(pkg.id, pkg.name)}
+                                  onClick={() => handleConfirmDelete(pkg.slug, pkg.name)}
                                   className="action-icon-btn delete-btn"
                                   title="Delete package"
                                   aria-label={`Delete ${pkg.name}`}

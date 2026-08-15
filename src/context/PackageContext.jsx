@@ -2,7 +2,10 @@ import React, { createContext, useState, useEffect, useContext } from 'react';
 
 const PackageContext = createContext();
 
-// Sample Seed Packages
+// Sample Seed Packages — kept here as reference data only.
+// This array is no longer used to populate the app at runtime (the backend now
+// owns that data), but it's useful if you want to bulk-load these exact
+// packages into Postgres via a Django data migration or admin import.
 const SEED_PACKAGES = [
   {
     id: 'spiti-valley',
@@ -436,98 +439,129 @@ const SEED_PACKAGES = [
   }
 ];
 
+// Django sends snake_case field names (is_active, short_description, etc.)
+// and represents images as [{image: url, order: n}, ...]. The rest of this
+// app (Home.jsx, PackageCard.jsx, PackageDetail.jsx, OwnerDashboard.jsx) was
+// built against the old localStorage shape, which used camelCase and a flat
+// array of image URL strings. Rather than rewriting every component, these
+// two functions translate at the boundary, once, right here.
+const normalizeFromApi = (apiPkg) => ({
+  id: apiPkg.id,
+  slug: apiPkg.slug,
+  name: apiPkg.name,
+  category: apiPkg.category,
+  destination: apiPkg.destination,
+  days: apiPkg.days,
+  nights: apiPkg.nights,
+  price: apiPkg.price,
+  shortDescription: apiPkg.short_description,
+  hotelDetails: apiPkg.hotel_details,
+  meals: apiPkg.meals,
+  transportation: apiPkg.transportation,
+  sightseeing: apiPkg.sightseeing,
+  specialOffer: apiPkg.special_offer,
+  // Guard against inclusions/exclusions being saved as an object instead of
+  // an array in Django Admin — components call .map() on these and will
+  // crash on a plain object. Enter them as a JSON list in the admin, e.g.
+  // ["Breakfast", "Airport transfer"], not {"name": "..."}.
+  inclusions: Array.isArray(apiPkg.inclusions) ? apiPkg.inclusions : [],
+  exclusions: Array.isArray(apiPkg.exclusions) ? apiPkg.exclusions : [],
+  itinerary: apiPkg.itinerary || [],
+  images: (apiPkg.images || []).map(img => (typeof img === 'string' ? img : img.image)),
+  isFeatured: apiPkg.is_featured,
+  isActive: apiPkg.is_active,
+});
+
+// Reverse direction — used when the Owner Dashboard form (still camelCase)
+// sends a package to the API.
+const normalizeToApi = (pkg) => ({
+  name: pkg.name,
+  category: pkg.category,
+  destination: pkg.destination,
+  days: pkg.days,
+  nights: pkg.nights,
+  price: pkg.price,
+  short_description: pkg.shortDescription,
+  hotel_details: pkg.hotelDetails,
+  meals: pkg.meals,
+  transportation: pkg.transportation,
+  sightseeing: pkg.sightseeing,
+  special_offer: pkg.specialOffer,
+  inclusions: pkg.inclusions,
+  exclusions: pkg.exclusions,
+  is_featured: pkg.isFeatured,
+  is_active: pkg.isActive,
+});
+
 export const PackageProvider = ({ children }) => {
   const [packages, setPackages] = useState([]);
+  const API_URL = import.meta.env.VITE_API_URL;
 
-  // Load packages from LocalStorage or seed defaults, safely merging updates
+  // Load packages from the real backend instead of localStorage.
   useEffect(() => {
-    const stored = localStorage.getItem('snowcat_packages');
-    if (stored) {
-      try {
-        const parsed = JSON.parse(stored);
-        const hasSingapore = parsed.some(p => p.id === 'singapore-escape');
-        if (!hasSingapore) {
-          const merged = [...parsed, ...SEED_PACKAGES.filter(s => !parsed.some(p => p.id === s.id))];
-          setPackages(merged);
-          localStorage.setItem('snowcat_packages', JSON.stringify(merged));
-        } else {
-          setPackages(parsed);
-        }
-      } catch (err) {
-        console.error("Error parsing packages from localStorage", err);
-        setPackages(SEED_PACKAGES);
-        localStorage.setItem('snowcat_packages', JSON.stringify(SEED_PACKAGES));
-      }
-    } else {
-      setPackages(SEED_PACKAGES);
-      localStorage.setItem('snowcat_packages', JSON.stringify(SEED_PACKAGES));
-    }
+    fetch(`${API_URL}/api/packages/`)
+      .then(res => res.json())
+      .then(data => setPackages(data.map(normalizeFromApi)))
+      .catch(err => console.error('Failed to load packages from backend', err));
   }, []);
 
-  // Save to localStorage helper
-  const savePackages = (updatedList) => {
-    setPackages(updatedList);
-    localStorage.setItem('snowcat_packages', JSON.stringify(updatedList));
-  };
-
   // Create
-  const addPackage = (pkg) => {
-    const newPkg = {
-      ...pkg,
-      id: pkg.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') + '-' + Date.now(),
-      isActive: pkg.isActive ?? true,
-      isFeatured: pkg.isFeatured ?? false,
-      price: Number(pkg.price),
-      days: Number(pkg.days),
-      nights: Number(pkg.nights)
-    };
-    const updated = [newPkg, ...packages];
-    savePackages(updated);
+  const addPackage = async (pkg) => {
+    const res = await fetch(`${API_URL}/api/packages/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+      },
+      body: JSON.stringify(normalizeToApi(pkg)),
+    });
+    if (!res.ok) {
+      const errorBody = await res.json().catch(() => ({}));
+      throw new Error(errorBody.detail || `Failed to create package (status ${res.status})`);
+    }
+    const saved = await res.json();
+    const newPkg = normalizeFromApi(saved);
+    setPackages(prev => [newPkg, ...prev]);
     return newPkg;
   };
 
-  // Update
-  const updatePackage = (updatedPkg) => {
-    const updated = packages.map(pkg => {
-      if (pkg.id === updatedPkg.id) {
-        return {
-          ...updatedPkg,
-          price: Number(updatedPkg.price),
-          days: Number(updatedPkg.days),
-          nights: Number(updatedPkg.nights)
-        };
-      }
-      return pkg;
+  // Update (send the changed fields; the backend uses `slug` as the lookup key, not `id`)
+  const updatePackage = async (updatedPkg) => {
+    const res = await fetch(`${API_URL}/api/packages/${updatedPkg.slug}/`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+      },
+      body: JSON.stringify(normalizeToApi(updatedPkg)),
     });
-    savePackages(updated);
+    if (!res.ok) {
+      const errorBody = await res.json().catch(() => ({}));
+      throw new Error(errorBody.detail || `Failed to update package (status ${res.status})`);
+    }
+    const saved = await res.json();
+    const normalized = normalizeFromApi(saved);
+    setPackages(prev => prev.map(p => (p.slug === normalized.slug ? normalized : p)));
   };
 
   // Delete
-  const deletePackage = (id) => {
-    const updated = packages.filter(pkg => pkg.id !== id);
-    savePackages(updated);
+  const deletePackage = async (slug) => {
+    await fetch(`${API_URL}/api/packages/${slug}/`, {
+      method: 'DELETE',
+      headers: { 'Authorization': `Bearer ${localStorage.getItem('access_token')}` },
+    });
+    setPackages(prev => prev.filter(p => p.slug !== slug));
   };
 
-  // Toggle Active
-  const togglePackageActive = (id) => {
-    const updated = packages.map(pkg => {
-      if (pkg.id === id) {
-        return { ...pkg, isActive: !pkg.isActive };
-      }
-      return pkg;
-    });
-    savePackages(updated);
+  // Toggle Active — implemented as a partial update rather than a separate
+  // localStorage-style helper, since every write now goes through the API.
+  const togglePackageActive = async (pkg) => {
+    await updatePackage({ ...pkg, isActive: !pkg.isActive });
   };
 
   // Toggle Featured
-  const togglePackageFeatured = (id) => {
-    const updated = packages.map(pkg => {
-      if (pkg.id === id) {
-        return { ...pkg, isFeatured: !pkg.isFeatured };
-      }
-      return pkg;
-    });
-    savePackages(updated);
+  const togglePackageFeatured = async (pkg) => {
+    await updatePackage({ ...pkg, isFeatured: !pkg.isFeatured });
   };
 
   return (
@@ -537,8 +571,7 @@ export const PackageProvider = ({ children }) => {
       updatePackage,
       deletePackage,
       togglePackageActive,
-      togglePackageFeatured,
-      seedPackages: SEED_PACKAGES
+      togglePackageFeatured
     }}>
       {children}
     </PackageContext.Provider>
