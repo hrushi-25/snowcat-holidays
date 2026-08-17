@@ -1,3 +1,4 @@
+import { API_URL } from '../utils/api';
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Lock, ArrowLeft, AlertCircle } from 'lucide-react';
@@ -25,7 +26,7 @@ export default function OwnerLogin() {
     setError('');
 
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/login/`, {
+      const res = await fetch(`/api/auth/login/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password }),

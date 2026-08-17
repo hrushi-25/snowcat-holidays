@@ -26,7 +26,8 @@ import {
 } from 'lucide-react';
 
 export default function PackageDetail() {
-  const { id } = useParams();
+  const { slug, id } = useParams();
+  const target = slug || id;
   const navigate = useNavigate();
   const { packages } = usePackages();
   const { addToast } = useToast();
@@ -37,11 +38,11 @@ export default function PackageDetail() {
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
-    const found = packages.find(p => p.id === id);
+    const found = packages.find(p => p.slug === target || String(p.id) === target || p.id === target);
     if (found) {
       setPkg(found);
     }
-  }, [id, packages]);
+  }, [target, packages]);
 
   if (!pkg) {
     return (

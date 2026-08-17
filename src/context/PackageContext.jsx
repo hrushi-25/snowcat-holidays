@@ -1,3 +1,4 @@
+import { API_URL } from '../utils/api';
 import React, { createContext, useState, useEffect, useContext } from 'react';
 
 const PackageContext = createContext();
@@ -495,13 +496,13 @@ const normalizeToApi = (pkg) => ({
 
 export const PackageProvider = ({ children }) => {
   const [packages, setPackages] = useState([]);
-  const API_URL = import.meta.env.VITE_API_URL;
+  
 
   // Load packages from the real backend instead of localStorage.
   useEffect(() => {
     fetch(`${API_URL}/api/packages/`)
       .then(res => res.json())
-      .then(data => setPackages(data.map(normalizeFromApi)))
+      .then(data => { if (Array.isArray(data)) setPackages(data.map(normalizeFromApi)); })
       .catch(err => console.error('Failed to load packages from backend', err));
   }, []);
 

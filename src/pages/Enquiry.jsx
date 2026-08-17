@@ -1,3 +1,4 @@
+import { API_URL } from '../utils/api';
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { usePackages } from '../context/PackageContext';
@@ -76,7 +77,7 @@ I would like to enquire about a journey. Here are my details:
   // regardless of whether the visitor actually completes the WhatsApp/email handoff.
   const saveEnquiryToBackend = async () => {
     try {
-      await fetch(`${import.meta.env.VITE_API_URL}/api/enquiries/`, {
+      await fetch(`/api/enquiries/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

@@ -1,3 +1,4 @@
+import { API_URL } from '../utils/api';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { usePackages } from '../context/PackageContext';
@@ -75,6 +76,23 @@ export default function OwnerDashboard() {
   const [imageUrls, setImageUrls] = useState([]);
   const [isFeatured, setIsFeatured] = useState(false);
   const [isActive, setIsActive] = useState(true);
+
+  const [enquiries, setEnquiries] = useState([]);
+  const [loadingEnquiries, setLoadingEnquiries] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem('access_token');
+    if (token) {
+      setLoadingEnquiries(true);
+            fetch(`/api/enquiries/list/`, {
+                headers: { 'Authorization': `Bearer ` }
+      })
+        .then(res => res.ok ? res.json() : [])
+        .then(data => { if (Array.isArray(data)) setEnquiries(data); })
+        .catch(err => console.error('Failed to fetch enquiries', err))
+        .finally(() => setLoadingEnquiries(false));
+    }
+  }, []);
 
   // Statistics counters (matching Screenshot 3 counters card layout)
   const totalCount = packages.length;
