@@ -1,6 +1,5 @@
 ﻿/**
  * Central API configuration helper for Snowcat Holidays frontend.
- * Evaluates environment variables and provides a clean fallback.
  */
 
 export const getApiUrl = () => {
@@ -8,10 +7,12 @@ export const getApiUrl = () => {
   if (envUrl && envUrl.trim() !== '') {
     return envUrl.replace(/\/$/, '');
   }
-  if (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
-    return 'http://127.0.0.1:8000';
+  if (typeof window !== 'undefined') {
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+      return 'http://127.0.0.1:8000';
+    }
   }
-  return '';
+  return 'https://snowcat-backend-8jjf.onrender.com';
 };
 
 export const API_URL = getApiUrl();
