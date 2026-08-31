@@ -1,18 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { MessageCircle, ArrowUpRight, Sparkles } from 'lucide-react';
+import { MessageCircle, ArrowUpRight, Sparkles, Lock, Mail, Phone } from 'lucide-react';
 
 const InstagramIcon = ({ size = 18, className = "" }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
     <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
     <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
     <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-  </svg>
-);
-
-const FacebookIcon = ({ size = 18, className = "" }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
   </svg>
 );
 
@@ -36,7 +30,7 @@ export default function Footer() {
             </div>
           </div>
           <p className="footer-tagline">
-            Curated journeys thoughtfully planned for life-long memories.
+            Curated journeys thoughtfully planned for life-long memories. All package prices are negotiable.
           </p>
 
           {/* Direct WhatsApp Enquiry Button */}
@@ -60,12 +54,13 @@ export default function Footer() {
           <div className="footer-links">
             <Link to="/">Home</Link>
             <Link to="/explore">Explore Packages</Link>
+            <Link to="/explore?tab=india">India Destinations</Link>
+            <Link to="/explore?tab=international">International Escapes</Link>
             <Link to="/enquire">Custom Enquiry</Link>
-            <Link to="/owner">Owner Portal</Link>
           </div>
         </div>
 
-        {/* Social Handles Column */}
+        {/* Official Channels Column */}
         <div className="footer-social-column">
           <h4 className="footer-column-title">Connect With Us</h4>
           <div className="footer-social-links">
@@ -85,17 +80,28 @@ export default function Footer() {
             </a>
 
             <a
-              href="https://facebook.com/snowcatholidays"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="social-link facebook-link"
+              href="mailto:snowcatholidays@gmail.com"
+              className="social-link email-link"
             >
-              <div className="social-icon-box">
-                <FacebookIcon size={18} />
+              <div className="social-icon-box email-box">
+                <Mail size={17} />
               </div>
               <div className="social-text">
-                <span className="social-platform">Facebook</span>
-                <span className="social-handle">Snowcat Holidays</span>
+                <span className="social-platform">Email Desk</span>
+                <span className="social-handle">snowcatholidays@gmail.com</span>
+              </div>
+            </a>
+
+            <a
+              href="tel:+917887778652"
+              className="social-link phone-link"
+            >
+              <div className="social-icon-box phone-box">
+                <Phone size={17} />
+              </div>
+              <div className="social-text">
+                <span className="social-platform">Direct Hotline</span>
+                <span className="social-handle">+91 78877 78652</span>
               </div>
             </a>
           </div>
@@ -108,13 +114,24 @@ export default function Footer() {
           <span>© {currentYear} Snowcat Holidays. All rights reserved.</span>
           <span className="dot-sep">•</span>
           <span>Trust The Cat</span>
+          {/* Subtle Owner Login portal link */}
+          <Link to="/owner" className="footer-owner-discreet" title="Staff Portal" aria-label="Staff Login">
+            <Lock size={11} />
+          </Link>
         </div>
 
-        {/* Developer Tag */}
-        <div className="developer-tag-badge shadow-realistic-sm">
+        {/* Developer Tag clickable to https://neuraspark.co.in */}
+        <a
+          href="https://neuraspark.co.in"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="developer-tag-badge shadow-realistic-sm"
+          title="Website created by Neuraspark Agency"
+        >
           <Sparkles size={13} className="dev-sparkle" />
-          <span>Website developed by <strong>NEURASPARK AI AGENCY</strong></span>
-        </div>
+          <span>Website created by <strong className="dev-agency-link">neuraspark.co.in</strong></span>
+          <ArrowUpRight size={13} className="dev-arrow" />
+        </a>
       </div>
 
       <style>{`
@@ -177,19 +194,21 @@ export default function Footer() {
           display: inline-flex;
           align-items: center;
           gap: 10px;
-          background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
-          color: #FFFFFF;
-          font-size: 14px;
-          font-weight: 700;
-          padding: 10px 20px;
+          background-color: var(--accent-turquoise-light);
+          color: var(--accent-teal);
+          border: 1px solid rgba(8, 124, 141, 0.25);
+          padding: 10px 18px;
           border-radius: 50px;
-          transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+          font-size: 13px;
+          font-weight: 700;
+          transition: all var(--transition-fast);
         }
 
         .footer-whatsapp-btn:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 8px 20px rgba(37, 211, 102, 0.35);
+          background-color: var(--accent-teal);
           color: #FFFFFF;
+          transform: translateY(-2px);
+          box-shadow: 0 6px 15px rgba(8, 124, 141, 0.25);
         }
 
         .whatsapp-icon-pulse {
@@ -198,13 +217,18 @@ export default function Footer() {
           justify-content: center;
         }
 
+        .footer-nav-column, .footer-social-column {
+          display: flex;
+          flex-direction: column;
+        }
+
         .footer-column-title {
-          font-size: 14px;
+          font-size: 15px;
           font-weight: 700;
           color: var(--text-primary);
+          margin: 0 0 16px 0;
+          letter-spacing: 0.5px;
           text-transform: uppercase;
-          letter-spacing: 1px;
-          margin-bottom: 16px;
         }
 
         .footer-links {
@@ -214,60 +238,64 @@ export default function Footer() {
         }
 
         .footer-links a {
-          font-size: 14px;
           color: var(--text-secondary);
-          transition: color 0.2s ease, transform 0.2s ease;
-          display: inline-block;
+          font-size: 14px;
+          font-weight: 500;
+          transition: all var(--transition-fast);
         }
 
         .footer-links a:hover {
           color: var(--accent-teal);
-          transform: translateX(3px);
+          transform: translateX(4px);
         }
 
         .footer-social-links {
           display: flex;
           flex-direction: column;
-          gap: 12px;
+          gap: 10px;
         }
 
         .social-link {
           display: flex;
           align-items: center;
           gap: 12px;
-          padding: 8px 14px;
-          background: var(--bg-secondary);
+          padding: 9px 14px;
+          border-radius: var(--radius-md);
+          background-color: var(--bg-secondary);
           border: 1px solid var(--border-color);
-          border-radius: 12px;
-          transition: all 0.25s ease;
+          transition: all var(--transition-fast);
+          text-decoration: none;
         }
 
         .social-link:hover {
           border-color: var(--accent-teal);
           transform: translateY(-2px);
-          box-shadow: var(--shadow-realistic-sm);
+          box-shadow: var(--shadow-subtle);
         }
 
-        .instagram-link:hover .social-icon-box {
+        .social-icon-box {
+          width: 32px;
+          height: 32px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-shrink: 0;
+        }
+
+        .instagram-link .social-icon-box {
           background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
           color: #FFFFFF;
         }
 
-        .facebook-link:hover .social-icon-box {
-          background: #1877F2;
+        .email-box {
+          background-color: var(--accent-teal);
           color: #FFFFFF;
         }
 
-        .social-icon-box {
-          width: 36px;
-          height: 36px;
-          border-radius: 50%;
-          background: var(--accent-turquoise-light);
-          color: var(--accent-teal);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          transition: all 0.25s ease;
+        .phone-box {
+          background-color: var(--accent-green);
+          color: #FFFFFF;
         }
 
         .social-text {
@@ -276,7 +304,7 @@ export default function Footer() {
         }
 
         .social-platform {
-          font-size: 11px;
+          font-size: 10.5px;
           font-weight: 700;
           color: var(--text-muted);
           text-transform: uppercase;
@@ -284,11 +312,12 @@ export default function Footer() {
         }
 
         .social-handle {
-          font-size: 13px;
+          font-size: 12.5px;
           font-weight: 600;
           color: var(--text-primary);
         }
 
+        /* Bottom bar */
         .footer-bottom {
           display: flex;
           flex-direction: column;
@@ -297,8 +326,6 @@ export default function Footer() {
           justify-content: space-between;
           padding-top: 24px;
           border-top: 1px solid var(--border-color);
-          font-size: 13px;
-          color: var(--text-muted);
         }
 
         @media (min-width: 768px) {
@@ -308,6 +335,8 @@ export default function Footer() {
         }
 
         .footer-copyright {
+          font-size: 12px;
+          color: var(--text-muted);
           display: flex;
           align-items: center;
           gap: 8px;
@@ -318,33 +347,51 @@ export default function Footer() {
           color: var(--border-color);
         }
 
+        .footer-owner-discreet {
+          color: var(--text-muted);
+          opacity: 0.35;
+          display: inline-flex;
+          align-items: center;
+          margin-left: 6px;
+          transition: opacity 0.2s ease;
+        }
+        .footer-owner-discreet:hover {
+          opacity: 1;
+          color: var(--accent-teal);
+        }
+
         .developer-tag-badge {
           display: inline-flex;
           align-items: center;
           gap: 7px;
-          background: linear-gradient(135deg, rgba(8, 124, 141, 0.08) 0%, rgba(21, 151, 174, 0.15) 100%);
-          border: 1px solid rgba(8, 124, 141, 0.2);
-          padding: 6px 16px;
-          border-radius: 50px;
-          font-size: 12px;
+          background: linear-gradient(135deg, rgba(8, 124, 141, 0.08) 0%, rgba(34, 169, 189, 0.15) 100%);
+          border: 1px solid rgba(8, 124, 141, 0.25);
           color: var(--text-primary);
+          font-size: 12px;
+          padding: 6px 14px;
+          border-radius: 50px;
+          text-decoration: none;
+          transition: all var(--transition-fast);
+        }
+
+        .developer-tag-badge:hover {
+          background: linear-gradient(135deg, rgba(8, 124, 141, 0.18) 0%, rgba(34, 169, 189, 0.28) 100%);
+          border-color: var(--accent-teal);
+          color: var(--accent-teal);
+          transform: translateY(-1px);
         }
 
         .dev-sparkle {
           color: var(--accent-teal);
-          animation: spinSparkle 4s linear infinite;
         }
 
-        @keyframes spinSparkle {
-          0% { transform: rotate(0deg) scale(1); }
-          50% { transform: rotate(180deg) scale(1.2); }
-          100% { transform: rotate(360deg) scale(1); }
-        }
-
-        .developer-tag-badge strong {
+        .dev-agency-link {
           color: var(--accent-teal);
-          font-weight: 800;
-          letter-spacing: 0.3px;
+          text-decoration: underline;
+        }
+
+        .dev-arrow {
+          color: var(--accent-teal);
         }
       `}</style>
     </footer>

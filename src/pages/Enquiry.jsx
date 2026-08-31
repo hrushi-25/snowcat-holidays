@@ -12,6 +12,7 @@ import {
   CheckCircle2,
   MessageSquare,
   Mail,
+  Phone,
   ExternalLink,
   Share2
 } from 'lucide-react';
@@ -21,12 +22,6 @@ const InstagramIcon = ({ size = 24, className = "" }) => (
     <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
     <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
     <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-  </svg>
-);
-
-const FacebookIcon = ({ size = 24, className = "" }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
   </svg>
 );
 
@@ -226,7 +221,7 @@ I would like to enquire about a journey. Here are my details:
                     required
                     value={formData.phone}
                     onChange={handleChange}
-                    placeholder="e.g. +91 9876543210"
+                    placeholder=""
                     className="form-input"
                   />
                 </div>
@@ -454,20 +449,18 @@ I would like to enquire about a journey. Here are my details:
               <ExternalLink size={16} className="tile-arrow" />
             </a>
 
-            {/* Facebook Handle */}
+            {/* Direct Phone Call */}
             <a
-              href="https://facebook.com/snowcatholidays"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="social-tile facebook-tile shadow-interactive"
+              href="tel:+917887778652"
+              className="social-tile phone-tile shadow-interactive"
             >
-              <div className="social-tile-icon-wrapper facebook-bg">
-                <FacebookIcon size={24} />
+              <div className="social-tile-icon-wrapper phone-bg">
+                <Phone size={24} />
               </div>
               <div className="social-tile-info">
-                <div className="social-platform">Facebook</div>
-                <div className="social-handle-name">@snowcatholidays</div>
-                <span className="social-tagline">Community & Reviews</span>
+                <div className="social-platform">Call Support</div>
+                <div className="social-handle-name">+91 78877 78652</div>
+                <span className="social-tagline">Speak With Trip Expert</span>
               </div>
               <ExternalLink size={16} className="tile-arrow" />
             </a>
@@ -802,8 +795,8 @@ I would like to enquire about a journey. Here are my details:
         .whatsapp-bg {
           background-color: var(--accent-green);
         }
-        .facebook-bg {
-          background-color: #1877F2;
+        .phone-bg {
+          background-color: #0284C7;
         }
         .email-bg {
           background-color: var(--accent-teal);

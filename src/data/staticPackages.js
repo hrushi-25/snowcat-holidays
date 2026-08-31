@@ -168,8 +168,8 @@ export const STATIC_PACKAGES = [
       { day: 5, title: 'Departure via Coastal Highway', details: 'Savor a traditional breakfast, purchase fresh cashews and Alphonso mango products, and drive back to Mumbai / Pune / Goa.' }
     ],
     images: [
-      'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=1200&q=80'
+      'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80'
     ],
     isFeatured: true,
     isActive: true
@@ -204,7 +204,8 @@ export const STATIC_PACKAGES = [
       { day: 3, title: 'Nagaon Water Sports & Return Cruise', details: 'Morning water sports at Nagaon Beach. Lunch at seaside shack and return ferry ride back to Mumbai.' }
     ],
     images: [
-      'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=1200&q=80'
+      'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80'
     ],
     isFeatured: false,
     isActive: true
@@ -240,7 +241,8 @@ export const STATIC_PACKAGES = [
       { day: 4, title: 'Old Mahabaleshwar Temples & Return', details: 'Visit Panchganga and Mahabaleshwar Temples where five holy rivers originate. Drive back to Pune / Mumbai.' }
     ],
     images: [
-      'https://images.unsplash.com/photo-1570168007204-dfb528c6958f?auto=format&fit=crop&w=1200&q=80'
+      'https://images.unsplash.com/photo-1570168007204-dfb528c6958f?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1582510003544-4d00b7f74220?auto=format&fit=crop&w=1200&q=80'
     ],
     isFeatured: true,
     isActive: true
@@ -276,6 +278,7 @@ export const STATIC_PACKAGES = [
       { day: 4, title: 'Karla Rock-cut Caves & Return', details: 'Explore the 2000-year-old Buddhist Karla Caves and return drive to Mumbai/Pune.' }
     ],
     images: [
+      'https://images.unsplash.com/photo-1627894483216-2138af692e32?auto=format&fit=crop&w=1200&q=80',
       'https://images.unsplash.com/photo-1570168007204-dfb528c6958f?auto=format&fit=crop&w=1200&q=80'
     ],
     isFeatured: false,
@@ -392,7 +395,8 @@ export const STATIC_PACKAGES = [
       { day: 3, title: 'Corbett Falls & Departure', details: 'Visit Corbett Waterfalls and heritage museum before driving back to Delhi.' }
     ],
     images: [
-      'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=1200&q=80'
+      'https://images.unsplash.com/photo-1561731216-c3a4d99437d5?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1534177616072-ef7dc120449d?auto=format&fit=crop&w=1200&q=80'
     ],
     isFeatured: false,
     isActive: true

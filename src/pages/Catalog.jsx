@@ -11,33 +11,35 @@ import Footer from '../components/Footer';
 import {
   Search,
   Compass,
-  CheckCircle2,
-  ArrowRight
+  ArrowLeft,
+  MapPin,
+  ArrowRight,
+  ChevronRight
 } from 'lucide-react';
 
-// Comprehensive Indian States metadata with curated high quality unsplash images & keywords
+// Comprehensive Indian States metadata with authentic Unsplash location images & keywords
 const INDIA_STATES = [
   {
     id: 'karnataka',
     name: 'Karnataka',
     tagline: 'Kumta Beaches, Gokarna Cliffs, Coorg Hills & Hampi Ruins',
-    image: 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=800&q=80',
+    image: 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=1200&q=80',
     highlights: 'Kumta, Gokarna, Coorg, Hampi, Mysore, Kabini',
     destKeywords: ['karnataka', 'kumta', 'gokarna', 'coorg', 'hampi', 'mysore', 'kabini', 'dandeli', 'bangalore']
   },
   {
     id: 'maharashtra',
     name: 'Maharashtra',
-    tagline: 'Konkan Scuba, Alibaug Villas, Mahabaleshwar & Matheran',
-    image: 'https://images.unsplash.com/photo-1570168007204-dfb528c6958f?auto=format&fit=crop&w=800&q=80',
-    highlights: 'Konkan Coast, Alibaug, Mahabaleshwar, Matheran, Lonavala, Igatpuri',
+    tagline: 'Konkan Scuba, Alibaug Villas, Mahabaleshwar & Lonavala Tiger Point',
+    image: 'https://images.unsplash.com/photo-1627894483216-2138af692e32?auto=format&fit=crop&w=1200&q=80',
+    highlights: 'Konkan Coast, Alibaug, Mahabaleshwar, Matheran, Lonavala Tiger Point, Khandala',
     destKeywords: ['maharashtra', 'konkan', 'tarkarli', 'malvan', 'ratnagiri', 'alibaug', 'mahabaleshwar', 'panchgani', 'matheran', 'lonavala', 'khandala', 'igatpuri', 'mumbai', 'pune', 'ganpatipule', 'sindhudurg']
   },
   {
     id: 'uttarakhand',
     name: 'Uttarakhand',
     tagline: 'Rishikesh Rafting, Haridwar Aarti, Nainital & Mussoorie',
-    image: 'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=800&q=80',
+    image: 'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=1200&q=80',
     highlights: 'Rishikesh, Haridwar, Nainital, Mussoorie, Jim Corbett, Auli',
     destKeywords: ['uttarakhand', 'rishikesh', 'haridwar', 'nainital', 'mussoorie', 'corbett', 'jim corbett', 'auli', 'kedarnath', 'chopta', 'dhanaulti', 'dehradun']
   },
@@ -45,7 +47,7 @@ const INDIA_STATES = [
     id: 'himachal-pradesh',
     name: 'Himachal Pradesh',
     tagline: 'Manali Snow, Solang Adventure, Kasol & Spiti 4x4',
-    image: 'https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&w=800&q=80',
+    image: 'https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&w=1200&q=80',
     highlights: 'Manali, Kasol, Kullu, Spiti Valley, Shimla, Dharamshala, Dalhousie',
     destKeywords: ['himachal', 'manali', 'solang', 'kasol', 'kullu', 'spiti', 'shimla', 'dharamshala', 'mcleodganj', 'tosh', 'manikaran', 'sissu', 'dalhousie', 'khajjiar']
   },
@@ -53,7 +55,7 @@ const INDIA_STATES = [
     id: 'punjab',
     name: 'Punjab',
     tagline: 'Golden Temple, Wagah Border & Rich Heritage Trail',
-    image: 'https://images.unsplash.com/photo-1588096344356-9b434a9e5257?auto=format&fit=crop&w=800&q=80',
+    image: 'https://images.unsplash.com/photo-1588096344356-9b434a9e5257?auto=format&fit=crop&w=1200&q=80',
     highlights: 'Golden Temple, Wagah Border, Amritsar, Chandigarh',
     destKeywords: ['punjab', 'amritsar', 'golden temple', 'wagah', 'chandigarh', 'anandpur']
   },
@@ -61,7 +63,7 @@ const INDIA_STATES = [
     id: 'rajasthan',
     name: 'Rajasthan',
     tagline: 'Royal Forts, Udaipur Lakes & Thar Desert Safari',
-    image: 'https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=800&q=80',
+    image: 'https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=1200&q=80',
     highlights: 'Jaipur Pink City, Udaipur Lakes, Jaisalmer Desert, Jodhpur',
     destKeywords: ['rajasthan', 'jaipur', 'udaipur', 'jaisalmer', 'jodhpur', 'pushkar', 'ranthambore', 'sam sand']
   },
@@ -69,7 +71,7 @@ const INDIA_STATES = [
     id: 'kerala',
     name: 'Kerala',
     tagline: 'God’s Own Country — Palm Canals & Misty Tea Hills',
-    image: 'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=800&q=80',
+    image: 'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=1200&q=80',
     highlights: 'Munnar, Alleppey Houseboats, Thekkady, Wayanad',
     destKeywords: ['kerala', 'munnar', 'alleppey', 'thekkady', 'kochi', 'wayanad', 'kovalam', 'varkala']
   },
@@ -77,7 +79,7 @@ const INDIA_STATES = [
     id: 'goa',
     name: 'Goa',
     tagline: 'Golden Sunshine, Portuguese Heritage & Tropical Beaches',
-    image: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=800&q=80',
+    image: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=80',
     highlights: 'North Goa Beaches, South Goa Resorts, Fort Aguada',
     destKeywords: ['goa', 'baga', 'calangute', 'panjim', 'anjuna', 'palolem', 'dudhsagar', 'aguada']
   },
@@ -85,7 +87,7 @@ const INDIA_STATES = [
     id: 'jammu-kashmir',
     name: 'Jammu & Kashmir',
     tagline: 'Paradise on Earth — Dal Lake Shikaras, Gulmarg & Pahalgam',
-    image: 'https://images.unsplash.com/photo-1566837945700-30057527ade0?auto=format&fit=crop&w=800&q=80',
+    image: 'https://images.unsplash.com/photo-1566837945700-30057527ade0?auto=format&fit=crop&w=1200&q=80',
     highlights: 'Srinagar Dal Lake, Gulmarg Gondola, Pahalgam Valley',
     destKeywords: ['kashmir', 'srinagar', 'gulmarg', 'pahalgam', 'sonamarg', 'jammu', 'dal lake']
   },
@@ -93,7 +95,7 @@ const INDIA_STATES = [
     id: 'ladakh',
     name: 'Ladakh',
     tagline: 'High Passes, Blue Lakes & Tibetan Monasteries',
-    image: 'https://images.unsplash.com/photo-1581793745862-99fde7fa73d2?auto=format&fit=crop&w=800&q=80',
+    image: 'https://images.unsplash.com/photo-1581793745862-99fde7fa73d2?auto=format&fit=crop&w=1200&q=80',
     highlights: 'Leh, Pangong Tso, Nubra Valley, Khardung La',
     destKeywords: ['ladakh', 'leh', 'pangong', 'nubra', 'khardung', 'hunder', 'chang la']
   },
@@ -101,7 +103,7 @@ const INDIA_STATES = [
     id: 'sikkim-darjeeling',
     name: 'Sikkim & North East',
     tagline: 'Mystic Monasteries, Organic Tea & Himalayan Heights',
-    image: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=800&q=80',
+    image: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=1200&q=80',
     highlights: 'Gangtok, Tsomgo Lake, Darjeeling, Meghalaya',
     destKeywords: ['sikkim', 'gangtok', 'darjeeling', 'meghalaya', 'shillong', 'tsomgo', 'assam']
   },
@@ -109,7 +111,7 @@ const INDIA_STATES = [
     id: 'tamil-nadu',
     name: 'Tamil Nadu',
     tagline: 'Nilgiri Toy Train, Ooty Hills & Temple Architecture',
-    image: 'https://images.unsplash.com/photo-1582510003544-4d00b7f74220?auto=format&fit=crop&w=800&q=80',
+    image: 'https://images.unsplash.com/photo-1582510003544-4d00b7f74220?auto=format&fit=crop&w=1200&q=80',
     highlights: 'Ooty Hills, Kodaikanal, Rameshwaram, Kanyakumari',
     destKeywords: ['tamil nadu', 'ooty', 'kodaikanal', 'nilgiri', 'coonoor', 'rameshwaram', 'kanyakumari', 'madurai']
   },
@@ -117,7 +119,7 @@ const INDIA_STATES = [
     id: 'gujarat',
     name: 'Gujarat',
     tagline: 'White Desert of Kutch & Asiatic Lion Safari',
-    image: 'https://images.unsplash.com/photo-1609766857041-ed402ea8069a?auto=format&fit=crop&w=800&q=80',
+    image: 'https://images.unsplash.com/photo-1609766857041-ed402ea8069a?auto=format&fit=crop&w=1200&q=80',
     highlights: 'Rann of Kutch, Gir Forest, Dwarka, Somnath',
     destKeywords: ['gujarat', 'kutch', 'gir', 'dwarka', 'statue of unity', 'ahmedabad', 'somnath', 'rann']
   }
@@ -194,11 +196,6 @@ export default function Catalog() {
     setSearchParams(params, { replace: true });
   }, [activeTab, selectedState, searchQuery, setSearchParams]);
 
-  // Active public packages
-  const activePackages = useMemo(() => {
-    return packages.filter(pkg => pkg && pkg.isActive !== false);
-  }, [packages]);
-
   // Helper check for international
   const isInternational = (pkg) => {
     if (!pkg) return false;
@@ -211,6 +208,32 @@ export default function Catalog() {
       name.includes('dubai') || name.includes('swiss') || name.includes('singapore') ||
       name.includes('thailand') || name.includes('maldives') || name.includes('bali');
   };
+
+  // Active public packages
+  const activePackages = useMemo(() => {
+    return packages.filter(pkg => pkg && pkg.isActive !== false);
+  }, [packages]);
+
+  // Count packages available per state
+  const stateCounts = useMemo(() => {
+    const counts = {};
+    const indiaPkgs = activePackages.filter(p => !isInternational(p));
+    INDIA_STATES.forEach(st => {
+      counts[st.id] = indiaPkgs.filter(p => {
+        const d = (p.destination || '').toLowerCase();
+        const n = (p.name || '').toLowerCase();
+        const s = (p.state || '').toLowerCase();
+        return st.destKeywords.some(kw => d.includes(kw) || n.includes(kw) || s.includes(kw));
+      }).length;
+    });
+    return counts;
+  }, [activePackages]);
+
+  // Currently active state object when viewing a dedicated state page
+  const activeStateObj = useMemo(() => {
+    if (selectedState === 'all' || activeTab !== 'india') return null;
+    return INDIA_STATES.find(s => s.id === selectedState) || null;
+  }, [selectedState, activeTab]);
 
   // Filtered packages calculation
   const filteredPackages = useMemo(() => {
@@ -248,55 +271,81 @@ export default function Catalog() {
     });
   }, [activePackages, activeTab, selectedState, searchQuery]);
 
-  // Count packages available per state
-  const stateCounts = useMemo(() => {
-    const counts = {};
-    const indiaPkgs = activePackages.filter(p => !isInternational(p));
-    INDIA_STATES.forEach(st => {
-      counts[st.id] = indiaPkgs.filter(p => {
-        const d = (p.destination || '').toLowerCase();
-        const n = (p.name || '').toLowerCase();
-        const s = (p.state || '').toLowerCase();
-        return st.destKeywords.some(kw => d.includes(kw) || n.includes(kw) || s.includes(kw));
-      }).length;
-    });
-    return counts;
-  }, [activePackages]);
+  const handleSelectState = (stateId) => {
+    setSelectedState(stateId);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleResetToAllStates = () => {
+    setSelectedState('all');
+    setSearchQuery('');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   return (
     <div className="catalog-page container mobile-nav-padding">
       
-      {/* Hero Banner Section */}
-      <section className="catalog-hero shadow-realistic-lg">
-        <div className="catalog-hero-overlay"></div>
-        <img
-          src="https://images.unsplash.com/photo-1506461883276-594a12b11cf3?auto=format&fit=crop&w=1400&q=80"
-          alt="Explore India & International Catalog"
-          className="catalog-hero-bg"
-        />
-        <div className="catalog-hero-content">
-          <FadeIn direction="up" delay={0.05}>
-            <div className="catalog-badge shadow-realistic-sm">
-              <Compass size={14} className="badge-compass" />
-              <span>OFFICIAL TRAVEL CATALOG</span>
-            </div>
-          </FadeIn>
-          <FadeIn direction="up" delay={0.15}>
-            <h1 className="catalog-hero-title">Discover India & Beyond</h1>
-          </FadeIn>
-          <FadeIn direction="up" delay={0.25}>
-            <p className="catalog-hero-subtitle">
-              Browse curated state-wise journeys with 3-Star & 5-Star accommodations and negotiable pricing.
-            </p>
-          </FadeIn>
+      {/* ---------------------------------------------------- */}
+      {/* 1. DEDICATED STATE VIEW (WHEN A SPECIFIC STATE IS SELECTED) */}
+      {/* ---------------------------------------------------- */}
+      {activeStateObj ? (
+        <div className="dedicated-state-view">
+          {/* Breadcrumbs & Back Bar */}
+          <div className="state-top-action-bar">
+            <button
+              onClick={handleResetToAllStates}
+              className="btn-back-to-states shadow-realistic-sm"
+            >
+              <ArrowLeft size={16} />
+              <span>Explore All Indian States</span>
+            </button>
 
-          {/* Unified Search Input */}
-          <FadeIn direction="up" delay={0.35}>
-            <div className="catalog-search-bar shadow-realistic-lg">
-              <Search size={20} className="search-icon" />
+            <div className="state-breadcrumbs">
+              <Link to="/">Home</Link>
+              <ChevronRight size={14} />
+              <button onClick={handleResetToAllStates} className="breadcrumb-btn">Explore</button>
+              <ChevronRight size={14} />
+              <span className="current">{activeStateObj.name}</span>
+            </div>
+          </div>
+
+          {/* Dedicated State Hero Header */}
+          <section className="dedicated-state-hero shadow-realistic-lg">
+            <img
+              src={activeStateObj.image}
+              alt={`${activeStateObj.name} Tourism`}
+              className="dedicated-state-bg"
+            />
+            <div className="dedicated-state-overlay"></div>
+            <div className="dedicated-state-hero-content">
+              <FadeIn direction="up" delay={0.05}>
+                <div className="state-eyebrow-pill shadow-realistic-sm">
+                  <MapPin size={14} className="state-pin-icon" />
+                  <span>{activeStateObj.name.toUpperCase()} TOURISM PACKAGES</span>
+                </div>
+              </FadeIn>
+              <FadeIn direction="up" delay={0.15}>
+                <h1 className="state-page-title">{activeStateObj.name} Destinations</h1>
+              </FadeIn>
+              <FadeIn direction="up" delay={0.25}>
+                <p className="state-page-tagline">{activeStateObj.tagline}</p>
+              </FadeIn>
+              <FadeIn direction="up" delay={0.35}>
+                <div className="state-highlights-bar">
+                  <span className="highlights-label">Featured Spots:</span>
+                  <span className="highlights-text">{activeStateObj.highlights}</span>
+                </div>
+              </FadeIn>
+            </div>
+          </section>
+
+          {/* Search within this state */}
+          <div className="state-search-container">
+            <div className="catalog-search-bar shadow-realistic-sm">
+              <Search size={18} className="search-icon" />
               <input
                 type="text"
-                placeholder="Search by state (Karnataka, Maharashtra, Uttarakhand, Punjab) or spot..."
+                placeholder={`Search specific spots in ${activeStateObj.name}...`}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="catalog-search-input"
@@ -311,164 +360,249 @@ export default function Catalog() {
                 </button>
               )}
             </div>
-          </FadeIn>
-        </div>
-      </section>
-
-      {/* Main Tab Segment: India vs International */}
-      <div className="catalog-tabs-bar">
-        <div className="segmented-switch-container catalog-tab-segmented">
-          <div className="segmented-switch shadow-realistic-sm">
-            <button
-              className={`switch-tab ${activeTab === 'international' ? 'active' : ''}`}
-              onClick={() => { setActiveTab('international'); setSelectedState('all'); }}
-              style={{ position: 'relative' }}
-            >
-              <span style={{ position: 'relative', zIndex: 2 }}>✈️ International Escapes</span>
-              {activeTab === 'international' && (
-                <motion.div
-                  layoutId="catalogMainTabBg"
-                  className="switch-tab-active-bg"
-                  transition={{ type: 'spring', stiffness: 400, damping: 32 }}
-                />
-              )}
-            </button>
-
-            <button
-              className={`switch-tab ${activeTab === 'india' ? 'active' : ''}`}
-              onClick={() => { setActiveTab('india'); setSelectedState('all'); }}
-              style={{ position: 'relative' }}
-            >
-              <span style={{ position: 'relative', zIndex: 2 }}>🇮🇳 India Packages</span>
-              {activeTab === 'india' && (
-                <motion.div
-                  layoutId="catalogMainTabBg"
-                  className="switch-tab-active-bg"
-                  transition={{ type: 'spring', stiffness: 400, damping: 32 }}
-                />
-              )}
-            </button>
           </div>
-        </div>
-      </div>
 
-      {/* FEATURED RESPONSIVE GRID */}
-      <FeaturedCarousel
-        packages={activePackages}
-        title={activeTab === 'india' ? 'Featured India Escapes' : 'Featured International Trips'}
-        staticGrid={true}
-        showTabs={false}
-        activeCategoryProp={activeTab}
-        searchQuery={searchQuery}
-      />
-
-      {/* INDIA STATE-WISE PREVIEW SHOWCASE */}
-      {activeTab === 'india' && (
-        <section className="state-showcase-section">
-          <Reveal y={16}>
-            <div className="state-section-header">
-              <div>
-                <span className="section-pre-title">EXPLORE BY STATE</span>
-                <h2 className="state-section-title">State-Wise Destination Showcase</h2>
+          {/* Dedicated State Packages Grid */}
+          <section className="catalog-packages-section">
+            <div className="catalog-list-header">
+              <div className="catalog-list-title-group">
+                <h2 className="catalog-list-title">
+                  {searchQuery ? `Search Results in ${activeStateObj.name}` : `All ${activeStateObj.name} Tour Packages`}
+                </h2>
+                <span className="results-count-chip shadow-realistic-sm">
+                  {filteredPackages.length} Curated Package{filteredPackages.length !== 1 ? 's' : ''}
+                </span>
               </div>
-              {selectedState !== 'all' && (
-                <button
-                  onClick={() => setSelectedState('all')}
-                  className="btn-reset-state shadow-realistic-sm"
-                >
-                  Show All States ({activePackages.filter(p => !isInternational(p)).length})
-                </button>
-              )}
             </div>
-          </Reveal>
 
-          {/* Grid of State Cards */}
-          <div className="states-grid">
-            {INDIA_STATES.map((st) => {
-              const count = stateCounts[st.id] || 0;
-              const isSelected = selectedState === st.id;
+            {filteredPackages.length > 0 ? (
+              <div className="catalog-grid">
+                {filteredPackages.map((pkg) => (
+                  <PackageCard key={pkg.slug || pkg.id} pkg={pkg} />
+                ))}
+              </div>
+            ) : (
+              <EmptyState
+                title={`No packages found in ${activeStateObj.name}`}
+                description={`We couldn't find any packages matching "${searchQuery}". Try a different keyword or explore our custom planning.`}
+                onReset={() => setSearchQuery('')}
+                resetLabel="Clear Search"
+              />
+            )}
+          </section>
 
-              return (
-                <motion.div
+          {/* Switch to Other States Quick Bar */}
+          <section className="other-states-quick-bar">
+            <h3 className="other-states-title">Explore Other Indian States</h3>
+            <div className="other-states-pills-list">
+              {INDIA_STATES.filter(st => st.id !== activeStateObj.id).map(st => (
+                <button
                   key={st.id}
-                  className={`state-card shadow-interactive ${isSelected ? 'selected' : ''}`}
-                  onClick={() => setSelectedState(isSelected ? 'all' : st.id)}
-                  whileHover={{ y: -6, scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  transition={{ duration: 0.2 }}
+                  onClick={() => handleSelectState(st.id)}
+                  className="state-pill-btn shadow-realistic-sm"
                 >
-                  <div className="state-img-wrapper">
-                    <img src={st.image} alt={st.name} className="state-card-img" />
-                    <div className="state-img-overlay"></div>
-                    <span className="state-count-badge shadow-realistic-sm">
-                      {count > 0 ? `${count} Package${count > 1 ? 's' : ''}` : 'Featured State'}
-                    </span>
-                    {isSelected && (
-                      <div className="state-selected-check">
-                        <CheckCircle2 size={16} />
-                        <span>Selected State</span>
-                      </div>
-                    )}
-                  </div>
-                  <div className="state-card-content">
-                    <h3 className="state-card-name">{st.name}</h3>
-                    <p className="state-card-tagline">{st.tagline}</p>
-                    <div className="state-card-highlights">
-                      <span>{st.highlights}</span>
-                    </div>
-                  </div>
-                </motion.div>
-              );
-            })}
-          </div>
-        </section>
-      )}
-
-      {/* FILTERED PACKAGES RESULTS LIST */}
-      <section className="catalog-packages-section">
-        <div className="catalog-list-header">
-          <div className="catalog-list-title-group">
-            <h2 className="catalog-list-title">
-              {activeTab === 'india'
-                ? selectedState === 'all'
-                  ? 'All India Tour Packages'
-                  : `Packages in ${INDIA_STATES.find(s => s.id === selectedState)?.name || 'Selected State'}`
-                : 'International Escapes'}
-            </h2>
-            <span className="results-count-chip shadow-realistic-sm">
-              Showing {filteredPackages.length} package{filteredPackages.length !== 1 ? 's' : ''}
-            </span>
-          </div>
+                  <span>{st.name}</span>
+                  <span className="pill-count">({stateCounts[st.id] || 0})</span>
+                </button>
+              ))}
+            </div>
+          </section>
         </div>
+      ) : (
+        /* ---------------------------------------------------- */
+        /* 2. GENERAL EXPLORE VIEW (ALL STATES & INTERNATIONAL) */
+        /* ---------------------------------------------------- */
+        <div className="general-explore-view">
+          {/* Hero Banner Section */}
+          <section className="catalog-hero shadow-realistic-lg">
+            <div className="catalog-hero-overlay"></div>
+            <img
+              src="https://images.unsplash.com/photo-1506461883276-594a12b11cf3?auto=format&fit=crop&w=1400&q=80"
+              alt="Explore India & International Catalog"
+              className="catalog-hero-bg"
+            />
+            <div className="catalog-hero-content">
+              <FadeIn direction="up" delay={0.05}>
+                <div className="catalog-badge shadow-realistic-sm">
+                  <Compass size={14} className="badge-compass" />
+                  <span>OFFICIAL TRAVEL CATALOG</span>
+                </div>
+              </FadeIn>
+              <FadeIn direction="up" delay={0.15}>
+                <h1 className="catalog-hero-title">Discover India & Beyond</h1>
+              </FadeIn>
+              <FadeIn direction="up" delay={0.25}>
+                <p className="catalog-hero-subtitle">
+                  Browse curated state-wise journeys with 3-Star & 5-Star accommodations and negotiable pricing.
+                </p>
+              </FadeIn>
 
-        {/* Package Grid */}
-        {filteredPackages.length > 0 ? (
-          <div className="catalog-grid">
-            {filteredPackages.map((pkg) => (
-              <PackageCard key={pkg.slug || pkg.id} pkg={pkg} />
-            ))}
+              {/* Unified Search Input */}
+              <FadeIn direction="up" delay={0.35}>
+                <div className="catalog-search-bar shadow-realistic-lg">
+                  <Search size={20} className="search-icon" />
+                  <input
+                    type="text"
+                    placeholder="Search by state (Maharashtra, Karnataka, Uttarakhand, Punjab) or destination..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="catalog-search-input"
+                  />
+                  {searchQuery && (
+                    <button
+                      onClick={() => setSearchQuery('')}
+                      className="search-clear-btn"
+                      type="button"
+                    >
+                      Clear
+                    </button>
+                  )}
+                </div>
+              </FadeIn>
+            </div>
+          </section>
+
+          {/* Main Tab Segment: India vs International */}
+          <div className="catalog-tabs-bar">
+            <div className="segmented-switch-container catalog-tab-segmented">
+              <div className="segmented-switch shadow-realistic-sm">
+                <button
+                  className={`switch-tab ${activeTab === 'international' ? 'active' : ''}`}
+                  onClick={() => { setActiveTab('international'); setSelectedState('all'); }}
+                  style={{ position: 'relative' }}
+                >
+                  <span style={{ position: 'relative', zIndex: 2 }}>✈️ International Escapes</span>
+                  {activeTab === 'international' && (
+                    <motion.div
+                      layoutId="catalogMainTabBg"
+                      className="switch-tab-active-bg"
+                      transition={{ type: 'spring', stiffness: 400, damping: 32 }}
+                    />
+                  )}
+                </button>
+
+                <button
+                  className={`switch-tab ${activeTab === 'india' ? 'active' : ''}`}
+                  onClick={() => { setActiveTab('india'); setSelectedState('all'); }}
+                  style={{ position: 'relative' }}
+                >
+                  <span style={{ position: 'relative', zIndex: 2 }}>🇮🇳 India Packages</span>
+                  {activeTab === 'india' && (
+                    <motion.div
+                      layoutId="catalogMainTabBg"
+                      className="switch-tab-active-bg"
+                      transition={{ type: 'spring', stiffness: 400, damping: 32 }}
+                    />
+                  )}
+                </button>
+              </div>
+            </div>
           </div>
-        ) : (
-          <EmptyState
-            title="No packages match your search"
-            description={`We couldn't find any packages matching your selection. Try clearing the state filter or search terms.`}
-            onReset={() => {
-              setSelectedState('all');
-              setSearchQuery('');
-            }}
-            resetLabel="Reset All Filters"
+
+          {/* FEATURED TICKER / CAROUSEL */}
+          <FeaturedCarousel
+            packages={activePackages}
+            title={activeTab === 'india' ? 'Featured India Escapes' : 'Featured International Trips'}
+            staticGrid={false}
+            showTabs={false}
+            activeCategoryProp={activeTab}
+            searchQuery={searchQuery}
           />
-        )}
-      </section>
+
+          {/* INDIA STATE-WISE DESTINATION SHOWCASE GRID */}
+          {activeTab === 'india' && (
+            <section className="state-showcase-section">
+              <Reveal y={16}>
+                <div className="state-section-header">
+                  <div>
+                    <span className="section-pre-title">EXPLORE BY STATE</span>
+                    <h2 className="state-section-title">Select a State to View Its Destinations</h2>
+                    <p className="state-section-sub">
+                      Click on any state card to open its dedicated itinerary page.
+                    </p>
+                  </div>
+                </div>
+              </Reveal>
+
+              {/* Grid of State Cards */}
+              <div className="states-grid">
+                {INDIA_STATES.map((st) => {
+                  const count = stateCounts[st.id] || 0;
+
+                  return (
+                    <motion.div
+                      key={st.id}
+                      className="state-card shadow-interactive"
+                      onClick={() => handleSelectState(st.id)}
+                      whileHover={{ y: -6, scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <div className="state-img-wrapper">
+                        <img src={st.image} alt={st.name} className="state-card-img" loading="lazy" />
+                        <div className="state-img-overlay"></div>
+                        <span className="state-count-badge shadow-realistic-sm">
+                          {count > 0 ? `${count} Package${count > 1 ? 's' : ''}` : 'Featured State'}
+                        </span>
+                        <div className="state-view-btn-overlay">
+                          <span>View {st.name} &rarr;</span>
+                        </div>
+                      </div>
+                      <div className="state-card-content">
+                        <h3 className="state-card-name">{st.name}</h3>
+                        <p className="state-card-tagline">{st.tagline}</p>
+                        <div className="state-card-highlights">
+                          <span>{st.highlights}</span>
+                        </div>
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </section>
+          )}
+
+          {/* ALL FILTERED PACKAGES LIST */}
+          <section className="catalog-packages-section">
+            <div className="catalog-list-header">
+              <div className="catalog-list-title-group">
+                <h2 className="catalog-list-title">
+                  {activeTab === 'india' ? 'All India Tour Packages' : 'International Escapes'}
+                </h2>
+                <span className="results-count-chip shadow-realistic-sm">
+                  Showing {filteredPackages.length} package{filteredPackages.length !== 1 ? 's' : ''}
+                </span>
+              </div>
+            </div>
+
+            {filteredPackages.length > 0 ? (
+              <div className="catalog-grid">
+                {filteredPackages.map((pkg) => (
+                  <PackageCard key={pkg.slug || pkg.id} pkg={pkg} />
+                ))}
+              </div>
+            ) : (
+              <EmptyState
+                title="No packages match your search"
+                description="We couldn't find any packages matching your search terms. Try clearing the search query."
+                onReset={() => setSearchQuery('')}
+                resetLabel="Reset Search"
+              />
+            )}
+          </section>
+        </div>
+      )}
 
       {/* Need Custom Itinerary Banner */}
       <section className="custom-plan-cta container">
         <div className="custom-plan-card shadow-realistic-lg">
           <div className="custom-plan-text">
-            <span className="custom-pre">CAN'T FIND YOUR STATE OR DESTINATION?</span>
-            <h2 className="custom-title">We craft bespoke itineraries all over India & Abroad.</h2>
+            <span className="custom-pre">CAN'T FIND YOUR SPECIFIC SPOT?</span>
+            <h2 className="custom-title">
+              {activeStateObj ? `We craft custom itineraries all across ${activeStateObj.name} & India.` : 'We craft bespoke itineraries all over India & Abroad.'}
+            </h2>
             <p className="custom-desc">
-              Tell us where you want to travel, and our expert travel planner will design a custom package for you within 2 hours. All prices are negotiable!
+              Tell us where you want to travel, and our expert travel planner will design a custom itinerary with 3-Star or 5-Star accommodations. All prices are negotiable!
             </p>
           </div>
           <Link to="/enquire" className="btn-turquoise-cta custom-cta-btn shadow-realistic-md">
@@ -486,7 +620,210 @@ export default function Catalog() {
           padding-bottom: 40px;
         }
 
-        /* Catalog Hero */
+        /* ------------------------------------------------ */
+        /* Dedicated State View Styles */
+        /* ------------------------------------------------ */
+        .state-top-action-bar {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 20px;
+          flex-wrap: wrap;
+          gap: 12px;
+        }
+
+        .btn-back-to-states {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          background: var(--bg-secondary);
+          color: var(--accent-teal);
+          border: 1px solid var(--accent-teal);
+          padding: 8px 18px;
+          border-radius: 50px;
+          font-size: 13px;
+          font-weight: 700;
+          cursor: pointer;
+          transition: all var(--transition-fast);
+        }
+        .btn-back-to-states:hover {
+          background: var(--accent-teal);
+          color: #FFFFFF;
+          transform: translateY(-1px);
+        }
+
+        .state-breadcrumbs {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          font-size: 13px;
+          color: var(--text-muted);
+        }
+        .state-breadcrumbs a, .breadcrumb-btn {
+          color: var(--text-secondary);
+          background: none;
+          border: none;
+          font-family: inherit;
+          font-size: inherit;
+          cursor: pointer;
+          padding: 0;
+          transition: color 0.2s;
+        }
+        .state-breadcrumbs a:hover, .breadcrumb-btn:hover {
+          color: var(--accent-teal);
+        }
+        .state-breadcrumbs .current {
+          color: var(--accent-teal);
+          font-weight: 700;
+        }
+
+        .dedicated-state-hero {
+          position: relative;
+          width: 100%;
+          border-radius: var(--radius-xl);
+          overflow: hidden;
+          background-color: var(--text-primary);
+          padding: 40px 24px;
+          color: #FFFFFF;
+          margin-bottom: 28px;
+          min-height: 240px;
+          display: flex;
+          align-items: center;
+        }
+        @media (min-width: 768px) {
+          .dedicated-state-hero {
+            padding: 50px 40px;
+            min-height: 280px;
+          }
+        }
+
+        .dedicated-state-bg {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          z-index: 1;
+        }
+
+        .dedicated-state-overlay {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(135deg, rgba(11, 45, 72, 0.94) 0%, rgba(11, 45, 72, 0.75) 60%, rgba(8, 124, 141, 0.5) 100%);
+          z-index: 2;
+        }
+
+        .dedicated-state-hero-content {
+          position: relative;
+          z-index: 3;
+          max-width: 700px;
+        }
+
+        .state-eyebrow-pill {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          background: rgba(255, 255, 255, 0.15);
+          backdrop-filter: blur(8px);
+          -webkit-backdrop-filter: blur(8px);
+          color: #FFFFFF;
+          font-size: 10.5px;
+          font-weight: 700;
+          letter-spacing: 1.5px;
+          padding: 5px 14px;
+          border-radius: 50px;
+          margin-bottom: 12px;
+          border: 1px solid rgba(255, 255, 255, 0.25);
+        }
+
+        .state-page-title {
+          font-size: 32px;
+          font-weight: 800;
+          color: #FFFFFF;
+          margin: 0 0 10px 0;
+          line-height: 1.2;
+        }
+        @media (min-width: 768px) {
+          .state-page-title { font-size: 40px; }
+        }
+
+        .state-page-tagline {
+          font-size: 15px;
+          color: rgba(255, 255, 255, 0.9);
+          margin: 0 0 16px 0;
+          line-height: 1.4;
+        }
+
+        .state-highlights-bar {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          flex-wrap: wrap;
+          font-size: 13px;
+        }
+        .highlights-label {
+          font-weight: 700;
+          color: var(--accent-turquoise);
+        }
+        .highlights-text {
+          color: rgba(255, 255, 255, 0.85);
+        }
+
+        .state-search-container {
+          margin-bottom: 28px;
+        }
+
+        .other-states-quick-bar {
+          margin-top: 50px;
+          padding: 28px 24px;
+          background: var(--bg-secondary);
+          border-radius: var(--radius-xl);
+          border: 1px solid var(--border-color);
+        }
+        .other-states-title {
+          font-size: 18px;
+          font-weight: 800;
+          margin: 0 0 16px 0;
+          color: var(--text-primary);
+        }
+        .other-states-pills-list {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 10px;
+        }
+        .state-pill-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          background: var(--bg-primary);
+          border: 1px solid var(--border-color);
+          padding: 8px 16px;
+          border-radius: 50px;
+          font-size: 13px;
+          font-weight: 700;
+          color: var(--text-primary);
+          cursor: pointer;
+          transition: all var(--transition-fast);
+        }
+        .state-pill-btn:hover {
+          border-color: var(--accent-teal);
+          color: var(--accent-teal);
+          background: var(--accent-turquoise-light);
+          transform: translateY(-2px);
+        }
+        .pill-count {
+          color: var(--text-muted);
+          font-size: 11px;
+          font-weight: 600;
+        }
+
+        /* ------------------------------------------------ */
+        /* General Explore Styles */
+        /* ------------------------------------------------ */
         .catalog-hero {
           position: relative;
           width: 100%;
@@ -559,9 +896,7 @@ export default function Catalog() {
           letter-spacing: -0.5px;
         }
         @media (min-width: 768px) {
-          .catalog-hero-title {
-            font-size: 42px;
-          }
+          .catalog-hero-title { font-size: 42px; }
         }
 
         .catalog-hero-subtitle {
@@ -579,6 +914,7 @@ export default function Catalog() {
           padding: 6px 10px 6px 20px;
           gap: 12px;
           width: 100%;
+          border: 1px solid var(--border-color);
         }
 
         .search-icon {
@@ -666,46 +1002,25 @@ export default function Catalog() {
         }
 
         .state-section-header {
-          display: flex;
-          flex-direction: column;
-          gap: 12px;
-          margin-bottom: 20px;
-        }
-        @media (min-width: 768px) {
-          .state-section-header {
-            flex-direction: row;
-            align-items: flex-end;
-            justify-content: space-between;
-          }
+          margin-bottom: 24px;
         }
 
         .state-section-title {
           font-size: 26px;
           font-weight: 800;
-          margin: 4px 0 0 0;
+          margin: 4px 0 6px 0;
         }
 
-        .btn-reset-state {
-          background: var(--accent-turquoise-light);
-          color: var(--accent-teal);
-          border: 1px solid var(--accent-teal);
-          font-size: 13px;
-          font-weight: 700;
-          padding: 8px 18px;
-          border-radius: 50px;
-          cursor: pointer;
-          align-self: flex-start;
-          transition: all 0.2s ease;
-        }
-        .btn-reset-state:hover {
-          background: var(--accent-teal);
-          color: #FFFFFF;
+        .state-section-sub {
+          font-size: 14px;
+          color: var(--text-secondary);
+          margin: 0;
         }
 
         .states-grid {
           display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-          gap: 18px;
+          grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+          gap: 20px;
         }
 
         .state-card {
@@ -717,15 +1032,11 @@ export default function Catalog() {
           display: flex;
           flex-direction: column;
         }
-        .state-card.selected {
-          border: 2px solid var(--accent-teal);
-          box-shadow: 0 0 0 3px var(--accent-turquoise-light), var(--shadow-hover-lift);
-        }
 
         .state-img-wrapper {
           position: relative;
           width: 100%;
-          height: 150px;
+          height: 165px;
           overflow: hidden;
         }
 
@@ -745,14 +1056,14 @@ export default function Catalog() {
           left: 0;
           width: 100%;
           height: 100%;
-          background: linear-gradient(to top, rgba(11, 45, 72, 0.6) 0%, transparent 70%);
+          background: linear-gradient(to top, rgba(11, 45, 72, 0.7) 0%, transparent 60%);
         }
 
         .state-count-badge {
           position: absolute;
           top: 12px;
           right: 12px;
-          background: rgba(11, 45, 72, 0.8);
+          background: rgba(11, 45, 72, 0.85);
           backdrop-filter: blur(8px);
           -webkit-backdrop-filter: blur(8px);
           color: #FFFFFF;
@@ -762,31 +1073,29 @@ export default function Catalog() {
           border-radius: 50px;
         }
 
-        .state-selected-check {
+        .state-view-btn-overlay {
           position: absolute;
           bottom: 12px;
           left: 12px;
           background: var(--accent-teal);
           color: #FFFFFF;
-          font-size: 11px;
+          font-size: 12px;
           font-weight: 700;
-          padding: 4px 10px;
+          padding: 5px 12px;
           border-radius: 50px;
-          display: flex;
-          align-items: center;
-          gap: 5px;
+          box-shadow: 0 4px 10px rgba(8, 124, 141, 0.3);
         }
 
         .state-card-content {
-          padding: 16px;
+          padding: 18px;
           display: flex;
           flex-direction: column;
           gap: 4px;
         }
 
         .state-card-name {
-          font-size: 18px;
-          font-weight: 700;
+          font-size: 19px;
+          font-weight: 800;
           color: var(--text-primary);
           margin: 0;
         }
@@ -805,7 +1114,7 @@ export default function Catalog() {
           background: var(--accent-turquoise-light);
           padding: 4px 10px;
           border-radius: 6px;
-          margin-top: 6px;
+          margin-top: 8px;
           display: inline-block;
         }
 

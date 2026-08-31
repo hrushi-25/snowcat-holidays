@@ -17,7 +17,6 @@ import {
   ShieldCheck,
   Heart,
   Headphones,
-  User,
   ArrowRight,
   ArrowUpRight
 } from 'lucide-react';
@@ -159,9 +158,9 @@ export default function Home() {
 
   return (
     <div className="home-page mobile-nav-padding">
-      {/* Mobile Top Header (Matches the reference screenshots) */}
+      {/* Mobile Top Header */}
       <div className="mobile-only-header container">
-        <div className="mobile-header-left">
+        <Link to="/" className="mobile-header-left" onDoubleClick={() => navigate('/owner')}>
           <img src="/snowcat-logo.png" alt="Snowcat Holidays Logo" className="mobile-header-logo-img" />
           <div className="mobile-logo-text-group">
             <span className="curated-label">CURATED JOURNEYS</span>
@@ -169,9 +168,6 @@ export default function Home() {
               Snowcat<span> holidays</span>
             </div>
           </div>
-        </div>
-        <Link to="/auth" className="mobile-profile-btn shadow-realistic-sm" aria-label="User account">
-          <User size={20} />
         </Link>
       </div>
 
