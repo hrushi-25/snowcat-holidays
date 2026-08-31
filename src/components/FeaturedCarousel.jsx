@@ -1,7 +1,7 @@
 import React, { useState, useRef, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Sparkles, ArrowLeft, ArrowRight, MapPin, Clock, ArrowUpRight } from 'lucide-react';
+import { Sparkles, ArrowLeft, ArrowRight, MapPin, Clock, ArrowUpRight, Globe, Map } from 'lucide-react';
 
 // Helper to compute search match score for a package
 const getSearchScore = (pkg, query) => {
@@ -168,7 +168,10 @@ export default function FeaturedCarousel({
                 onClick={() => handleCategoryClick('international')}
                 style={{ position: 'relative' }}
               >
-                <span style={{ position: 'relative', zIndex: 2 }}>✈️ International Escapes</span>
+                <span className="tab-label-wrap">
+                  <Globe size={16} className="tab-icon" />
+                  <span>International Escapes</span>
+                </span>
                 {activeCategory === 'international' && (
                   <motion.div
                     layoutId="carouselCategoryBg"
@@ -183,7 +186,10 @@ export default function FeaturedCarousel({
                 onClick={() => handleCategoryClick('india')}
                 style={{ position: 'relative' }}
               >
-                <span style={{ position: 'relative', zIndex: 2 }}>🇮🇳 India Packages</span>
+                <span className="tab-label-wrap">
+                  <Map size={16} className="tab-icon" />
+                  <span>India Packages</span>
+                </span>
                 {activeCategory === 'india' && (
                   <motion.div
                     layoutId="carouselCategoryBg"
@@ -559,6 +565,24 @@ export default function FeaturedCarousel({
         .featured-carousel-section.static-grid-mode .ticker-card {
           width: 100%;
           flex-shrink: 1;
+        }
+
+        .tab-label-wrap {
+          position: relative;
+          z-index: 2;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+        }
+
+        .tab-icon {
+          flex-shrink: 0;
+          transition: transform 0.2s ease;
+        }
+
+        .switch-tab:hover .tab-icon {
+          transform: scale(1.12);
         }
       `}</style>
     </div>

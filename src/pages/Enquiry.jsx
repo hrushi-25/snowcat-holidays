@@ -14,7 +14,9 @@ import {
   Mail,
   Phone,
   ExternalLink,
-  Share2
+  Share2,
+  Plane,
+  Train
 } from 'lucide-react';
 
 const InstagramIcon = ({ size = 24, className = "" }) => (
@@ -310,13 +312,14 @@ I would like to enquire about a journey. Here are my details:
                   <label className="form-label">Mode of Travel *</label>
                   <div className="budget-radios">
                     {[
-                      { value: 'Flight', label: '✈ Flight' },
-                      { value: 'Train', label: '🚆 Train' }
+                      { value: 'Flight', label: 'Flight', icon: <Plane size={15} /> },
+                      { value: 'Train', label: 'Train', icon: <Train size={15} /> }
                     ].map((opt) => (
                       <motion.label
                         key={opt.value}
                         className={`budget-radio-label ${formData.modeOfTravel === opt.value ? 'checked' : ''}`}
                         whileTap={{ scale: 0.97 }}
+                        style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
                       >
                         <input
                           type="radio"
@@ -326,6 +329,7 @@ I would like to enquire about a journey. Here are my details:
                           onChange={handleChange}
                           className="budget-radio-input"
                         />
+                        {opt.icon}
                         <span>{opt.label}</span>
                       </motion.label>
                     ))}

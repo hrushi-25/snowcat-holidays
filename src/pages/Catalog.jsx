@@ -14,7 +14,9 @@ import {
   ArrowLeft,
   MapPin,
   ArrowRight,
-  ChevronRight
+  ChevronRight,
+  Globe,
+  Map
 } from 'lucide-react';
 
 // Comprehensive Indian States metadata with authentic Unsplash location images & keywords
@@ -471,7 +473,10 @@ export default function Catalog() {
                   onClick={() => { setActiveTab('international'); setSelectedState('all'); }}
                   style={{ position: 'relative' }}
                 >
-                  <span style={{ position: 'relative', zIndex: 2 }}>✈️ International Escapes</span>
+                  <span className="tab-label-wrap">
+                    <Globe size={16} className="tab-icon" />
+                    <span>International Escapes</span>
+                  </span>
                   {activeTab === 'international' && (
                     <motion.div
                       layoutId="catalogMainTabBg"
@@ -486,7 +491,10 @@ export default function Catalog() {
                   onClick={() => { setActiveTab('india'); setSelectedState('all'); }}
                   style={{ position: 'relative' }}
                 >
-                  <span style={{ position: 'relative', zIndex: 2 }}>🇮🇳 India Packages</span>
+                  <span className="tab-label-wrap">
+                    <Map size={16} className="tab-icon" />
+                    <span>India Packages</span>
+                  </span>
                   {activeTab === 'india' && (
                     <motion.div
                       layoutId="catalogMainTabBg"
@@ -994,6 +1002,24 @@ export default function Catalog() {
           background-color: var(--accent-teal);
           border-radius: 26px;
           z-index: 1;
+        }
+
+        .tab-label-wrap {
+          position: relative;
+          z-index: 2;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+        }
+
+        .tab-icon {
+          flex-shrink: 0;
+          transition: transform 0.2s ease;
+        }
+
+        .switch-tab:hover .tab-icon {
+          transform: scale(1.12);
         }
 
         /* State Showcase */
