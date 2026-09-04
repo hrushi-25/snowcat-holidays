@@ -1,14 +1,12 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { usePackages } from '../context/PackageContext';
-import { motion } from 'framer-motion';
 import FadeIn from '../components/animations/FadeIn';
 import Reveal from '../components/animations/Reveal';
 import { StaggerContainer, StaggerItem } from '../components/animations/StaggerContainer';
 import AnimatedCounter from '../components/animations/AnimatedCounter';
 import HoverCard from '../components/animations/HoverCard';
 import MagneticButton from '../components/animations/MagneticButton';
-import EmptyState from '../components/animations/EmptyState';
 import FeaturedCarousel from '../components/FeaturedCarousel';
 import Footer from '../components/Footer';
 import {
@@ -104,49 +102,6 @@ export default function Home() {
     }
     return name.slice(0, 2).toUpperCase();
   };
-
-  // Helper to determine if a package is International
-  const isInternationalPkg = (pkg) => {
-    if (!pkg) return false;
-    const cat = (pkg.category || '').toLowerCase();
-    const dest = (pkg.destination || '').toLowerCase();
-    const name = (pkg.name || '').toLowerCase();
-    return cat === 'international' ||
-      dest.includes('dubai') ||
-      dest.includes('switzerland') ||
-      dest.includes('singapore') ||
-      dest.includes('thailand') ||
-      dest.includes('maldives') ||
-      dest.includes('bali') ||
-      name.includes('dubai') ||
-      name.includes('swiss') ||
-      name.includes('singapore') ||
-      name.includes('thailand') ||
-      name.includes('maldives') ||
-      name.includes('bali');
-  };
-
-  const filteredTrendingPackages = useMemo(() => {
-    return activePackages.filter(pkg => {
-      if (!pkg) return false;
-      // 1. Tab check
-      const matchesTab = trendingTab === 'international'
-        ? isInternationalPkg(pkg)
-        : !isInternationalPkg(pkg);
-
-      // 2. Search check (name, destination, category/packageType)
-      const name = (pkg.name || '').toLowerCase();
-      const dest = (pkg.destination || '').toLowerCase();
-      const cat = (pkg.category || '').toLowerCase();
-
-      const matchesSearch = trendingSearchQuery === '' ||
-        name.includes(trendingSearchQuery.toLowerCase()) ||
-        dest.includes(trendingSearchQuery.toLowerCase()) ||
-        cat.includes(trendingSearchQuery.toLowerCase());
-
-      return matchesTab && matchesSearch;
-    });
-  }, [activePackages, trendingTab, trendingSearchQuery]);
 
   const handleExploreClick = () => {
     navigate('/explore');

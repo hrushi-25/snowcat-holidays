@@ -6,6 +6,7 @@ import { ToastProvider } from './components/animations/Toast';
 import ScrollToTop from './components/animations/ScrollToTop';
 import Navigation from './components/Navigation';
 import Home from './pages/Home';
+import Explore from './pages/Explore';
 import Catalog from './pages/Catalog';
 import PackageDetail from './pages/PackageDetail';
 import Enquiry from './pages/Enquiry';
@@ -24,8 +25,8 @@ export default function App() {
             <main className="flex-grow-1">
               <Routes>
                 <Route path="/" element={<Home />} />
-                <Route path="/explore" element={<Catalog />} />
-                <Route path="/catalog" element={<Catalog />} />
+                <Route path="/explore" element={<Explore />} />
+                <Route path="/catalog" element={<Explore />} />
                 <Route path="/package/:slug" element={<PackageDetail />} />
                 <Route path="/enquire" element={<Enquiry />} />
                 <Route path="/auth" element={<UserAuth />} />

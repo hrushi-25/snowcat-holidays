@@ -97,11 +97,19 @@ export default function FeaturedCarousel({
     const cat = (pkg.category || '').toLowerCase();
     const dest = (pkg.destination || pkg.location || pkg.dest || '').toLowerCase();
     const name = (pkg.name || pkg.packageName || pkg.package_name || '').toLowerCase();
-    return cat === 'international' ||
+    const country = (pkg.country || '').toLowerCase();
+
+    if (cat === 'international' || (country && country !== 'india')) return true;
+    if (cat === 'india') return false;
+
+    return (
       dest.includes('dubai') || dest.includes('switzerland') || dest.includes('singapore') ||
       dest.includes('thailand') || dest.includes('maldives') || dest.includes('bali') ||
+      dest.includes('london') || dest.includes('paris') || dest.includes('egypt') ||
       name.includes('dubai') || name.includes('swiss') || name.includes('singapore') ||
-      name.includes('thailand') || name.includes('maldives') || name.includes('bali');
+      name.includes('thailand') || name.includes('maldives') || name.includes('bali') ||
+      name.includes('london') || name.includes('paris') || name.includes('egypt')
+    );
   };
 
   // Filter packages based on activeCategory and searchQuery

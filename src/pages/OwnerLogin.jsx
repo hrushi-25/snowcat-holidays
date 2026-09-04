@@ -43,7 +43,7 @@ export default function OwnerLogin() {
       localStorage.setItem('refresh_token', data.refresh);
       addToast('Welcome back!', 'success');
       navigate('/owner/dashboard');
-    } catch (err) {
+    } catch {
       setError('Could not reach the server. Please try again.');
       addToast('Login failed — server unreachable', 'error');
     }

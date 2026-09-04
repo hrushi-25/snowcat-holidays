@@ -10,7 +10,6 @@ import {
   Lock,
   Phone,
   ArrowLeft,
-  CheckCircle2,
   Sparkles,
   LogOut,
   Shield,
@@ -101,7 +100,7 @@ export default function UserAuth() {
       await login('traveller@snowcatholidays.com', 'password123');
       addToast('Signed in with guest traveller profile!', 'success');
       navigate(-1);
-    } catch (err) {
+    } catch {
       addToast('Demo login error', 'error');
     } finally {
       setLoading(false);

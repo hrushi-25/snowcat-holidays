@@ -1,13 +1,9 @@
 import { API_URL } from '../utils/api';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { usePackages } from '../context/PackageContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useToast } from '../components/animations/Toast';
-import FadeIn from '../components/animations/FadeIn';
-import Reveal from '../components/animations/Reveal';
-import HoverCard from '../components/animations/HoverCard';
-import MagneticButton from '../components/animations/MagneticButton';
 import {
   Plus,
   Edit,
@@ -17,10 +13,15 @@ import {
   LogOut,
   X,
   Image as ImageIcon,
-  MapPin,
-  Calendar,
   Layers,
-  ArrowLeft
+  MessageSquare,
+  Phone,
+  Mail,
+  Calendar,
+  User,
+  CheckCircle,
+  Clock,
+  RefreshCw
 } from 'lucide-react';
 
 const PRESET_IMAGES = [
@@ -42,6 +43,9 @@ export default function OwnerDashboard() {
     togglePackageActive
   } = usePackages();
 
+  // Active dashboard tab: 'catalog' | 'leads'
+  const [activeTab, setActiveTab] = useState('catalog');
+
   // Authentication check
   useEffect(() => {
     const isLoggedIn = !!localStorage.getItem('access_token');
@@ -54,11 +58,11 @@ export default function OwnerDashboard() {
   const [showEditor, setShowEditor] = useState(false);
   const [editingId, setEditingId] = useState(null); // Null for CREATE, String for EDIT
 
-  // Form Fields State (matching screenshot inputs exactly)
+  // Form Fields State
   const [name, setName] = useState('');
   const [destination, setDestination] = useState('');
   const [daysNightsText, setDaysNightsText] = useState(''); // e.g. "6 Days / 5 Nights"
-  const [category, setCategory] = useState('Leisure'); // Package Type
+  const [category, setCategory] = useState('Leisure');
   const [price, setPrice] = useState('0');
   const [shortDescription, setShortDescription] = useState('');
   const [hotelDetails, setHotelDetails] = useState('');
@@ -67,7 +71,7 @@ export default function OwnerDashboard() {
   const [sightseeing, setSightseeing] = useState('');
   const [specialOffer, setSpecialOffer] = useState('');
 
-  // Custom textarea inputs (parsed on submit)
+  // Custom textarea inputs
   const [itineraryText, setItineraryText] = useState('Day 1 | ');
   const [inclusionsText, setInclusionsText] = useState('Accommodation');
   const [exclusionsText, setExclusionsText] = useState('Flights');
@@ -77,33 +81,80 @@ export default function OwnerDashboard() {
   const [isFeatured, setIsFeatured] = useState(false);
   const [isActive, setIsActive] = useState(true);
 
+  // Enquiries / Leads
   const [enquiries, setEnquiries] = useState([]);
   const [loadingEnquiries, setLoadingEnquiries] = useState(false);
 
-  useEffect(() => {
+  const fetchEnquiries = useCallback(() => {
     const token = localStorage.getItem('access_token');
-    if (token) {
-      setLoadingEnquiries(true);
-      fetch(`${API_URL}/api/enquiries/`, {
-        headers: { 'Authorization': `Bearer ${token}` }
+    if (!token) return;
+    setLoadingEnquiries(true);
+    fetch(`${API_URL}/api/enquiries/list/`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    })
+      .then(res => {
+        if (res.ok) return res.json();
+        return [];
       })
-        .then(res => {
-          if (res.ok) return res.json();
-          // Fallback to /list/ endpoint if primary returns 404
-          return fetch(`${API_URL}/api/enquiries/list/`, {
-            headers: { 'Authorization': `Bearer ${token}` }
-          }).then(r => r.ok ? r.json() : []);
-        })
-        .then(data => { if (Array.isArray(data)) setEnquiries(data); })
-        .catch(err => console.error('Failed to fetch enquiries', err))
-        .finally(() => setLoadingEnquiries(false));
-    }
+      .then(data => {
+        if (Array.isArray(data)) setEnquiries(data);
+      })
+      .catch(err => console.error('Failed to fetch enquiries', err))
+      .finally(() => setLoadingEnquiries(false));
   }, []);
 
-  // Statistics counters (matching Screenshot 3 counters card layout)
+  useEffect(() => {
+    fetchEnquiries();
+  }, [fetchEnquiries]);
+
+  const handleToggleLeadContacted = async (lead) => {
+    const token = localStorage.getItem('access_token');
+    if (!token) return;
+    const newStatus = !lead.contacted;
+    try {
+      const res = await fetch(`${API_URL}/api/enquiries/${lead.id}/`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ contacted: newStatus })
+      });
+      if (res.ok) {
+        setEnquiries(prev => prev.map(item => item.id === lead.id ? { ...item, contacted: newStatus } : item));
+        addToast(newStatus ? 'Marked lead as Contacted' : 'Marked lead as New', 'success');
+      } else {
+        addToast('Failed to update lead status', 'error');
+      }
+    } catch {
+      addToast('Error communicating with server', 'error');
+    }
+  };
+
+  const handleDeleteLead = async (leadId) => {
+    if (!window.confirm('Are you sure you want to delete this customer enquiry?')) return;
+    const token = localStorage.getItem('access_token');
+    if (!token) return;
+    try {
+      const res = await fetch(`${API_URL}/api/enquiries/${leadId}/`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (res.ok || res.status === 204) {
+        setEnquiries(prev => prev.filter(item => item.id !== leadId));
+        addToast('Enquiry deleted successfully', 'info');
+      } else {
+        addToast('Failed to delete enquiry', 'error');
+      }
+    } catch {
+      addToast('Error communicating with server', 'error');
+    }
+  };
+
+  // Statistics counters
   const totalCount = packages.length;
   const activeCount = packages.filter(p => p.isActive).length;
-  const featuredCount = packages.filter(p => p.isFeatured).length;
+  const newLeadsCount = enquiries.filter(e => !e.contacted).length;
 
   const handleLogout = () => {
     localStorage.removeItem('access_token');
@@ -116,48 +167,46 @@ export default function OwnerDashboard() {
     const daysMatch = str.match(/(\d+)\s*Day/i);
     const nightsMatch = str.match(/(\d+)\s*Night/i);
     return {
-      days: daysMatch ? parseInt(daysMatch[1]) : 1,
-      nights: nightsMatch ? parseInt(nightsMatch[1]) : 0
+      days: daysMatch ? parseInt(daysMatch[1], 10) : 1,
+      nights: nightsMatch ? parseInt(nightsMatch[1], 10) : 0
     };
   };
 
-  // Reconstruct Day-wise Itinerary Array from Text Area
+  // Parse Multi-line Itinerary Text into Array of Objects
   const parseItineraryText = (text) => {
-    return text.split('\n').filter(line => line.trim()).map((line, idx) => {
-      const parts = line.split('|');
+    if (!text || text.trim() === '') return [];
+    const lines = text.split('\n').filter(line => line.trim() !== '');
+
+    return lines.map((line, idx) => {
+      const parts = line.split('|').map(p => p.trim());
       if (parts.length >= 3) {
-        // Format: Day 1 | Title | Details
-        const dayLabel = parts[0].trim();
-        const title = parts[1].trim();
-        const details = parts.slice(2).join('|').trim();
-        const dayNumMatch = dayLabel.match(/\d+/);
-        const dayNum = dayNumMatch ? parseInt(dayNumMatch[0]) : idx + 1;
+        const dayMatch = parts[0].match(/\d+/);
+        const dayNum = dayMatch ? parseInt(dayMatch[0], 10) : idx + 1;
         return {
           day: dayNum,
-          title: title || `Day ${dayNum}`,
-          details: details
+          title: parts[1] || `Day ${dayNum}`,
+          details: parts.slice(2).join(' | ')
         };
       } else if (parts.length === 2) {
-        // Format: Day 1 | Details (auto-extracting first sentence or using Day number as title)
-        const dayLabel = parts[0].trim();
-        const details = parts[1].trim();
-        const dayNumMatch = dayLabel.match(/\d+/);
-        const dayNum = dayNumMatch ? parseInt(dayNumMatch[0]) : idx + 1;
-
-        let title = `Day ${dayNum}`;
-        let detailText = details;
+        const dayMatch = parts[0].match(/\d+/);
+        const dayNum = dayMatch ? parseInt(dayMatch[0], 10) : idx + 1;
+        let title = parts[0];
+        const details = parts[1];
         const dotIndex = details.indexOf('.');
         if (dotIndex > 0 && dotIndex < 40) {
           title = details.substring(0, dotIndex).trim();
-          detailText = details.substring(dotIndex + 1).trim();
+          return {
+            day: dayNum,
+            title: title,
+            details: details.substring(dotIndex + 1).trim() || details
+          };
         }
         return {
           day: dayNum,
           title: title,
-          details: detailText || details
+          details: details
         };
       } else {
-        // Raw text line fallback
         return {
           day: idx + 1,
           title: `Day ${idx + 1}`,
@@ -171,7 +220,6 @@ export default function OwnerDashboard() {
   const getItineraryTextString = (itineraryArray) => {
     if (!itineraryArray || itineraryArray.length === 0) return 'Day 1 | ';
     return itineraryArray.map(item => {
-      // Reconstruct as "Day X | Title | Details"
       return `${item.title.toLowerCase().startsWith('day') ? item.title : `Day ${item.day} - ${item.title}`} | ${item.details}`;
     }).join('\n');
   };
@@ -222,7 +270,7 @@ export default function OwnerDashboard() {
     setShowEditor(true);
   };
 
-  // Choose file upload converting to base64
+  // Multiple image uploader
   const handleMultipleImagesUpload = (e) => {
     const files = Array.from(e.target.files);
     if (files.length === 0) return;
@@ -251,10 +299,8 @@ export default function OwnerDashboard() {
       return;
     }
 
-    // Parse Duration
     const { days, nights } = parseDaysNights(daysNightsText);
 
-    // Parse Inclusions & Exclusions
     const inclusions = inclusionsText
       .split('\n')
       .map(line => line.trim())
@@ -265,13 +311,10 @@ export default function OwnerDashboard() {
       .map(line => line.trim())
       .filter(line => line !== '');
 
-    // Parse Itinerary Text
     const itinerary = parseItineraryText(itineraryText);
 
-    // Final Images check
     let images = [...imageUrls];
     if (images.length === 0) {
-      // Add default preset image
       images.push('https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=800&q=80');
     }
 
@@ -335,48 +378,204 @@ export default function OwnerDashboard() {
         </button>
       </div>
 
-      {/* Statistics Cards Grid Card (Matching layout in screenshots) */}
+      {/* Statistics Cards Grid Card */}
       <div className="container mb-24">
         <div className="dashboard-stats-card-container">
-          <div className="d-stat-column">
+          <div className="d-stat-column" onClick={() => { setActiveTab('catalog'); setShowEditor(false); }} style={{ cursor: 'pointer' }}>
             <span className="d-stat-val">{totalCount}</span>
             <span className="d-stat-lbl">total journeys</span>
           </div>
           <div className="d-stat-divider"></div>
-          <div className="d-stat-column">
+          <div className="d-stat-column" onClick={() => { setActiveTab('catalog'); setShowEditor(false); }} style={{ cursor: 'pointer' }}>
             <span className="d-stat-val">{activeCount}</span>
             <span className="d-stat-lbl">active now</span>
           </div>
           <div className="d-stat-divider"></div>
-          <div className="d-stat-column">
-            <span className="d-stat-val">{featuredCount}</span>
-            <span className="d-stat-lbl">featured</span>
+          <div className="d-stat-column" onClick={() => { setActiveTab('leads'); setShowEditor(false); }} style={{ cursor: 'pointer' }}>
+            <span className="d-stat-val text-teal">{enquiries.length}</span>
+            <span className="d-stat-lbl">{newLeadsCount > 0 ? `${newLeadsCount} new leads` : 'customer leads'}</span>
           </div>
         </div>
       </div>
 
-      {/* Editor Toggler Button Bar */}
+      {/* Section Switcher Tabs */}
       <div className="container mb-20">
-        {showEditor ? (
-          <button onClick={handleCancelEditor} className="btn-close-editor-custom">
-            <X size={18} />
-            <span>Close editor</span>
+        <div className="dashboard-tab-bar">
+          <button
+            className={`dashboard-tab-btn ${activeTab === 'catalog' ? 'active' : ''}`}
+            onClick={() => { setActiveTab('catalog'); setShowEditor(false); }}
+          >
+            <Layers size={16} />
+            <span>Trips Catalog ({packages.length})</span>
           </button>
-        ) : (
-          <div className="catalog-header-actions-row">
-            <h2 className="catalog-heading">Trips Catalog</h2>
-            <button onClick={openCreateMode} className="btn-primary add-pkg-btn">
-              <Plus size={18} />
-              <span>Add new package</span>
-            </button>
-          </div>
-        )}
+          <button
+            className={`dashboard-tab-btn ${activeTab === 'leads' ? 'active' : ''}`}
+            onClick={() => { setActiveTab('leads'); setShowEditor(false); }}
+          >
+            <MessageSquare size={16} />
+            <span>Customer Enquiries ({enquiries.length})</span>
+            {newLeadsCount > 0 && (
+              <span className="badge-new-leads">{newLeadsCount} new</span>
+            )}
+          </button>
+        </div>
       </div>
 
-      {/* Inline Content Toggle: Editor vs Table list */}
+      {/* Editor Toggler Button Bar (Catalog mode only) */}
+      {activeTab === 'catalog' && (
+        <div className="container mb-20">
+          {showEditor ? (
+            <button onClick={handleCancelEditor} className="btn-close-editor-custom">
+              <X size={18} />
+              <span>Close editor</span>
+            </button>
+          ) : (
+            <div className="catalog-header-actions-row">
+              <h2 className="catalog-heading">Trips Catalog</h2>
+              <button onClick={openCreateMode} className="btn-primary add-pkg-btn">
+                <Plus size={18} />
+                <span>Add new package</span>
+              </button>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Main Content Area */}
       <div className="container">
         <AnimatePresence mode="wait">
-          {showEditor ? (
+          {activeTab === 'leads' ? (
+            /* CUSTOMER LEADS / ENQUIRIES VIEW */
+            <motion.div
+              key="leads"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -12 }}
+              transition={{ duration: 0.25 }}
+              className="catalog-table-card"
+            >
+              <div className="leads-card-header">
+                <div>
+                  <h2 className="catalog-heading">Customer Enquiries & Leads</h2>
+                  <p className="dashboard-subheading">Inquiries submitted by travellers on the Snowcat Holidays website.</p>
+                </div>
+                <button onClick={fetchEnquiries} className="btn-refresh-leads" title="Refresh enquiries">
+                  <RefreshCw size={14} className={loadingEnquiries ? 'spin' : ''} />
+                  <span>Refresh</span>
+                </button>
+              </div>
+
+              {loadingEnquiries && enquiries.length === 0 ? (
+                <div className="empty-catalog text-center">Loading customer enquiries...</div>
+              ) : enquiries.length > 0 ? (
+                <div className="table-responsive">
+                  <table className="catalog-table leads-table">
+                    <thead>
+                      <tr>
+                        <th>Customer</th>
+                        <th>Destination</th>
+                        <th>Travel Info</th>
+                        <th>Message</th>
+                        <th>Status</th>
+                        <th className="text-right">Quick Contact / Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <AnimatePresence>
+                        {enquiries.map((lead) => (
+                          <motion.tr
+                            key={lead.id}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0, height: 0 }}
+                            className={lead.contacted ? 'lead-row-contacted' : 'lead-row-new'}
+                          >
+                            <td>
+                              <div className="lead-customer-cell">
+                                <div className="lead-avatar">
+                                  <User size={16} />
+                                </div>
+                                <div>
+                                  <strong className="lead-name">{lead.name}</strong>
+                                  <div className="lead-contact-links">
+                                    <a href={`tel:${lead.phone}`} className="lead-link">
+                                      <Phone size={12} /> {lead.phone}
+                                    </a>
+                                    {lead.email && (
+                                      <a href={`mailto:${lead.email}`} className="lead-link">
+                                        <Mail size={12} /> {lead.email}
+                                      </a>
+                                    )}
+                                  </div>
+                                </div>
+                              </div>
+                            </td>
+                            <td>
+                              <span className="lead-dest-badge">{lead.destination}</span>
+                            </td>
+                            <td>
+                              <div className="lead-meta-group">
+                                {lead.travel_date && (
+                                  <span className="lead-meta-item"><Calendar size={12} /> {lead.travel_date}</span>
+                                )}
+                                {lead.travelers && (
+                                  <span className="lead-meta-item">{lead.travelers} Travelers</span>
+                                )}
+                                {lead.budget && (
+                                  <span className="budget-tag">{lead.budget}</span>
+                                )}
+                              </div>
+                            </td>
+                            <td>
+                              <div className="lead-message-box" title={lead.message}>
+                                {lead.message || 'No additional message provided.'}
+                              </div>
+                            </td>
+                            <td>
+                              <button
+                                onClick={() => handleToggleLeadContacted(lead)}
+                                className={`status-badge-btn ${lead.contacted ? 'active' : 'inactive'}`}
+                                title="Click to toggle contacted status"
+                              >
+                                {lead.contacted ? <CheckCircle size={12} /> : <Clock size={12} />}
+                                <span>{lead.contacted ? 'CONTACTED' : 'NEW LEAD'}</span>
+                              </button>
+                            </td>
+                            <td className="text-right">
+                              <div className="actions-cell-flex">
+                                <a
+                                  href={`https://wa.me/${(lead.phone || '').replace(/[^0-9]/g, '')}?text=${encodeURIComponent(`Hi ${lead.name}, thank you for contacting Snowcat Holidays regarding your trip to ${lead.destination}!`)}`}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="action-icon-btn whatsapp-btn"
+                                  title="WhatsApp customer"
+                                >
+                                  <MessageSquare size={16} />
+                                </a>
+                                <button
+                                  onClick={() => handleDeleteLead(lead.id)}
+                                  className="action-icon-btn delete-btn"
+                                  title="Delete enquiry"
+                                  aria-label="Delete enquiry"
+                                >
+                                  <Trash2 size={16} />
+                                </button>
+                              </div>
+                            </td>
+                          </motion.tr>
+                        ))}
+                      </AnimatePresence>
+                    </tbody>
+                  </table>
+                </div>
+              ) : (
+                <div className="empty-catalog text-center">
+                  <MessageSquare size={40} className="empty-icon" />
+                  <p>No customer enquiries yet. Inquiries submitted via the booking form will appear here automatically.</p>
+                </div>
+              )}
+            </motion.div>
+          ) : showEditor ? (
             /* FULL-SCREEN / FULL-WIDTH INLINE PACKAGE FORM */
             <motion.div
               key="editor"
@@ -389,12 +588,11 @@ export default function OwnerDashboard() {
               <div className="editor-card-header">
                 <h2 className="editor-card-title">{editingId ? 'Edit package' : 'New package'}</h2>
                 <p className="editor-card-subtitle">
-                  Packages are saved locally and appear on the website immediately.
+                  Packages are synced with the database and appear immediately for visitors.
                 </p>
               </div>
 
               <form onSubmit={handleSavePackageSubmit} className="editor-inputs-form">
-                {/* Form Input fields */}
                 <div className="editor-form-group">
                   <label className="editor-label">Package name</label>
                   <input
@@ -444,59 +642,59 @@ export default function OwnerDashboard() {
                 </div>
 
                 <div className="editor-form-group">
-                  <label className="editor-label">Price per person</label>
+                  <label className="editor-label">Price per person (₹)</label>
                   <input
                     type="number"
                     required
                     value={price}
                     onChange={(e) => setPrice(e.target.value)}
-                    placeholder="0"
+                    placeholder="25000"
                     className="editor-input-field"
                   />
                 </div>
 
                 <div className="editor-form-group">
-                  <label className="editor-label">Short description</label>
+                  <label className="editor-label">Short Description</label>
                   <textarea
                     value={shortDescription}
                     onChange={(e) => setShortDescription(e.target.value)}
-                    placeholder="What makes this journey special?"
+                    placeholder="Brief package summary"
                     rows="3"
                     className="editor-textarea-field"
                   ></textarea>
                 </div>
 
                 <div className="editor-form-group">
-                  <label className="editor-label">Hotel details</label>
-                  <textarea
+                  <label className="editor-label">Hotel Details</label>
+                  <input
+                    type="text"
                     value={hotelDetails}
                     onChange={(e) => setHotelDetails(e.target.value)}
-                    placeholder="Stay style and room details"
-                    rows="3"
-                    className="editor-textarea-field"
-                  ></textarea>
+                    placeholder="e.g. 4-Star Premium Resort & Houseboat"
+                    className="editor-input-field"
+                  />
                 </div>
 
                 <div className="editor-form-group">
                   <label className="editor-label">Meals</label>
-                  <textarea
+                  <input
+                    type="text"
                     value={meals}
                     onChange={(e) => setMeals(e.target.value)}
-                    placeholder="What's included?"
-                    rows="3"
-                    className="editor-textarea-field"
-                  ></textarea>
+                    placeholder="e.g. Breakfast & Dinner Included"
+                    className="editor-input-field"
+                  />
                 </div>
 
                 <div className="editor-form-group">
                   <label className="editor-label">Transportation</label>
-                  <textarea
+                  <input
+                    type="text"
                     value={transportation}
                     onChange={(e) => setTransportation(e.target.value)}
-                    placeholder="Private cab / transfers"
-                    rows="3"
-                    className="editor-textarea-field"
-                  ></textarea>
+                    placeholder="e.g. Private AC Sedan for all transfers"
+                    className="editor-input-field"
+                  />
                 </div>
 
                 <div className="editor-form-group">
@@ -504,7 +702,7 @@ export default function OwnerDashboard() {
                   <textarea
                     value={sightseeing}
                     onChange={(e) => setSightseeing(e.target.value)}
-                    placeholder="Key highlights"
+                    placeholder="Key highlights & attractions"
                     rows="3"
                     className="editor-textarea-field"
                   ></textarea>
@@ -565,20 +763,20 @@ export default function OwnerDashboard() {
                       onChange={handleMultipleImagesUpload}
                       style={{ display: 'none' }}
                     />
-                    <label htmlFor="img-upload-input" className="img-upload-dropzone">
-                      <ImageIcon size={24} />
+                    <label htmlFor="img-upload-input" className="choose-images-btn-custom-styled">
+                      <ImageIcon size={20} />
                       <span>Upload photos from device</span>
                     </label>
 
-                    <div className="preset-selector">
-                      <span className="preset-label">Or choose preset photo:</span>
-                      <div className="preset-chips-row">
+                    <div className="preset-choices-container">
+                      <span className="presets-row-title">Or choose preset photo:</span>
+                      <div className="preset-chips-flex">
                         {PRESET_IMAGES.map((preset, idx) => (
                           <button
                             key={idx}
                             type="button"
                             onClick={() => selectCuratedPreset(preset.url)}
-                            className="preset-chip-btn"
+                            className="preset-pill-btn"
                           >
                             + {preset.name}
                           </button>
@@ -587,14 +785,15 @@ export default function OwnerDashboard() {
                     </div>
 
                     {imageUrls.length > 0 && (
-                      <div className="selected-thumbs-grid">
+                      <div className="thumbnails-flex-row">
                         {imageUrls.map((url, idx) => (
-                          <div key={idx} className="thumb-preview-box">
-                            <img src={url} alt={`Preview ${idx + 1}`} />
+                          <div key={idx} className="thumbnail-preview-wrapper">
+                            <img src={url} alt={`Preview ${idx + 1}`} className="thumb-img" />
                             <button
                               type="button"
                               onClick={() => removeSelectedImage(idx)}
-                              className="remove-thumb-btn"
+                              className="btn-delete-thumb"
+                              title="Remove photo"
                             >
                               <X size={12} />
                             </button>
@@ -606,28 +805,38 @@ export default function OwnerDashboard() {
                 </div>
 
                 {/* Toggles: Featured & Active */}
-                <div className="editor-toggles-row full-width-group">
-                  <label className="toggle-checkbox-label">
+                <div className="toggle-row-wrapper-flex">
+                  <div className="toggle-text-left-container">
+                    <span className="toggle-main-title">Featured Package</span>
+                    <span className="toggle-sub-desc">Display at the top of the homepage in curated spotlight</span>
+                  </div>
+                  <label className="custom-ios-switch">
                     <input
                       type="checkbox"
                       checked={isFeatured}
                       onChange={(e) => setIsFeatured(e.target.checked)}
                     />
-                    <span>Highlight as Featured Package</span>
+                    <span className="custom-ios-slider"></span>
                   </label>
+                </div>
 
-                  <label className="toggle-checkbox-label">
+                <div className="toggle-row-wrapper-flex">
+                  <div className="toggle-text-left-container">
+                    <span className="toggle-main-title">Package Live Status</span>
+                    <span className="toggle-sub-desc">Toggle off to draft/hide package from travellers</span>
+                  </div>
+                  <label className="custom-ios-switch">
                     <input
                       type="checkbox"
                       checked={isActive}
                       onChange={(e) => setIsActive(e.target.checked)}
                     />
-                    <span>Package is Live (visible to public)</span>
+                    <span className="custom-ios-slider"></span>
                   </label>
                 </div>
 
                 {/* Editor Action Buttons */}
-                <div className="editor-footer-actions full-width-group">
+                <div className="editor-form-actions-flex">
                   <button type="button" onClick={handleCancelEditor} className="btn-cancel-editor">
                     Cancel
                   </button>
@@ -664,7 +873,7 @@ export default function OwnerDashboard() {
                       <AnimatePresence>
                         {packages.map((pkg) => (
                           <motion.tr
-                            key={pkg.slug}
+                            key={pkg.slug || pkg.id}
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, height: 0 }}
@@ -685,7 +894,7 @@ export default function OwnerDashboard() {
                             </td>
                             <td>{pkg.destination}</td>
                             <td>
-                              <strong>₹{pkg.price.toLocaleString('en-IN')}</strong>
+                              <strong>₹{Number(pkg.price || 0).toLocaleString('en-IN')}</strong>
                             </td>
                             <td>{pkg.days}D / {pkg.nights}N</td>
                             <td>
@@ -712,7 +921,7 @@ export default function OwnerDashboard() {
                                   <Edit size={16} />
                                 </button>
                                 <button
-                                  onClick={() => handleConfirmDelete(pkg.slug, pkg.name)}
+                                  onClick={() => handleConfirmDelete(pkg.slug || pkg.id, pkg.name)}
                                   className="action-icon-btn delete-btn"
                                   title="Delete package"
                                   aria-label={`Delete ${pkg.name}`}
@@ -787,9 +996,9 @@ export default function OwnerDashboard() {
           transform: translateY(-1px);
         }
 
-        /* Stats Card (matches Screenshot 3 layout in dark navy blue) */
+        /* Stats Card */
         .dashboard-stats-card-container {
-          background-color: #0B2D48; /* Dark navy */
+          background-color: #0B2D48;
           border-radius: var(--radius-xl);
           padding: 24px 16px;
           display: flex;
@@ -805,6 +1014,11 @@ export default function OwnerDashboard() {
           text-align: center;
           width: 30%;
           color: #FFFFFF;
+          transition: transform var(--transition-fast);
+        }
+
+        .d-stat-column:hover {
+          transform: scale(1.03);
         }
 
         .d-stat-val {
@@ -829,7 +1043,196 @@ export default function OwnerDashboard() {
           background-color: rgba(255, 255, 255, 0.15);
         }
 
-        /* Add New Package Bar */
+        /* Tab Switcher */
+        .dashboard-tab-bar {
+          display: flex;
+          gap: 12px;
+          border-bottom: 2px solid var(--border-color);
+          padding-bottom: 4px;
+        }
+
+        .dashboard-tab-btn {
+          background: none;
+          border: none;
+          padding: 10px 18px;
+          font-size: 14px;
+          font-weight: 700;
+          color: var(--text-secondary);
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          cursor: pointer;
+          border-radius: var(--radius-md) var(--radius-md) 0 0;
+          transition: all var(--transition-fast);
+          position: relative;
+        }
+
+        .dashboard-tab-btn:hover {
+          color: var(--text-primary);
+        }
+
+        .dashboard-tab-btn.active {
+          color: var(--accent-teal);
+          background-color: var(--bg-secondary);
+        }
+
+        .dashboard-tab-btn.active::after {
+          content: '';
+          position: absolute;
+          bottom: -6px;
+          left: 0;
+          right: 0;
+          height: 3px;
+          background-color: var(--accent-teal);
+          border-radius: 3px 3px 0 0;
+        }
+
+        .badge-new-leads {
+          background-color: var(--accent-teal);
+          color: #FFFFFF;
+          font-size: 10px;
+          font-weight: 800;
+          padding: 2px 8px;
+          border-radius: 20px;
+          text-transform: uppercase;
+        }
+
+        /* Leads View Styles */
+        .leads-card-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 20px 24px;
+          border-bottom: 1px solid var(--border-color);
+          background-color: var(--bg-primary);
+        }
+
+        .dashboard-subheading {
+          font-size: 13px;
+          color: var(--text-secondary);
+          margin: 4px 0 0 0;
+        }
+
+        .btn-refresh-leads {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          background-color: var(--bg-secondary);
+          border: 1px solid var(--border-color);
+          padding: 8px 14px;
+          border-radius: var(--radius-md);
+          font-size: 13px;
+          font-weight: 600;
+          color: var(--text-secondary);
+          cursor: pointer;
+          transition: all var(--transition-fast);
+        }
+
+        .btn-refresh-leads:hover {
+          color: var(--text-primary);
+          border-color: var(--accent-teal);
+        }
+
+        .spin {
+          animation: spinAnimation 1s linear infinite;
+        }
+
+        @keyframes spinAnimation {
+          100% { transform: rotate(360deg); }
+        }
+
+        .lead-row-new {
+          background-color: rgba(21, 151, 174, 0.03);
+        }
+
+        .lead-customer-cell {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+        }
+
+        .lead-avatar {
+          width: 36px;
+          height: 36px;
+          border-radius: 50%;
+          background-color: var(--accent-turquoise-light);
+          color: var(--accent-teal);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-shrink: 0;
+        }
+
+        .lead-name {
+          display: block;
+          font-size: 14px;
+          color: var(--text-primary);
+        }
+
+        .lead-contact-links {
+          display: flex;
+          gap: 10px;
+          margin-top: 2px;
+        }
+
+        .lead-link {
+          display: inline-flex;
+          align-items: center;
+          gap: 4px;
+          font-size: 12px;
+          color: var(--text-secondary);
+          text-decoration: none;
+        }
+
+        .lead-link:hover {
+          color: var(--accent-teal);
+        }
+
+        .lead-dest-badge {
+          background-color: var(--bg-primary);
+          border: 1px solid var(--border-color);
+          padding: 4px 10px;
+          border-radius: var(--radius-sm);
+          font-size: 12px;
+          font-weight: 600;
+          color: var(--text-primary);
+        }
+
+        .lead-meta-group {
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+          font-size: 12px;
+          color: var(--text-secondary);
+        }
+
+        .lead-meta-item {
+          display: inline-flex;
+          align-items: center;
+          gap: 4px;
+        }
+
+        .budget-tag {
+          font-weight: 700;
+          color: var(--accent-teal);
+        }
+
+        .lead-message-box {
+          max-width: 280px;
+          font-size: 13px;
+          color: var(--text-secondary);
+          line-height: 1.4;
+          white-space: pre-wrap;
+          word-break: break-word;
+        }
+
+        .whatsapp-btn:hover {
+          background-color: #25D366 !important;
+          color: #FFFFFF !important;
+          border-color: #25D366 !important;
+        }
+
+        /* Catalog list table card */
         .catalog-header-actions-row {
           display: flex;
           justify-content: space-between;
@@ -849,9 +1252,8 @@ export default function OwnerDashboard() {
           padding: 10px 20px;
         }
 
-        /* ✕ Close Editor Custom Turquoise Button (Full Width) */
         .btn-close-editor-custom {
-          background-color: #1597AE; /* Turquoise */
+          background-color: #1597AE;
           color: #FFFFFF;
           font-family: var(--font-sans);
           font-weight: 600;
@@ -874,7 +1276,6 @@ export default function OwnerDashboard() {
           background-color: #107E92;
         }
 
-        /* Catalog list table card */
         .catalog-table-card {
           background-color: var(--bg-secondary);
           border-radius: var(--radius-xl);
@@ -1006,7 +1407,7 @@ export default function OwnerDashboard() {
           color: var(--text-secondary);
         }
 
-        /* 📋 FULL-SCREEN / FULL-WIDTH EDITOR CARD (Screenshot style) */
+        /* Full-width Editor Card */
         .full-screen-editor-card {
           background-color: var(--bg-secondary);
           border-radius: var(--radius-xl);
@@ -1055,6 +1456,12 @@ export default function OwnerDashboard() {
           color: var(--text-primary);
         }
 
+        .editor-hint {
+          font-size: 12px;
+          color: var(--text-secondary);
+          margin: 0 0 4px 0;
+        }
+
         .editor-input-field {
           font-family: var(--font-sans);
           font-size: 15px;
@@ -1091,14 +1498,9 @@ export default function OwnerDashboard() {
           box-shadow: 0 0 0 3px var(--accent-turquoise-light);
         }
 
-        .code-text-font {
-          font-family: var(--font-sans);
-        }
-
-        /* Multiple Images Upload button (Screenshot style) */
         .choose-images-btn-custom-styled {
-          background-color: #E8F5F7; /* light turquoise */
-          border: 1px dashed #1597AE; /* teal dashed */
+          background-color: #E8F5F7;
+          border: 1px dashed #1597AE;
           color: #087C8D;
           display: inline-flex;
           align-items: center;
@@ -1118,11 +1520,6 @@ export default function OwnerDashboard() {
           background-color: #D3EEF2;
         }
 
-        .hidden-uploader-input {
-          display: none;
-        }
-
-        /* Uploaded Image Thumbnails Row */
         .thumbnails-flex-row {
           display: flex;
           flex-wrap: wrap;
@@ -1167,7 +1564,6 @@ export default function OwnerDashboard() {
           background-color: var(--danger-color);
         }
 
-        /* Preset photos choices row */
         .preset-choices-container {
           margin-top: 16px;
           padding: 12px;
@@ -1210,7 +1606,6 @@ export default function OwnerDashboard() {
           background-color: var(--accent-turquoise-light);
         }
 
-        /* Toggle switches rows (Matches Screenshot 1 & 3 toggle layouts) */
         .toggle-row-wrapper-flex {
           display: flex;
           justify-content: space-between;
@@ -1237,7 +1632,6 @@ export default function OwnerDashboard() {
           color: var(--text-secondary);
         }
 
-        /* Custom styled iOS toggle switch */
         .custom-ios-switch {
           position: relative;
           display: inline-block;
@@ -1285,7 +1679,6 @@ export default function OwnerDashboard() {
           transform: translateX(22px);
         }
 
-        /* Form footer buttons cancel / save */
         .editor-form-actions-flex {
           display: flex;
           gap: 12px;
@@ -1336,7 +1729,6 @@ export default function OwnerDashboard() {
         .mb-20 { margin-bottom: 20px; }
         .text-teal { color: var(--accent-teal); }
         
-        /* Desktop multi-column grid adjustments */
         @media (min-width: 768px) {
           .dashboard-top-brand {
             margin-top: 20px;
@@ -1358,7 +1750,6 @@ export default function OwnerDashboard() {
             padding: 40px;
           }
 
-          /* Two column layout for input grids */
           .editor-inputs-form {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -1369,19 +1760,18 @@ export default function OwnerDashboard() {
             grid-column: span 1;
           }
 
-          /* Elements that should span full-width on desktop */
-          .editor-form-group:nth-child(6), /* Short description */
-          .editor-form-group:nth-child(7), /* Hotel details */
-          .editor-form-group:nth-child(8), /* Meals */
-          .editor-form-group:nth-child(9), /* Transportation */
-          .editor-form-group:nth-child(10), /* Sightseeing */
-          .editor-form-group:nth-child(11), /* Special offers */
-          .editor-form-group:nth-child(12), /* Day-wise itinerary */
-          .editor-form-group:nth-child(13), /* Inclusions */
-          .editor-form-group:nth-child(14), /* Exclusions */
-          .editor-form-group:nth-child(15), /* Package images */
-          .toggle-row-wrapper-flex,          /* Toggles */
-          .editor-form-actions-flex {       /* Actions */
+          .editor-form-group:nth-child(6),
+          .editor-form-group:nth-child(7),
+          .editor-form-group:nth-child(8),
+          .editor-form-group:nth-child(9),
+          .editor-form-group:nth-child(10),
+          .editor-form-group:nth-child(11),
+          .editor-form-group:nth-child(12),
+          .editor-form-group:nth-child(13),
+          .editor-form-group:nth-child(14),
+          .editor-form-group:nth-child(15),
+          .toggle-row-wrapper-flex,
+          .editor-form-actions-flex {
             grid-column: span 2;
           }
 

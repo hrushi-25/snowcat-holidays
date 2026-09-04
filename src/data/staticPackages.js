@@ -1,1172 +1,2517 @@
 /**
- * Comprehensive static travel packages and itineraries dataset for Snowcat Holidays.
- * Covers all major Indian states and bucket-list international destinations.
- * Includes 3-Star and 5-Star accommodation options and 10% uplifted pricing.
+ * Curated packages dataset for Snowcat Holidays.
  */
 
 export const STATIC_PACKAGES = [
-  // ==========================================
-  // KARNATAKA
-  // ==========================================
   {
-    id: 'karnataka-kumta-gokarna',
-    slug: 'kumta-gokarna-coastal-escape',
-    name: 'Kumta & Gokarna Coastal Trail & Beach Hopping',
-    category: 'Beach & Coastal',
-    destination: 'Kumta & Gokarna, Karnataka',
-    state: 'Karnataka',
-    days: 4,
-    nights: 3,
-    price: 21890, // 10% uplift from ~19.9k
-    shortDescription: 'Discover the untouched golden beaches of Kumta, pristine cliff views, Nirvana Beach, and sacred Gokarna temples.',
-    hotelDetails: '3-Star Beach Cottages (Deluxe) & 5-Star Luxury Coastal Eco-Resort options available',
-    meals: 'Daily Breakfast and authentic coastal Karnataka Dinners included',
-    transportation: 'Dedicated AC private cab for all coastal transfers and sightseeing',
-    sightseeing: 'Kumta Nirvana Beach, Mystery Cave, Om Beach, Kudle Beach, Mahabaleshwar Temple, Mirjan Fort',
-    specialOffer: 'Complimentary sunset beach bonfire & acoustic music session!',
-    negotiableText: 'Price is negotiable for every destination',
-    inclusions: [
-      '3 nights stay in 3-Star Beachfront Deluxe Cottages or 5-Star Eco-Resort',
-      'Daily freshly prepared breakfast and coastal dinner',
-      'Private AC sedan/SUV for airport/railway transfers and local sightseeing',
-      'Guided beach trekking from Om Beach to Half Moon Beach',
-      'Entry tickets to Mirjan Fort and temple permits',
-      '24/7 dedicated local trip coordinator support'
+    "id": "alibaug-beach-getaway",
+    "subId": "alibaug-beach-getaway",
+    "slug": "alibaug-beach-getaway",
+    "name": "Alibaug Sun, Sand & Coastal Forts Weekend",
+    "packageName": "Alibaug Sun, Sand & Coastal Forts Weekend",
+    "category": "India",
+    "destination": "Alibaug, Maharashtra",
+    "state": "Maharashtra",
+    "stateId": "maharashtra",
+    "subName": "Alibaug",
+    "country": "India",
+    "days": 2,
+    "nights": 1,
+    "duration": "2 Days / 1 Night",
+    "price": 4999,
+    "pricing": {
+      "startingPrice": 6999,
+      "discountedPrice": 4999,
+      "currency": "INR",
+      "perPerson": true
+    },
+    "shortDescription": "Relax at Kihim & Nagaon beaches, explore historic Kolaba Sea Fort, and indulge in authentic Konkani seafood.",
+    "hotelDetails": "3-Star Deluxe & 5-Star Luxury Resort options available",
+    "meals": "Daily Breakfast included",
+    "transportation": "AC Speedboat / Private AC Cab",
+    "modeOfTransport": "AC Speedboat / Private AC Cab",
+    "sightseeing": "Relax at Kihim & Nagaon beaches, explore historic Kolaba Sea Fort, and indulge in authentic Konkani seafood.",
+    "specialOffer": "Complimentary sunset excursion & local food tasting session!",
+    "negotiableText": "Price is negotiable for every destination",
+    "inclusions": [
+      "1 Night stay in Premium Beachside Resort",
+      "Breakfast and Konkani Welcome Dinner",
+      "Mandwa Ferry / Speedboat Transfers",
+      "Kolaba Fort Entry & Water Sports Passes",
+      "Dedicated Local Chauffeur / Guide"
     ],
-    exclusions: [
-      'Train / flight tickets to Hubli / Goa / Kumta Railway Station',
-      'Lunch meals and personal snacking',
-      'Water sports (Jet ski, Banana ride) and surfing rentals',
-      'Personal expenses, laundry, and guide gratuities'
+    "exclusions": [
+      "Personal expenses & additional adventure sports",
+      "Alcoholic beverages",
+      "GST (5%)"
     ],
-    itinerary: [
-      { day: 1, title: 'Arrival in Kumta & Nirvana Beach Sunset', details: 'Arrive at Kumta / Gokarna Railway Station. Meet your chauffeur and check in to your beachfront stay. In the afternoon, explore Nirvana Beach and Mystery Cave, ending the day with a serene Arabian Sea sunset.' },
-      { day: 2, title: 'Mirjan Fort Heritage & Gokarna Temple Trail', details: 'Visit the historic 16th-century Mirjan Fort with its lush laterite ramparts. Later, head to Gokarna town to visit the revered Mahabaleshwar Temple and sacred Kotitirtha pond.' },
-      { day: 3, title: 'Gokarna 5-Beach Trail & Cliffside Sunset', details: 'Embark on a scenic guided beach trek across Om Beach, Kudle Beach, Half Moon Beach, and Paradise Beach. Relax at seaside shacks and enjoy an evening barbecue dinner.' },
-      { day: 4, title: 'Morning Beach Walk & Departure', details: 'Enjoy a leisurely breakfast by the sea. Check out and transfer to Kumta or Goa Airport/Railway Station with wonderful memories.' }
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Mumbai to Alibaug & Beach Activities",
+        "details": "Board morning Ro-Ro or speedboat from Mumbai to Mandwa. Check-in to resort. Afternoon visit to Nagaon beach for jet-ski and banana boat rides. Evening sunset at Kihim Beach followed by Konkani barbecue."
+      },
+      {
+        "day": 2,
+        "title": "Kolaba Sea Fort & Return",
+        "details": "Morning walk or horse carriage ride to Kolaba Fort during low tide. Visit Kanakeshwar temple or shop for organic spices & chikki in Alibaug market. Afternoon return transfer to Mandwa."
+      }
     ],
-    images: [
-      'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1590523277543-a94d2e4eb00b?auto=format&fit=crop&w=1200&q=80'
+    "images": [
+      "/destinations/india/maharashtra/alibag.jpg",
+      "/destinations/india/maharashtra/alibag1.jpg"
     ],
-    isFeatured: true,
-    isActive: true
+    "photos": [
+      "/destinations/india/maharashtra/alibag.jpg",
+      "/destinations/india/maharashtra/alibag1.jpg"
+    ],
+    "isFeatured": true,
+    "isActive": true
   },
   {
-    id: 'karnataka-coorg-coffee-hills',
-    slug: 'coorg-coffee-highlands-retreat',
-    name: 'Coorg Coffee Highlands & Dubare Elephant Camp',
-    category: 'Hills & Nature',
-    destination: 'Coorg, Karnataka',
-    state: 'Karnataka',
-    days: 4,
-    nights: 3,
-    price: 24750,
-    shortDescription: 'Immerse in lush misty coffee estates, cascading Abbey Falls, spice gardens, and Tibetan culture at Bylakuppe.',
-    hotelDetails: '3-Star Premium Coffee Plantation Stay & 5-Star Luxury Rainforest Spa Resort',
-    meals: 'Daily Kodava style breakfast & buffet dinners',
-    transportation: 'Chauffeured AC vehicle for all transfers from Bangalore/Mangalore',
-    sightseeing: 'Abbey Falls, Raja’s Seat, Dubare Elephant Camp, Golden Temple Bylakuppe, Talakaveri',
-    specialOffer: 'Complimentary guided Coffee Plantation & Spice Tasting Walk',
-    negotiableText: 'Price is negotiable for every destination',
-    inclusions: [
-      '3 nights stay in handpicked coffee estate villas on twin sharing',
-      'Daily breakfast and traditional Kodava dinner',
-      'Private AC cab for full round-trip from Bangalore / Mangalore',
-      'Dubare Elephant Camp river crossing and interaction entry',
-      'Guided coffee and cardamom plantation walk with tasting session'
+    "id": "mahabaleshwar-panchgani-escape",
+    "subId": "mahabaleshwar-panchgani-escape",
+    "slug": "mahabaleshwar-panchgani-escape",
+    "name": "Mahabaleshwar & Panchgani Strawberry Valley Retreat",
+    "packageName": "Mahabaleshwar & Panchgani Strawberry Valley Retreat",
+    "category": "India",
+    "destination": "Mahabaleshwar & Panchgani, Maharashtra",
+    "state": "Maharashtra",
+    "stateId": "maharashtra",
+    "subName": "Mahabaleshwar & Panchgani",
+    "country": "India",
+    "days": 3,
+    "nights": 2,
+    "duration": "3 Days / 2 Nights",
+    "price": 6999,
+    "pricing": {
+      "startingPrice": 9999,
+      "discountedPrice": 6999,
+      "currency": "INR",
+      "perPerson": true
+    },
+    "shortDescription": "Experience misty viewpoints, strawberry farms, Venna Lake boating, and breathtaking Table Land.",
+    "hotelDetails": "3-Star Deluxe & 5-Star Luxury Resort options available",
+    "meals": "Daily Breakfast included",
+    "transportation": "AC Private Sedan / SUV",
+    "modeOfTransport": "AC Private Sedan / SUV",
+    "sightseeing": "Experience misty viewpoints, strawberry farms, Venna Lake boating, and breathtaking Table Land.",
+    "specialOffer": "Complimentary sunset excursion & local food tasting session!",
+    "negotiableText": "Price is negotiable for every destination",
+    "inclusions": [
+      "2 Nights Stay in 3-Star Valley View Resort",
+      "Daily Breakfast & Dinners",
+      "Sightseeing across Mahabaleshwar & Panchgani",
+      "Strawberry Farm Experience & Tasting",
+      "Toll, Parking and Driver Allowances"
     ],
-    exclusions: [
-      'Flights/Trains to Bangalore or Mangalore',
-      'Lunch meals and personal drinks',
-      'River rafting charges at Dubare'
+    "exclusions": [
+      "Boating fees at Venna Lake",
+      "Lunch & personal snacks",
+      "GST (5%)"
     ],
-    itinerary: [
-      { day: 1, title: 'Pickup from Bangalore/Mangalore & Drive to Coorg', details: 'Scenic uphill drive past Western Ghats. Check in to your estate resort. Relax amidst birdsong and aroma of blooming coffee flowers.' },
-      { day: 2, title: 'Dubare Elephant Camp & Abbey Falls', details: 'Morning visit to Dubare Elephant Camp along Cauvery River. Afternoon excursion to roar of Abbey Falls and evening panoramic sunset from Raja’s Seat.' },
-      { day: 3, title: 'Talakaveri Source & Bylakuppe Golden Temple', details: 'Visit Talakaveri, the sacred birthplace of River Cauvery nestled in Brahmagiri hills. Later explore Namdroling Monastery (Golden Temple) in Bylakuppe Tibetan settlement.' },
-      { day: 4, title: 'Spice Shopping & Return Journey', details: 'Shop for authentic homemade chocolates, organic spices, and coffee beans. Transfer back to Bangalore/Mangalore airport.' }
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Arrival & Venna Lake Leisure",
+        "details": "Drive from Pune/Mumbai up the scenic Western Ghats to Mahabaleshwar. Check in to resort. Evening stroll and boating at Venna Lake."
+      },
+      {
+        "day": 2,
+        "title": "Arthur's Seat, Old Mahabaleshwar & Strawberry Farms",
+        "details": "Full day tour covering Arthur's Seat, Elphinstone Point, Kate's Point, and Mahabaleshwar Shiva Temple. Visit Mapro Garden for strawberry cream desserts and farm tours."
+      },
+      {
+        "day": 3,
+        "title": "Panchgani Table Land & Departure",
+        "details": "Visit Table Land plateau, Sydney Point, and Parsi Point in Panchgani. Afternoon scenic drive back to Pune or Mumbai."
+      }
     ],
-    images: [
-      'https://images.unsplash.com/photo-1600100397608-f010e423b971?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1596176530529-78163a4f7af2?auto=format&fit=crop&w=1200&q=80'
+    "images": [
+      "/destinations/india/maharashtra/mahableshwar.jpg",
+      "/destinations/india/maharashtra/mahableshwar1.jpg"
     ],
-    isFeatured: true,
-    isActive: true
+    "photos": [
+      "/destinations/india/maharashtra/mahableshwar.jpg",
+      "/destinations/india/maharashtra/mahableshwar1.jpg"
+    ],
+    "isFeatured": true,
+    "isActive": true
   },
   {
-    id: 'karnataka-hampi-heritage',
-    slug: 'hampi-unesco-ruins-odyssey',
-    name: 'Hampi UNESCO Heritage & Boulder Sunset Trail',
-    category: 'Heritage & Culture',
-    destination: 'Hampi & Badami, Karnataka',
-    state: 'Karnataka',
-    days: 3,
-    nights: 2,
-    price: 20900,
-    shortDescription: 'Walk through ancient stone chariots, colossal monolithic deities, Tungabhadra riverbanks, and mystic boulder landscapes.',
-    hotelDetails: '3-Star Heritage Boutique Hotel & 5-Star Royal Palace Retreat',
-    meals: 'Daily breakfast and South Indian gourmet dinners',
-    transportation: 'AC private cab for all monument hopping',
-    sightseeing: 'Virupaksha Temple, Stone Chariot (Vijaya Vittala), Lotus Mahal, Matanga Hill, Coracle Boat Ride',
-    specialOffer: 'Complimentary Coracle Boat Ride on Tungabhadra River',
-    negotiableText: 'Price is negotiable for every destination',
-    inclusions: [
-      '2 nights stay in curated boutique heritage hotel',
-      'Daily breakfast and dinner',
-      'Dedicated AC vehicle for all transfers',
-      'Licensed ASI government guide for Vijaya Vittala and royal enclosure'
+    "id": "matheran-eco-heritage",
+    "subId": "matheran-eco-heritage",
+    "slug": "matheran-eco-heritage",
+    "name": "Matheran Eco-Hill Station & Toy Train Explorer",
+    "packageName": "Matheran Eco-Hill Station & Toy Train Explorer",
+    "category": "India",
+    "destination": "Matheran, Maharashtra",
+    "state": "Maharashtra",
+    "stateId": "maharashtra",
+    "subName": "Matheran",
+    "country": "India",
+    "days": 2,
+    "nights": 1,
+    "duration": "2 Days / 1 Night",
+    "price": 4999,
+    "pricing": {
+      "startingPrice": 7499,
+      "discountedPrice": 4999,
+      "currency": "INR",
+      "perPerson": true
+    },
+    "shortDescription": "Asia's only automobile-free hill station featuring red soil pathways, Toy Train, and 360-degree canyon panoramas.",
+    "hotelDetails": "3-Star Deluxe & 5-Star Luxury Resort options available",
+    "meals": "Daily Breakfast included",
+    "transportation": "Heritage Toy Train / Horseback / Walking",
+    "modeOfTransport": "Heritage Toy Train / Horseback / Walking",
+    "sightseeing": "Asia's only automobile-free hill station featuring red soil pathways, Toy Train, and 360-degree canyon panoramas.",
+    "specialOffer": "Complimentary sunset excursion & local food tasting session!",
+    "negotiableText": "Price is negotiable for every destination",
+    "inclusions": [
+      "1 Night Stay in Heritage Forest Cottage",
+      "All Meals (Breakfast, Lunch, Dinner)",
+      "Guided Sunset & Sunrise Viewpoint Trek",
+      "Matheran Eco-tax & Entry Fees"
     ],
-    exclusions: ['Airfare/Train tickets', 'Monument camera fees', 'Lunch meals'],
-    itinerary: [
-      { day: 1, title: 'Arrival in Hospet/Hampi & Sacred Enclosure', details: 'Arrive and check in. Visit Virupaksha Temple, Hemakuta Hill, and sunset over Tungabhadra river.' },
-      { day: 2, title: 'Royal Enclosure, Vijaya Vittala & Coracle Ride', details: 'Explore the Stone Chariot, musical pillars of Vijaya Vittala, Lotus Mahal, and Elephant Stables. Experience a traditional coracle ride.' },
-      { day: 3, title: 'Anjaneya Hill Sunrise & Departure', details: 'Climb Anjanadri Hill for panoramic view of boulder valleys. Check out and transfer to Hospet railway station / Hubli airport.' }
+    "exclusions": [
+      "Horse riding or hand-pulled rickshaw charges",
+      "Personal expenses"
     ],
-    images: [
-      'https://images.unsplash.com/photo-1600100397608-f010e423b971?auto=format&fit=crop&w=1200&q=80'
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Aman Lodge to Matheran & Panorama Sunset",
+        "details": "Arrive at Dasturi Naka or Aman Lodge Toy train. Settle into heritage cottage amidst dense forest. Afternoon hike to Echo Point and Louisa Point for stunning sunset views."
+      },
+      {
+        "day": 2,
+        "title": "Charlotte Lake & Valley Views",
+        "details": "Early morning trek to Charlotte Lake and Lord Point. Savor fresh local fudge and chikki in the marketplace before scenic descent."
+      }
     ],
-    isFeatured: false,
-    isActive: true
-  },
-
-  // ==========================================
-  // MAHARASHTRA
-  // ==========================================
-  {
-    id: 'maharashtra-konkan-tarkarli',
-    slug: 'konkan-tarkarli-scuba-coastal-odyssey',
-    name: 'Pristine Konkan Coast: Tarkarli, Ratnagiri & Sindhudurg Fort',
-    category: 'Beach & Coastal',
-    destination: 'Konkan (Tarkarli, Malvan, Ratnagiri), Maharashtra',
-    state: 'Maharashtra',
-    days: 5,
-    nights: 4,
-    price: 23900,
-    shortDescription: 'Crystal clear Arabian waters, scuba diving at Sindhudurg sea fort, Alphonso orchards, and authentic Malvani culinary feasts.',
-    hotelDetails: '3-Star Beachfront Deluxe Resorts & 5-Star Luxury Coastal Villas',
-    meals: 'Daily Breakfast and authentic Konkani/Malvani Dinners included',
-    transportation: 'Dedicated AC private cab from Mumbai/Pune/Goa',
-    sightseeing: 'Sindhudurg Sea Fort, Tarkarli Beach, Devbagh Sangam, Scuba Diving spot, Ganpatipule Temple, Ratnagiri Fort',
-    specialOffer: 'Complimentary Scuba Diving experience with HD underwater video recording!',
-    negotiableText: 'Price is negotiable for every destination',
-    inclusions: [
-      '4 nights accommodation in sea-facing deluxe beach resort / luxury villa',
-      'Scuba diving session with certified PADI divemaster and video/photos',
-      'Parasailing, Jet-ski and Banana water sports package at Devbagh',
-      'Boat transfer to Sindhudurg Fort across the open sea',
-      'Daily delicious breakfast and Malvani dinner',
-      'Private AC sedan/SUV for complete door-to-door journey'
+    "images": [
+      "/destinations/india/maharashtra/matheran.jpg",
+      "/destinations/india/maharashtra/matheran1.jpg"
     ],
-    exclusions: ['Train/Flight tickets', 'Lunch meals', 'Personal shopping'],
-    itinerary: [
-      { day: 1, title: 'Drive to Ratnagiri & Ganpatipule Beach Temple', details: 'Scenic drive along the Konkan highway. Check in near Ganpatipule. Visit the 400-year-old self-manifested Ganesha temple right on the beach.' },
-      { day: 2, title: 'Drive to Tarkarli & Sunset at White Sand Beach', details: 'Drive south through scenic mango and coconut groves to Tarkarli. Check into beachfront resort. Enjoy peaceful evening walk on golden sands.' },
-      { day: 3, title: 'Scuba Diving & Sindhudurg Fort Exploration', details: 'Morning boat ride for scuba diving amidst coral reefs. Visit Chhatrapati Shivaji Maharaj’s historic Sindhudurg Fort standing in the Arabian sea.' },
-      { day: 4, title: 'Devbagh Sangam, Tsunami Island & Water Sports', details: 'Cruise along the Karli river backwaters to Devbagh Sangam and Tsunami Island. Enjoy thrilling water sports and authentic Malvani fish thali/curry.' },
-      { day: 5, title: 'Departure via Coastal Highway', details: 'Savor a traditional breakfast, purchase fresh cashews and Alphonso mango products, and drive back to Mumbai / Pune / Goa.' }
+    "photos": [
+      "/destinations/india/maharashtra/matheran.jpg",
+      "/destinations/india/maharashtra/matheran1.jpg"
     ],
-    images: [
-      'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80'
-    ],
-    isFeatured: true,
-    isActive: true
+    "isFeatured": true,
+    "isActive": true
   },
   {
-    id: 'maharashtra-alibaug-coastal',
-    slug: 'alibaug-beachside-villa-retreat',
-    name: 'Alibaug Coastal Retreat & Beachside Villas',
-    category: 'Weekend & Beach',
-    destination: 'Alibaug, Maharashtra',
-    state: 'Maharashtra',
-    days: 3,
-    nights: 2,
-    price: 18900,
-    shortDescription: 'Speedboat cruise from Gateway of India to sandy shores, Kolaba Sea Fort, beach cafes, and coconut groves.',
-    hotelDetails: '3-Star Boutique Beach Resort & 5-Star Luxury Private Pool Villa',
-    meals: 'Daily Breakfast & Special Chef Dinner included',
-    transportation: 'Ro-Ro ferry transfers / Private AC Cab throughout',
-    sightseeing: 'Kolaba Sea Fort, Nagaon Beach, Kihim Beach, Kashid White Sand Beach, Murud Janjira Fort',
-    specialOffer: 'Complimentary Ro-Ro Ferry ticket with car transfer from Mumbai',
-    negotiableText: 'Price is negotiable for every destination',
-    inclusions: [
-      '2 nights stay in luxury villa / beachfront resort',
-      'Daily breakfast and chef-crafted dinner',
-      'Private AC transfers for all sightseeing',
-      'Boat ride to Murud-Janjira Fort in the sea'
+    "id": "konkan-malvan-scuba",
+    "subId": "konkan-malvan-scuba",
+    "slug": "konkan-malvan-scuba",
+    "name": "Konkan Coast Scuba Diving & Sindhudurg Fort",
+    "packageName": "Konkan Coast Scuba Diving & Sindhudurg Fort",
+    "category": "India",
+    "destination": "Konkan & Malvan, Maharashtra",
+    "state": "Maharashtra",
+    "stateId": "maharashtra",
+    "subName": "Konkan & Malvan",
+    "country": "India",
+    "days": 4,
+    "nights": 3,
+    "duration": "4 Days / 3 Nights",
+    "price": 8999,
+    "pricing": {
+      "startingPrice": 12999,
+      "discountedPrice": 8999,
+      "currency": "INR",
+      "perPerson": true
+    },
+    "shortDescription": "Crystal clear waters of Malvan, deep sea scuba diving, water sports, and Shivaji Maharaj's coastal sea fort.",
+    "hotelDetails": "3-Star Deluxe & 5-Star Luxury Resort options available",
+    "meals": "Daily Breakfast included",
+    "transportation": "AC Coach / Private Vehicle",
+    "modeOfTransport": "AC Coach / Private Vehicle",
+    "sightseeing": "Crystal clear waters of Malvan, deep sea scuba diving, water sports, and Shivaji Maharaj's coastal sea fort.",
+    "specialOffer": "Complimentary sunset excursion & local food tasting session!",
+    "negotiableText": "Price is negotiable for every destination",
+    "inclusions": [
+      "3 Nights Beach Resort Stay in Tarkarli/Malvan",
+      "Scuba Diving with Underwater HD Video & Photos",
+      "5 Water Sports (Parasailing, Jet Ski, Banana, Bumper, Speedboat)",
+      "Daily Breakfast & Authentic Malvani Seafood Dinner",
+      "Sindhudurg Fort Boat Transfer"
     ],
-    exclusions: ['Lunch meals', 'Water sports rentals', 'Personal shopping'],
-    itinerary: [
-      { day: 1, title: 'Ro-Ro Ferry to Mandwa & Kolaba Fort', details: 'Board luxury Ro-Ro ferry from Mumbai to Mandwa. Transfer to Alibaug resort. Walk through shallow waters at low tide to explore Kolaba Fort.' },
-      { day: 2, title: 'Kashid White Sand Beach & Murud Janjira', details: 'Excursion to Kashid Beach, famed for silver sands. Continue to Murud Janjira, the impregnable sea fort with giant historic cannons.' },
-      { day: 3, title: 'Nagaon Water Sports & Return Cruise', details: 'Morning water sports at Nagaon Beach. Lunch at seaside shack and return ferry ride back to Mumbai.' }
+    "exclusions": [
+      "Train/Airfare to Kudal/Goa",
+      "Personal expenses & tips"
     ],
-    images: [
-      'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80'
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Arrival in Malvan & Beachside Sunset",
+        "details": "Arrive at Tarkarli / Malvan. Check in to coastal wooden cottages. Relax by the pristine white sand beach."
+      },
+      {
+        "day": 2,
+        "title": "Scuba Diving & Sindhudurg Fort Exploration",
+        "details": "Morning guided scuba diving session with certified PADI divemasters. Afternoon boat tour to Sindhudurg Fort."
+      },
+      {
+        "day": 3,
+        "title": "Tsunami Island Water Sports & Devbagh Sangam",
+        "details": "Full day water sports at Tsunami Island and scenic boat cruise to Devbagh Sangam (where Karli river meets the Arabian Sea)."
+      },
+      {
+        "day": 4,
+        "title": "Malvan Bazaar & Departure",
+        "details": "Shop for Malvani cashews, Alphonso mango pulp, and homemade spices before departure."
+      }
     ],
-    isFeatured: false,
-    isActive: true
+    "images": [
+      "/destinations/india/maharashtra/malvan1.jpg",
+      "/destinations/india/maharashtra/konkan1.jpg",
+      "/destinations/india/maharashtra/konkan2.jpg"
+    ],
+    "photos": [
+      "/destinations/india/maharashtra/malvan1.jpg",
+      "/destinations/india/maharashtra/konkan1.jpg",
+      "/destinations/india/maharashtra/konkan2.jpg"
+    ],
+    "isFeatured": true,
+    "isActive": true
   },
   {
-    id: 'maharashtra-mahabaleshwar-panchgani',
-    slug: 'mahabaleshwar-panchgani-strawberry-hills',
-    name: 'Mahabaleshwar & Panchgani Strawberry Valleys',
-    category: 'Hills & Nature',
-    destination: 'Mahabaleshwar & Panchgani, Maharashtra',
-    state: 'Maharashtra',
-    days: 4,
-    nights: 3,
-    price: 21900,
-    shortDescription: 'Misty mountain cliffs, strawberry farms, Venna Lake boating, Pratapgad Fort history, and Table Land walks.',
-    hotelDetails: '3-Star Valley View Resort & 5-Star Mountain Spa Resort with Infinity Pool',
-    meals: 'Daily Breakfast and multi-cuisine Buffet Dinners',
-    transportation: 'Dedicated AC Sedan / SUV from Mumbai or Pune',
-    sightseeing: 'Venna Lake, Arthur’s Seat, Elephant’s Head Point, Mapro Garden, Pratapgad Fort, Panchgani Table Land',
-    specialOffer: 'Complimentary Fresh Strawberry Cream Tasting & Farm Tour',
-    negotiableText: 'Price is negotiable for every destination',
-    inclusions: [
-      '3 nights stay in premium valley-view resort',
-      'Daily breakfast and grand dinner buffets',
-      'Private AC cab for all viewpoints and fort visits',
-      'Rowboat cruise ticket on Venna Lake'
+    "id": "somnath-girnar-pilgrimage",
+    "subId": "somnath-girnar-pilgrimage",
+    "slug": "somnath-girnar-pilgrimage",
+    "name": "Somnath Temple & Sacred Mount Girnar Ropeway Circuit",
+    "packageName": "Somnath Temple & Sacred Mount Girnar Ropeway Circuit",
+    "category": "India",
+    "destination": "Somnath & Mount Girnar, Gujarat",
+    "state": "Gujarat",
+    "stateId": "gujarat",
+    "subName": "Somnath & Mount Girnar",
+    "country": "India",
+    "days": 4,
+    "nights": 3,
+    "duration": "4 Days / 3 Nights",
+    "price": 9999,
+    "pricing": {
+      "startingPrice": 14999,
+      "discountedPrice": 9999,
+      "currency": "INR",
+      "perPerson": true
+    },
+    "shortDescription": "Divine pilgrimage to First Jyotirlinga Somnath, Bhavnath Taleti, and Asia's longest ropeway at Mount Girnar in Junagadh.",
+    "hotelDetails": "3-Star Deluxe & 5-Star Luxury Resort options available",
+    "meals": "Daily Breakfast included",
+    "transportation": "AC Private Sedan / Innova",
+    "modeOfTransport": "AC Private Sedan / Innova",
+    "sightseeing": "Divine pilgrimage to First Jyotirlinga Somnath, Bhavnath Taleti, and Asia's longest ropeway at Mount Girnar in Junagadh.",
+    "specialOffer": "Complimentary sunset excursion & local food tasting session!",
+    "negotiableText": "Price is negotiable for every destination",
+    "inclusions": [
+      "3 Nights Hotel Stays (Somnath & Junagadh)",
+      "Daily Vegetarian Breakfast & Traditional Kathiyawadi Dinners",
+      "Mount Girnar Ropeway Ticket Included",
+      "VIP Somnath Darshan & Evening Sound & Light Show",
+      "Dedicated AC Vehicle with Professional Chauffeur"
     ],
-    exclusions: ['Personal shopping', 'Lunch meals'],
-    itinerary: [
-      { day: 1, title: 'Drive to Panchgani & Table Land Sunset', details: 'Scenic uphill drive through Pasarni Ghat. Check in at resort. Evening walk on Table Land, Asia’s second largest mountain plateau.' },
-      { day: 2, title: 'Mahabaleshwar Viewpoints & Venna Lake', details: 'Visit Arthur’s Seat, Kate’s Point, and Lodwick Point. In the evening, enjoy a peaceful boat ride on Venna Lake.' },
-      { day: 3, title: 'Pratapgad Fort Heritage & Mapro Garden', details: 'Excursion to Shivaji Maharaj’s hilltop Pratapgad Fort. Stop at Mapro Garden for wood-fired pizzas and fresh strawberry desserts.' },
-      { day: 4, title: 'Old Mahabaleshwar Temples & Return', details: 'Visit Panchganga and Mahabaleshwar Temples where five holy rivers originate. Drive back to Pune / Mumbai.' }
+    "exclusions": [
+      "Train / Flight to Rajkot or Diu",
+      "Girnar Doli / Palki charges if preferred over ropeway",
+      "Personal expenses & GST (5%)"
     ],
-    images: [
-      'https://images.unsplash.com/photo-1570168007204-dfb528c6958f?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1582510003544-4d00b7f74220?auto=format&fit=crop&w=1200&q=80'
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Arrival in Rajkot/Diu - Drive to Somnath",
+        "details": "Pick-up from Rajkot or Diu airport/railway station. Drive to holy city of Somnath. Evening attend grand Somnath Sandhya Aarti and oceanfront Sound & Light show."
+      },
+      {
+        "day": 2,
+        "title": "Somnath Darshan, Bhalka Tirth & Junagadh",
+        "details": "Morning Abhishek at Somnath Temple, visit Bhalka Tirth and Triveni Sangam. Afternoon drive to historic Junagadh. Visit Mahabat Maqbara and Uparkot Fort."
+      },
+      {
+        "day": 3,
+        "title": "Mount Girnar Ropeway & Temple Ascent",
+        "details": "Take the spectacular Girnar Ropeway soaring above lush forests to Ambaji Temple & Dattatreya Peak. Panoramic views of Saurashtra. Evening visit Bhavnath Mahadev temple at base."
+      },
+      {
+        "day": 4,
+        "title": "Dwarka / Rajkot Departure",
+        "details": "Morning visit to local spice & handloom markets. Transfer back to Rajkot or extended tour to Dwarkadhish."
+      }
     ],
-    isFeatured: true,
-    isActive: true
+    "images": [
+      "/destinations/india/gujarat/somnath.jpg",
+      "/destinations/india/gujarat/somnath_night.jpg",
+      "/destinations/india/gujarat/somnath1.jpg",
+      "/destinations/india/gujarat/girnar.jpg",
+      "/destinations/india/gujarat/dwarka.jpg"
+    ],
+    "photos": [
+      "/destinations/india/gujarat/somnath.jpg",
+      "/destinations/india/gujarat/somnath_night.jpg",
+      "/destinations/india/gujarat/somnath1.jpg",
+      "/destinations/india/gujarat/girnar.jpg",
+      "/destinations/india/gujarat/dwarka.jpg"
+    ],
+    "isFeatured": true,
+    "isActive": true
   },
   {
-    id: 'maharashtra-matheran-lonavala',
-    slug: 'matheran-lonavala-monsoon-escape',
-    name: 'Matheran Eco-Hill Station & Lonavala Forts Escape',
-    category: 'Hills & Nature',
-    destination: 'Matheran, Lonavala & Khandala, Maharashtra',
-    state: 'Maharashtra',
-    days: 4,
-    nights: 3,
-    price: 19800,
-    shortDescription: 'Automobile-free red soil paths, heritage toy train, Tiger’s Leap cliffs, Bhushi Dam cascades, and ancient Karla Caves.',
-    hotelDetails: '3-Star Heritage Forest Cottages & 5-Star Luxury Valley Resorts',
-    meals: 'Daily Breakfast and Chef-crafted Dinners',
-    transportation: 'Dedicated AC transfers & Horseback / Hand-pulled rickshaw experiences',
-    sightseeing: 'Panorama Point, Charlotte Lake, Echo Point, Tiger’s Leap, Bhushi Dam, Karla & Bhaja Caves, Rajmachi Fort',
-    specialOffer: 'Complimentary box of authentic Lonavala Chikki & Fudges',
-    negotiableText: 'Price is negotiable for every destination',
-    inclusions: [
-      '3 nights stay (2N Matheran + 1N Lonavala) in boutique resorts',
-      'Daily breakfast and dinner',
-      'Full local sightseeing transfers',
-      'Entry tickets to Karla Caves and Matheran eco-cess'
+    "id": "kutch-gir-wildlife",
+    "subId": "kutch-gir-wildlife",
+    "slug": "kutch-gir-wildlife",
+    "name": "White Desert Rann of Kutch & Asiatic Lion Safari",
+    "packageName": "White Desert Rann of Kutch & Asiatic Lion Safari",
+    "category": "India",
+    "destination": "Rann of Kutch & Gir, Gujarat",
+    "state": "Gujarat",
+    "stateId": "gujarat",
+    "subName": "Rann of Kutch & Gir",
+    "country": "India",
+    "days": 5,
+    "nights": 4,
+    "duration": "5 Days / 4 Nights",
+    "price": 13999,
+    "pricing": {
+      "startingPrice": 18999,
+      "discountedPrice": 13999,
+      "currency": "INR",
+      "perPerson": true
+    },
+    "shortDescription": "Endless salt desert under moonlit skies, authentic Kutchi Bhungas, and thrilling Asiatic Lion safari in Gir Forest.",
+    "hotelDetails": "3-Star Deluxe & 5-Star Luxury Resort options available",
+    "meals": "Daily Breakfast included",
+    "transportation": "AC Private Innova / Tempo",
+    "modeOfTransport": "AC Private Innova / Tempo",
+    "sightseeing": "Endless salt desert under moonlit skies, authentic Kutchi Bhungas, and thrilling Asiatic Lion safari in Gir Forest.",
+    "specialOffer": "Complimentary sunset excursion & local food tasting session!",
+    "negotiableText": "Price is negotiable for every destination",
+    "inclusions": [
+      "2 Nights in Luxury Tent City / Bhunga at Dhordo Kutch",
+      "2 Nights at Gir Jungle Safari Resort",
+      "1 Gir Forest Open Gypsy Lion Safari Permit",
+      "All Meals (Traditional Kutchi & Gujarati cuisine)",
+      "White Rann Entry Permits & Cultural Folk Music Shows"
     ],
-    exclusions: ['Lunch meals', 'Personal porter fees'],
-    itinerary: [
-      { day: 1, title: 'Arrival at Matheran via Toy Train', details: 'Drive to Neral/Daman Point and ride the historic toy train or horse trail into Matheran. Walk to Charlotte Lake for sunset.' },
-      { day: 2, title: 'Matheran 360-degree Valley Viewpoints', details: 'Explore Echo Point, Louisa Point, and Panorama Point overlooking deep green Western Ghats valleys.' },
-      { day: 3, title: 'Drive to Lonavala & Tiger’s Leap', details: 'Descend to Lonavala. Visit Tiger’s Leap, Lion’s Point, and Bhushi Dam waterfalls. Indulge in local chikki tasting.' },
-      { day: 4, title: 'Karla Rock-cut Caves & Return', details: 'Explore the 2000-year-old Buddhist Karla Caves and return drive to Mumbai/Pune.' }
+    "exclusions": [
+      "Camera permits inside Gir National Park",
+      "Flight/train tickets to Bhuj/Ahmedabad"
     ],
-    images: [
-      'https://images.unsplash.com/photo-1627894483216-2138af692e32?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1570168007204-dfb528c6958f?auto=format&fit=crop&w=1200&q=80'
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Bhuj Arrival & Dhordo Rann Tent City",
+        "details": "Arrive in Bhuj, visit Aina Mahal and drive to White Desert Dhordo. Check into traditional Bhunga. Evening sunset on the gleaming White Salt Desert."
+      },
+      {
+        "day": 2,
+        "title": "Kalo Dungar & Kutchi Handicraft Villages",
+        "details": "Visit Kalo Dungar (Black Hill) for horizon views, explore artisan villages Nirona and Hodka known for Rogan art and mirror embroidery."
+      },
+      {
+        "day": 3,
+        "title": "Drive to Sasan Gir Forest",
+        "details": "Scenic drive from Kutch to Sasan Gir. Evening nature walk and tribal Siddi Dhamal dance performance at the jungle resort."
+      },
+      {
+        "day": 4,
+        "title": "Gir Open Gypsy Safari & Devalia Park",
+        "details": "Early morning 4x4 open gypsy safari tracking Asiatic Lions, leopards, and sambar deer. Afternoon visit Devalia Safari Park."
+      },
+      {
+        "day": 5,
+        "title": "Statue of Unity or Ahmedabad Departure",
+        "details": "Morning breakfast and transfer to Ahmedabad / Rajkot airport with unforgettable memories."
+      }
     ],
-    isFeatured: false,
-    isActive: true
-  },
-
-  // ==========================================
-  // UTTARAKHAND
-  // ==========================================
-  {
-    id: 'uttarakhand-rishikesh-haridwar',
-    slug: 'rishikesh-haridwar-spiritual-rafting-trail',
-    name: 'Rishikesh & Haridwar: Ganga Aarti, River Rafting & Yoga',
-    category: 'Adventure & Spiritual',
-    destination: 'Haridwar & Rishikesh, Uttarakhand',
-    state: 'Uttarakhand',
-    days: 4,
-    nights: 3,
-    price: 24900,
-    shortDescription: 'Witness mesmerizing Ganga Aarti at Triveni Ghat & Har Ki Pauri, conquer Grade III river rapids, and rejuvenate with Himalayan yoga.',
-    hotelDetails: '3-Star Riverside Deluxe Camp/Hotel & 5-Star Luxury Ayurvedic Spa Resort',
-    meals: 'Daily Satvik and multi-cuisine Breakfast & Dinner',
-    transportation: 'Dedicated AC private cab from Dehradun Airport or Delhi',
-    sightseeing: 'Har Ki Pauri, Parmarth Niketan, Ram Jhula, Laxman Jhula, Beatles Ashram, Shivpuri 16km River Rafting, Neer Garh Waterfall',
-    specialOffer: 'Complimentary 16km River Rafting expedition with cliff jumping!',
-    negotiableText: 'Price is negotiable for every destination',
-    inclusions: [
-      '3 nights stay in riverside luxury camps / 5-star wellness resort',
-      '16 km White Water River Rafting session with safety gear and instructor',
-      'VIP front-row seating assistance for Parmarth Niketan Ganga Aarti',
-      'Daily morning yoga & meditation session by certified yogi',
-      'Daily breakfast and dinner buffets',
-      'All local and interstate transfers in private AC cab'
+    "images": [
+      "/destinations/india/gujarat/kutch_white.jpg",
+      "/destinations/india/gujarat/gir_safari.jpg",
+      "/destinations/india/gujarat/statue_unity.jpg"
     ],
-    exclusions: ['Airfare/Train tickets to Delhi/Dehradun', 'Lunch meals', 'Bungee jumping fee'],
-    itinerary: [
-      { day: 1, title: 'Arrival in Haridwar & Evening Har Ki Pauri Aarti', details: 'Pickup from Dehradun Airport / Delhi. Drive to Haridwar. Check in to your hotel. In the evening, witness thousands of oil lamps floating on Mother Ganga during the divine Har Ki Pauri Aarti.' },
-      { day: 2, title: 'Drive to Rishikesh, Beatles Ashram & Parmarth Aarti', details: 'Drive to spiritual Rishikesh. Visit Ram Jhula, Laxman Jhula, and the historic Beatles Ashram. Attend the soul-stirring evening Ganga Aarti at Parmarth Niketan.' },
-      { day: 3, title: 'White Water River Rafting & Waterfall Hike', details: 'Embark on a thrilling 16km river rafting journey from Shivpuri to Rishikesh with Grade III rapids and cliff jumping. Afternoon hike to Neer Garh Waterfall.' },
-      { day: 4, title: 'Morning Yoga Session & Departure', details: 'Wake up for sunrise yoga overlooking the emerald river. After breakfast, transfer to Dehradun Airport or Delhi.' }
+    "photos": [
+      "/destinations/india/gujarat/kutch_white.jpg",
+      "/destinations/india/gujarat/gir_safari.jpg",
+      "/destinations/india/gujarat/statue_unity.jpg"
     ],
-    images: [
-      'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=1200&q=80'
-    ],
-    isFeatured: true,
-    isActive: true
-  },
-  {
-    id: 'uttarakhand-nainital-mussoorie',
-    slug: 'nainital-mussoorie-queen-of-hills-escape',
-    name: 'Nainital & Mussoorie: Lakes & Queen of Hills',
-    category: 'Hills & Nature',
-    destination: 'Nainital & Mussoorie, Uttarakhand',
-    state: 'Uttarakhand',
-    days: 6,
-    nights: 5,
-    price: 29900,
-    shortDescription: 'Sail on Naini Lake, ride the Snow View cable car, stroll Mussoorie’s Mall Road, and bathe beneath Kempty Falls.',
-    hotelDetails: '3-Star Lakeview Deluxe Boutique Stays & 5-Star Luxury Heritage Resorts',
-    meals: 'Daily Breakfast and multi-cuisine Dinners included',
-    transportation: 'Dedicated AC Sedan / SUV for whole mountain circuit',
-    sightseeing: 'Naini Lake boating, Naina Devi Temple, Snow View Point, Kempty Falls, Gun Hill, Dhanaulti Eco Park',
-    specialOffer: 'Complimentary Lake Yachting / Boating experience on Naini Lake',
-    negotiableText: 'Price is negotiable for every destination',
-    inclusions: [
-      '5 nights luxury hotel accommodations on twin sharing',
-      'Daily breakfast and dinner at hotels',
-      'Private AC cab for all mountain drives and tours',
-      'Boating pass for Naini Lake'
-    ],
-    exclusions: ['Airfare/Train to Delhi/Kathgodam', 'Lunch meals', 'Cable car tickets'],
-    itinerary: [
-      { day: 1, title: 'Drive from Delhi to Nainital', details: 'Scenic uphill drive to the Lake City. Check into your hotel overlooking Naini Lake. Enjoy evening stroll on Mall Road.' },
-      { day: 2, title: 'Nainital Lake Tour & Snow View Point', details: 'Visit Bhimtal, Sattal, and Naukuchiatal. Cable car ride to Snow View Point for panoramic views of Trishul and Nanda Devi peaks.' },
-      { day: 3, title: 'Drive to Mussoorie via Corbett Foothills', details: 'Scenic drive through green mountain valleys to Mussoorie, the Queen of Hills. Check in and enjoy sunset from Camel’s Back Road.' },
-      { day: 4, title: 'Kempty Falls & Mussoorie Local Sights', details: 'Visit gushing Kempty Falls, Company Garden, and ride the ropeway to Gun Hill.' },
-      { day: 5, title: 'Day Excursion to Dhanaulti & Pine Forests', details: 'Drive to peaceful Dhanaulti. Walk through deodar forests at Eco Park and visit Surkanda Devi temple.' },
-      { day: 6, title: 'Departure Drive to Delhi/Dehradun', details: 'After breakfast, transfer to Dehradun Airport or Delhi for onward journey.' }
-    ],
-    images: [
-      'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=1200&q=80'
-    ],
-    isFeatured: true,
-    isActive: true
+    "isFeatured": true,
+    "isActive": true
   },
   {
-    id: 'uttarakhand-jim-corbett-wildlife',
-    slug: 'jim-corbett-tiger-safari-wilderness',
-    name: 'Jim Corbett Tiger Safari & Wilderness Resort',
-    category: 'Wildlife & Safari',
-    destination: 'Jim Corbett National Park, Uttarakhand',
-    state: 'Uttarakhand',
-    days: 3,
-    nights: 2,
-    price: 24200,
-    shortDescription: 'Track Royal Bengal Tigers and wild elephants on an open 4x4 Gypsy safari in India’s oldest national park.',
-    hotelDetails: '3-Star Jungle Lodge & 5-Star Luxury Riverside Safari Resort',
-    meals: 'All meals included (Breakfast, Lunch & Dinner)',
-    transportation: 'Private AC transfer + Open 4x4 Safari Gypsy',
-    sightseeing: 'Bijrani / Dhikala / Jhirna Safari Zone, Corbett Waterfalls, Garjiya Devi Temple, Kosi River',
-    specialOffer: 'Complimentary Jungle Safari in open top 4x4 Gypsy with expert naturalist',
-    negotiableText: 'Price is negotiable for every destination',
-    inclusions: [
-      '2 nights stay in luxury riverside jungle resort',
-      'All meals (Buffet Breakfast, Lunch, Dinner)',
-      '1 open 4x4 Jeep Safari with forest permit and guide',
-      'Evening wildlife documentary and bonfire'
+    "id": "ujjain-indore-omkareshwar-circuit",
+    "subId": "ujjain-indore-omkareshwar-circuit",
+    "slug": "ujjain-indore-omkareshwar-circuit",
+    "name": "Ujjain Mahakal Bhasma Aarti, Indore & Omkareshwar Jyotirlinga",
+    "packageName": "Ujjain Mahakal Bhasma Aarti, Indore & Omkareshwar Jyotirlinga",
+    "category": "India",
+    "destination": "Ujjain & Omkareshwar, Madhya Pradesh",
+    "state": "Madhya Pradesh",
+    "stateId": "madhya-pradesh",
+    "subName": "Ujjain & Omkareshwar",
+    "country": "India",
+    "days": 4,
+    "nights": 3,
+    "duration": "4 Days / 3 Nights",
+    "price": 7499,
+    "pricing": {
+      "startingPrice": 11999,
+      "discountedPrice": 7499,
+      "currency": "INR",
+      "perPerson": true
+    },
+    "shortDescription": "Experience divine Bhasma Aarti at Mahakaleshwar Corridor, island Jyotirlinga of Omkareshwar, and culinary street food of Indore.",
+    "hotelDetails": "3-Star Deluxe & 5-Star Luxury Resort options available",
+    "meals": "Daily Breakfast included",
+    "transportation": "AC Private Sedan / SUV",
+    "modeOfTransport": "AC Private Sedan / SUV",
+    "sightseeing": "Experience divine Bhasma Aarti at Mahakaleshwar Corridor, island Jyotirlinga of Omkareshwar, and culinary street food of Indore.",
+    "specialOffer": "Complimentary sunset excursion & local food tasting session!",
+    "negotiableText": "Price is negotiable for every destination",
+    "inclusions": [
+      "2 Nights Hotel in Ujjain near Mahakal + 1 Night in Indore",
+      "Daily Breakfast and Traditional MP Thali Meals",
+      "Assistance for Mahakal Darshan & Mahakal Lok Corridor Tour",
+      "Omkareshwar & Mamleshwar Jyotirlinga Narmada Boat Ride",
+      "All Sightseeing Transfers in Private AC Cab"
     ],
-    exclusions: ['Travel to Ramnagar/Delhi', 'Camera fee'],
-    itinerary: [
-      { day: 1, title: 'Arrival at Corbett & Kosi River Walk', details: 'Arrive at Ramnagar. Check in to your jungle resort by the Kosi River. Evening tea and bonfire with wildlife tales.' },
-      { day: 2, title: 'Early Morning Tiger Safari & Garjiya Temple', details: 'Dawn open-jeep safari through sal forests in search of Royal Bengal Tigers, spotted deer, and hornbills. Afternoon visit to Garjiya Devi temple on river rock.' },
-      { day: 3, title: 'Corbett Falls & Departure', details: 'Visit Corbett Waterfalls and heritage museum before driving back to Delhi.' }
+    "exclusions": [
+      "Special VIP Bhasma Aarti protocol registration fee (direct)",
+      "Personal expenses & shopping"
     ],
-    images: [
-      'https://images.unsplash.com/photo-1561731216-c3a4d99437d5?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1534177616072-ef7dc120449d?auto=format&fit=crop&w=1200&q=80'
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Indore Arrival & Ujjain Mahakal Lok",
+        "details": "Pickup from Indore Airport/Railway station and drive to Ujjain (55 km). Check in to hotel. Evening visit to the magnificent Mahakal Lok Corridor with 108 grand stone pillars and light installations."
+      },
+      {
+        "day": 2,
+        "title": "Mahakaleshwar Bhasma Aarti & Ujjain Temples",
+        "details": "Attend the world-famous early morning Bhasma Aarti. Visit Kaal Bhairav temple, Harsiddhi Mata Shaktipeeth, Mangalnath, and Ram Ghat on Shipra river."
+      },
+      {
+        "day": 3,
+        "title": "Omkareshwar Jyotirlinga on Holy Narmada River",
+        "details": "Drive to the sacred island shaped like the symbol 'Om' on river Narmada. Darshan at Omkareshwar & Mamleshwar temples. Evening transfer to Indore and explore famous Sarafa Night Food Bazaar."
+      },
+      {
+        "day": 4,
+        "title": "Indore Heritage (Rajwada, Chhappan Dukan) & Departure",
+        "details": "Visit Holkar Palace (Rajwada), Lal Bagh Palace, and taste legendary Poha-Jalebi at Chhappan Dukan. Airport drop."
+      }
     ],
-    isFeatured: false,
-    isActive: true
-  },
-
-  // ==========================================
-  // HIMACHAL PRADESH
-  // ==========================================
-  {
-    id: 'himachal-manali-solang-kasol',
-    slug: 'manali-solang-kasol-parvati-valley',
-    name: 'Manali, Solang Valley & Kasol Parvati Trail',
-    category: 'Snow & Adventure',
-    destination: 'Manali, Kasol & Kullu, Himachal Pradesh',
-    state: 'Himachal Pradesh',
-    days: 6,
-    nights: 5,
-    price: 29900,
-    shortDescription: 'Snow activities at Solang Valley, drive through Atal Tunnel, riverside cafes in Kasol, Manikaran hot springs, and Kullu river rafting.',
-    hotelDetails: '3-Star Riverside Deluxe Hotel & 5-Star Luxury Mountainside Chalet Resort',
-    meals: 'Daily Breakfast and warm Himalayan Buffet Dinners included',
-    transportation: 'Dedicated AC/Heated SUV for mountain roads',
-    sightseeing: 'Hadimba Temple, Solang Valley, Atal Tunnel to Sissu (Lahaul), Kasol Parvati River, Manikaran Sahib, Kullu Rafting',
-    specialOffer: 'Complimentary Paragliding / Snow Gear activity voucher at Solang',
-    negotiableText: 'Price is negotiable for every destination',
-    inclusions: [
-      '5 nights luxury hotel stay in deluxe rooms on twin sharing',
-      'Daily breakfast and dinner with mountain views',
-      'Private SUV for all transfers and snow excursions',
-      'Permits for Atal Tunnel and Sissu waterfall valley',
-      'Bonfire and live music evening in Kasol'
+    "images": [
+      "/destinations/india/madhya-pradesh/ujjain_mahakal.jpg",
+      "/destinations/india/madhya-pradesh/omkareshwar.jpg",
+      "/destinations/india/madhya-pradesh/indore_rajwada.jpg",
+      "/destinations/india/madhya-pradesh/khajuraho.jpg"
     ],
-    exclusions: ['Airfare/Train to Chandigarh/Kullu', 'Lunch meals', 'Extreme sports gear'],
-    itinerary: [
-      { day: 1, title: 'Chandigarh Pickup & Scenic Beas River Drive to Manali', details: 'Arrive at Chandigarh. Board SUV and drive along rushing Beas river and Pandoh Dam to Manali. Check in and rest.' },
-      { day: 2, title: 'Manali Sights: Hadimba Temple & Old Manali Cafes', details: 'Explore wooden Hadimba Temple in cedar forest, Vashisht Hot Sulphur Springs, and vibrant Old Manali cafes.' },
-      { day: 3, title: 'Solang Valley Snow Point & Atal Tunnel to Sissu', details: 'Full day adventure at Solang Valley. Drive through the engineering marvel Atal Tunnel into the cold desert of Sissu (Lahaul Valley).' },
-      { day: 4, title: 'Drive to Kasol via Kullu River Rafting', details: 'Experience thrilling river rafting in Kullu. Drive along turquoise Parvati River to hippie village of Kasol. Evening by the river.' },
-      { day: 5, title: 'Manikaran Sahib Gurudwara & Tosh Hike', details: 'Visit Manikaran Sahib with natural hot spring baths. Afternoon hike to picturesque Tosh village overlooking snow peaks.' },
-      { day: 6, title: 'Departure Drive to Chandigarh', details: 'After breakfast, descend through scenic Himalayan foothills to Chandigarh airport.' }
+    "photos": [
+      "/destinations/india/madhya-pradesh/ujjain_mahakal.jpg",
+      "/destinations/india/madhya-pradesh/omkareshwar.jpg",
+      "/destinations/india/madhya-pradesh/indore_rajwada.jpg",
+      "/destinations/india/madhya-pradesh/khajuraho.jpg"
     ],
-    images: [
-      'https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1589308078059-be1415eab4c3?auto=format&fit=crop&w=1200&q=80'
-    ],
-    isFeatured: true,
-    isActive: true
+    "isFeatured": true,
+    "isActive": true
   },
   {
-    id: 'himachal-spiti-valley-expedition',
-    slug: 'spiti-valley-snowcat-escape',
-    name: 'Spiti Valley Snowcat 4x4 Winter Expedition',
-    category: 'Adventure',
-    destination: 'Spiti Valley, Himachal Pradesh',
-    state: 'Himachal Pradesh',
-    days: 7,
-    nights: 6,
-    price: 38390, // 10% uplift from 34.9k
-    shortDescription: 'A mesmerizing winter expedition to the land of lamas, cliffside monasteries, frozen waterfalls, and highest villages.',
-    hotelDetails: '3-Star Cozy Mountain Homestays & 5-Star Boutique Alpine Guesthouses',
-    meals: 'Daily Breakfast & Dinner included (local organic cuisine)',
-    transportation: '4x4 Snowcat-ready SUV for all mountain routes',
-    sightseeing: 'Key Monastery, Hikkim (Highest Post Office), Komic, Langza, Dhankar Lake, Pin Valley',
-    specialOffer: 'Early Bird Offer: Complimentary high-altitude souvenir postcard mailed from Hikkim!',
-    negotiableText: 'Price is negotiable for every destination',
-    inclusions: [
-      '6 nights accommodation in premium homestays & mountain lodges',
-      'All local transfers in dedicated 4x4 SUV (Innova / Scorpio 4x4)',
-      'Daily breakfast and dinner',
-      'All inner line permits and local entry fees',
-      'Experienced trip leader and local spot guides',
-      'Medical oxygen and emergency first-aid kit'
+    "id": "tirupati-balaji-srikalahasti-divine",
+    "subId": "tirupati-balaji-srikalahasti-divine",
+    "slug": "tirupati-balaji-srikalahasti-divine",
+    "name": "Tirupati Balaji VIP Darshan & Sri Kalahasti Rahu-Ketu Tour",
+    "packageName": "Tirupati Balaji VIP Darshan & Sri Kalahasti Rahu-Ketu Tour",
+    "category": "India",
+    "destination": "Tirupati & Srikalahasti, Andhra Pradesh",
+    "state": "Andhra Pradesh",
+    "stateId": "andhra-pradesh",
+    "subName": "Tirupati & Srikalahasti",
+    "country": "India",
+    "days": 3,
+    "nights": 2,
+    "duration": "3 Days / 2 Nights",
+    "price": 5499,
+    "pricing": {
+      "startingPrice": 8999,
+      "discountedPrice": 5499,
+      "currency": "INR",
+      "perPerson": true
+    },
+    "shortDescription": "Sacred pilgrimage atop the Seven Hills of Tirumala for Lord Balaji, Padmavathi Ammavari, and Sri Kalahasteeswara Vayu Lingam.",
+    "hotelDetails": "3-Star Deluxe & 5-Star Luxury Resort options available",
+    "meals": "Daily Breakfast included",
+    "transportation": "AC Private Sedan / Tempo",
+    "modeOfTransport": "AC Private Sedan / Tempo",
+    "sightseeing": "Sacred pilgrimage atop the Seven Hills of Tirumala for Lord Balaji, Padmavathi Ammavari, and Sri Kalahasteeswara Vayu Lingam.",
+    "specialOffer": "Complimentary sunset excursion & local food tasting session!",
+    "negotiableText": "Price is negotiable for every destination",
+    "inclusions": [
+      "2 Nights Stay in 3-Star AC Hotel in Tirupati",
+      "Daily South Indian Vegetarian Breakfast & Dinners",
+      "Dedicated Private AC Vehicle for Tirumala & Sri Kalahasti",
+      "Assistance for Special Entry Darshan & Tirupati Ladoo Prasadam",
+      "All Tolls, Parking, Hill Entry Permits"
     ],
-    exclusions: ['Flights/trains to Chandigarh/Shimla', 'Lunch meals', 'Personal snacks'],
-    itinerary: [
-      { day: 1, title: 'Arrival in Shimla & Drive to Kalpa', details: 'Arrive in Shimla. Board the SUV and embark on a beautiful drive to Kalpa. Check in at your homestay, acclimatize, and enjoy warm local dinner.' },
-      { day: 2, title: 'Kalpa to Kaza via Tabo Monastery', details: 'Travel along the rugged Satluj river and enter Spiti Valley. Visit ancient Tabo Monastery (UNESCO site) before reaching Kaza.' },
-      { day: 3, title: 'Key Monastery & Kibber High-Altitude Exploration', details: 'Visit iconic Key Monastery perched on a hilltop. Drive to Kibber, one of the highest inhabited villages in the world.' },
-      { day: 4, title: 'High Post Office in Hikkim, Komic & Langza', details: 'Mail a letter from the world’s highest post office at Hikkim. Visit Komic and Langza giant Buddha statue.' },
-      { day: 5, title: 'Dhankar Monastery & Pin Valley National Park', details: 'Explore the cliffside Dhankar Monastery. Walk around Pin Valley National Park and experience pristine cold desert ecology.' },
-      { day: 6, title: 'Scenic Drive Back to Kinnaur', details: 'Drive back to green valleys of Kinnaur, enjoying the contrast between stark mountains and dense pine forests.' },
-      { day: 7, title: 'Return Drive to Shimla/Chandigarh', details: 'After early breakfast, drive back to Shimla/Chandigarh for onward journey.' }
+    "exclusions": [
+      "Train / Flight to Tirupati / Chennai / Bengaluru",
+      "Personal Pooja expenses"
     ],
-    images: [
-      'https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1589308078059-be1415eab4c3?auto=format&fit=crop&w=1200&q=80'
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Tirupati Arrival & Padmavathi Temple",
+        "details": "Pick up from Tirupati or Chennai/Bangalore. Check in to hotel. Visit Sri Padmavathi Ammavari Temple at Tiruchanur and Govindaraja Swamy Temple."
+      },
+      {
+        "day": 2,
+        "title": "Tirumala Balaji Darshan & Silathoranam",
+        "details": "Ascend the Seven Hills to Tirumala. Divine Darshan of Lord Sri Venkateswara Swami. Collect authentic Tirupati Prasadam. Visit Silathoranam natural rock arch, Chakra Tirtham, and Akasa Ganga."
+      },
+      {
+        "day": 3,
+        "title": "Sri Kalahasti Temple & Departure",
+        "details": "Drive to Sri Kalahasti (Panchabhoota Vayu Linga temple) known for Rahu-Ketu Pooja. Conclude tour with drop-off at Tirupati/Chennai."
+      }
     ],
-    isFeatured: true,
-    isActive: true
+    "images": [
+      "/destinations/india/andhra-pradesh/tirupati_balaji.jpg",
+      "/destinations/india/andhra-pradesh/srikalahasti.jpg",
+      "/destinations/india/andhra-pradesh/vizag_beach.jpg"
+    ],
+    "photos": [
+      "/destinations/india/andhra-pradesh/tirupati_balaji.jpg",
+      "/destinations/india/andhra-pradesh/srikalahasti.jpg",
+      "/destinations/india/andhra-pradesh/vizag_beach.jpg"
+    ],
+    "isFeatured": true,
+    "isActive": true
   },
   {
-    id: 'himachal-shimla-dharamshala-dalhousie',
-    slug: 'shimla-dharamshala-dalhousie-grand-circuit',
-    name: 'Shimla, Dharamshala & Dalhousie Mini Switzerland',
-    category: 'Hills & Nature',
-    destination: 'Shimla, Dharamshala, Dalhousie, Himachal Pradesh',
-    state: 'Himachal Pradesh',
-    days: 7,
-    nights: 6,
-    price: 32900,
-    shortDescription: 'Colonial heritage of Shimla Ridge, Dalai Lama’s abode in McLeodganj, and lush meadows of Khajjiar (Mini Switzerland).',
-    hotelDetails: '3-Star Deluxe Pine Resorts & 5-Star Heritage Himalayan Lodges',
-    meals: 'Daily Breakfast and grand Buffet Dinners',
-    transportation: 'Dedicated AC/Heated Private Sedan / SUV',
-    sightseeing: 'Shimla Ridge, Kufri, Dalai Lama Temple, Bhagsu Waterfall, Khajjiar Meadow, Kalatop Wildlife Sanctuary',
-    specialOffer: 'Complimentary Khajjiar Horse Riding & Zorbing Activity',
-    negotiableText: 'Price is negotiable for every destination',
-    inclusions: [
-      '6 nights luxury hotel accommodation',
-      'Daily breakfast and dinner',
-      'All sightseeing and intercity transfers in private cab'
+    "id": "kedarnath-badrinath-tungnath-circuit",
+    "subId": "kedarnath-badrinath-tungnath-circuit",
+    "slug": "kedarnath-badrinath-tungnath-circuit",
+    "name": "Kedarnath, Badrinath & Tungnath Alpine Holy Circuit",
+    "packageName": "Kedarnath, Badrinath & Tungnath Alpine Holy Circuit",
+    "category": "India",
+    "destination": "Kedarnath, Badrinath & Tungnath, Uttarakhand",
+    "state": "Uttarakhand",
+    "stateId": "uttarakhand",
+    "subName": "Kedarnath, Badrinath & Tungnath",
+    "country": "India",
+    "days": 6,
+    "nights": 5,
+    "duration": "6 Days / 5 Nights",
+    "price": 15999,
+    "pricing": {
+      "startingPrice": 22999,
+      "discountedPrice": 15999,
+      "currency": "INR",
+      "perPerson": true
+    },
+    "shortDescription": "Grand Himalayan pilgrimage: Jyotirlinga Kedarnath, Highest Shiva Temple Tungnath in Chopta meadows, and sacred Badrinath Dham.",
+    "hotelDetails": "3-Star Deluxe & 5-Star Luxury Resort options available",
+    "meals": "Daily Breakfast included",
+    "transportation": "AC Himalayan 4x4 / Tempo Traveller",
+    "modeOfTransport": "AC Himalayan 4x4 / Tempo Traveller",
+    "sightseeing": "Grand Himalayan pilgrimage: Jyotirlinga Kedarnath, Highest Shiva Temple Tungnath in Chopta meadows, and sacred Badrinath Dham.",
+    "specialOffer": "Complimentary sunset excursion & local food tasting session!",
+    "negotiableText": "Price is negotiable for every destination",
+    "inclusions": [
+      "5 Nights Himalayan Stay (Guptkashi, Kedarnath Base, Chopta Camp, Badrinath)",
+      "Breakfast & Pure Vegetarian Dinners Daily",
+      "Dedicated Mountain Cab & Experienced High-Altitude Chauffeur",
+      "Kedarnath Heli/Trek Coordination & Biometric Yatra Registration",
+      "All State Road Taxes, Parking & Driver Allowances"
     ],
-    exclusions: ['Train/Airfare', 'Lunch meals'],
-    itinerary: [
-      { day: 1, title: 'Chandigarh to Shimla & The Ridge Walk', details: 'Drive to Shimla. Stroll along Mall Road and historic Christ Church on The Ridge.' },
-      { day: 2, title: 'Kufri Snow View & Jakhoo Temple', details: 'Excursion to Kufri for horse riding and panoramic views. Visit Jakhoo Hanuman Temple.' },
-      { day: 3, title: 'Drive to Dharamshala via Kangra Valley', details: 'Scenic drive past tea gardens and Kangra Fort to Dharamshala.' },
-      { day: 4, title: 'McLeodganj Dalai Lama Temple & Bhagsu', details: 'Visit Tsuglagkhang Complex (Dalai Lama Temple), Norbulingka Institute, and Bhagsu Nag waterfall.' },
-      { day: 5, title: 'Drive to Dalhousie & Colonial Church Tour', details: 'Drive to colonial hill station of Dalhousie. Visit St. John’s Church and Subhash Baoli.' },
-      { day: 6, title: 'Khajjiar (Mini Switzerland) Excursion', details: 'Full day at saucer-shaped Khajjiar meadow surrounded by dense deodar forests and floating island lake.' },
-      { day: 7, title: 'Departure via Pathankot/Chandigarh', details: 'Check out and transfer to Pathankot / Chandigarh for return journey.' }
+    "exclusions": [
+      "Kedarnath Helicopter Ticket / Pony / Palki charges",
+      "Personal porter fees",
+      "GST (5%)"
     ],
-    images: [
-      'https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&w=1200&q=80'
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Haridwar/Rishikesh to Guptkashi",
+        "details": "Drive along the holy Mandakini & Alaknanda river valleys past Devprayag sangam. Reach Guptkashi and check in to hotel."
+      },
+      {
+        "day": 2,
+        "title": "Sonprayag to Kedarnath Dham Trek",
+        "details": "Early morning transfer to Sonprayag/Gaurikund. Trek (16 km) or take helicopter to Kedarnath. Evening Sandhya Aarti with resonant bells amidst snow peaks."
+      },
+      {
+        "day": 3,
+        "title": "Kedarnath Morning Darshan & Chopta Swiss Tents",
+        "details": "Morning VIP Darshan at Kedarnath. Descend back to Gaurikund and drive to the lush mini-Switzerland of Chopta. Stay in luxury dome tents."
+      },
+      {
+        "day": 4,
+        "title": "Tungnath (Highest Shiva Temple) & Chandrashila Peak",
+        "details": "Trek through rhododendron forests to Tungnath Temple (3,680m) and Chandrashila summit (4,000m) for 360-degree Himalayan views (Nanda Devi, Trishul, Chaukhamba)."
+      },
+      {
+        "day": 5,
+        "title": "Drive to Badrinath Dham & Mana Village",
+        "details": "Scenic drive to Badrinath via Joshimath. Take holy dip in Tapt Kund and attend Badrinath Darshan. Visit Mana, the First Indian Village, Bhim Pul, and Saraswati River Origin."
+      },
+      {
+        "day": 6,
+        "title": "Return Drive to Rishikesh / Haridwar",
+        "details": "Descend via Rudraprayag and Srinagar to Rishikesh. Evening Ganga Aarti at Triveni Ghat."
+      }
     ],
-    isFeatured: false,
-    isActive: true
-  },
-
-  // ==========================================
-  // PUNJAB
-  // ==========================================
-  {
-    id: 'punjab-amritsar-wagah-heritage',
-    slug: 'amritsar-golden-temple-wagah-heritage',
-    name: 'Amritsar Golden Temple, Wagah Border & Punjabi Heritage',
-    category: 'Heritage & Culture',
-    destination: 'Amritsar & Chandigarh, Punjab',
-    state: 'Punjab',
-    days: 4,
-    nights: 3,
-    price: 21900,
-    shortDescription: 'Spiritual tranquility at Harmandir Sahib (Golden Temple), patriotic fervor at Wagah Border ceremony, Jallianwala Bagh, and legendary Amritsari Kulcha trail.',
-    hotelDetails: '3-Star Deluxe City Hotel & 5-Star Grand Palace Luxury Hotel',
-    meals: 'Daily Punjabi Breakfast & Traditional Dinners included',
-    transportation: 'Dedicated AC Private Sedan for airport and border transfers',
-    sightseeing: 'Golden Temple (Day & Night illumination), Langar community kitchen, Jallianwala Bagh, Wagah Border Retreat Ceremony, Gobindgarh Fort, Rock Garden Chandigarh',
-    specialOffer: 'Complimentary VIP Gate entry pass for Wagah Border Flag Retreat!',
-    negotiableText: 'Price is negotiable for every destination',
-    inclusions: [
-      '3 nights stay in top-rated deluxe/5-star hotel in Amritsar',
-      'Daily authentic breakfast and Punjabi dinner',
-      'Dedicated AC vehicle for all transfers and Wagah border excursion',
-      'Guided Golden Temple walk and Langar service experience',
-      'Entry tickets to Gobindgarh Fort and Light & Sound show'
+    "images": [
+      "/destinations/india/uttarakhand/kedarnath_temple.jpg",
+      "/destinations/india/uttarakhand/badrinath_temple.jpg",
+      "/destinations/india/uttarakhand/tungnath_chopta.jpg",
+      "/destinations/india/uttarakhand/auli_snow.jpg"
     ],
-    exclusions: ['Airfare / Train tickets to Amritsar', 'Lunch meals', 'Personal shopping'],
-    itinerary: [
-      { day: 1, title: 'Arrival in Amritsar & Night Illumination of Golden Temple', details: 'Arrive at Sri Guru Ram Dass Jee Airport/Amritsar Junction. Check in to your hotel. In the evening, visit the illuminated Golden Temple with sacred hymns reflecting on the Amrit Sarovar.' },
-      { day: 2, title: 'Jallianwala Bagh & Patriotic Wagah Border Ceremony', details: 'Visit Jallianwala Bagh Memorial and Partition Museum. In the afternoon, drive to the India-Pakistan border at Wagah to witness the electrifying Beating Retreat ceremony.' },
-      { day: 3, title: 'Gobindgarh Fort & Authentic Amritsari Food Trail', details: 'Explore historic Gobindgarh Fort with 7D martial history show. Enjoy authentic culinary trail including piping hot Amritsari Kulchas with Chole and creamy Makhan Lassi.' },
-      { day: 4, title: 'Morning Palki Sahib Ceremony & Departure', details: 'Witness early morning Palki Sahib ceremony at Golden Temple. Transfer to airport for flight home with blessed memories.' }
+    "photos": [
+      "/destinations/india/uttarakhand/kedarnath_temple.jpg",
+      "/destinations/india/uttarakhand/badrinath_temple.jpg",
+      "/destinations/india/uttarakhand/tungnath_chopta.jpg",
+      "/destinations/india/uttarakhand/auli_snow.jpg"
     ],
-    images: [
-      'https://images.unsplash.com/photo-1588096344356-9b434a9e5257?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1600100397608-f010e423b971?auto=format&fit=crop&w=1200&q=80'
-    ],
-    isFeatured: true,
-    isActive: true
-  },
-
-  // ==========================================
-  // RAJASTHAN
-  // ==========================================
-  {
-    id: 'rajasthan-royal-heritage-circuit',
-    slug: 'rajasthan-royal-heritage-journey',
-    name: 'Rajasthan Royal Heritage: Jaipur, Jodhpur & Udaipur',
-    category: 'Heritage & Culture',
-    destination: 'Jaipur, Jodhpur & Udaipur, Rajasthan',
-    state: 'Rajasthan',
-    days: 6,
-    nights: 5,
-    price: 32900, // 10% uplift
-    shortDescription: 'Live the royal era with towering desert forts, lake palaces, camel safaris, and traditional Rajasthani cultural folk dances.',
-    hotelDetails: '3-Star Heritage Havelis & 5-Star Royal Palace Resorts',
-    meals: 'Daily Rajasthani buffet breakfast & royal dinners',
-    transportation: 'Dedicated AC private cab with experienced chauffeur',
-    sightseeing: 'Amber Fort, Hawa Mahal, City Palace Jaipur, Mehrangarh Fort Jodhpur, Lake Pichola boating, Saheliyon Ki Bari',
-    specialOffer: 'Complimentary Lake Pichola Sunset Boat Cruise & Folk Dance Show',
-    negotiableText: 'Price is negotiable for every destination',
-    inclusions: [
-      '5 nights accommodation in curated heritage palace hotels',
-      'Daily buffet breakfast and dinners',
-      'Private AC cab for all intercity transfers and tours',
-      'Boat cruise on Lake Pichola in Udaipur',
-      'Folk dance & puppet show entry at Bagore Ki Haveli'
-    ],
-    exclusions: ['Airfare/Train tickets', 'Monument entry tickets', 'Lunch meals'],
-    itinerary: [
-      { day: 1, title: 'Jaipur Arrival & City Palace Tour', details: 'Arrive in the Pink City Jaipur. Visit City Palace and Jantar Mantar observatory. Evening shopping at Johari Bazaar.' },
-      { day: 2, title: 'Amber Fort & Jal Mahal', details: 'Ascend majestic Amber Fort with mirror work in Sheesh Mahal. Photo stop at water-locked Jal Mahal and Hawa Mahal.' },
-      { day: 3, title: 'Drive to Jodhpur & Mehrangarh Fort', details: 'Drive to Blue City Jodhpur. Explore Mehrangarh Fort perched 400 feet above the city and Jaswant Thada marble cenotaphs.' },
-      { day: 4, title: 'Ranakpur Jain Temples & Drive to Udaipur', details: 'Drive past Aravalli hills with stop at Ranakpur marble temples with 1,444 uniquely carved pillars. Arrive in Udaipur.' },
-      { day: 5, title: 'Udaipur City Palace & Lake Pichola Cruise', details: 'Tour Udaipur City Palace overlooking Lake Pichola. Enjoy relaxing sunset boat ride and cultural dance at Bagore Ki Haveli.' },
-      { day: 6, title: 'Departure from Udaipur', details: 'After breakfast, transfer to Udaipur Airport for return flight.' }
-    ],
-    images: [
-      'https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=1200&q=80'
-    ],
-    isFeatured: true,
-    isActive: true
+    "isFeatured": true,
+    "isActive": true
   },
   {
-    id: 'rajasthan-jaisalmer-desert-camp',
-    slug: 'jaisalmer-golden-dunes-desert-camp',
-    name: 'Jaisalmer Golden Dunes & Thar Desert Safari',
-    category: 'Desert & Culture',
-    destination: 'Jaisalmer, Rajasthan',
-    state: 'Rajasthan',
-    days: 4,
-    nights: 3,
-    price: 27500,
-    shortDescription: 'Golden living sandstone fort, sunset camel safari on Sam Sand Dunes, luxury Swiss tents, and stargazing in the Thar desert.',
-    hotelDetails: '3-Star Heritage Fort Hotel & 5-Star Luxury Royal Desert Swiss Tents',
-    meals: 'Daily Breakfast & Rajasthani Dinners with live folk music',
-    transportation: 'Dedicated AC cab + 4x4 Dune Bashing Jeep',
-    sightseeing: 'Jaisalmer Fort (Sonar Qila), Patwon Ki Haveli, Gadisar Lake, Sam Sand Dunes, Kuldhara Ghost Village',
-    specialOffer: 'Complimentary Camel Safari & Desert Dune Bashing in 4x4 Jeep',
-    negotiableText: 'Price is negotiable for every destination',
-    inclusions: [
-      '2 nights in Golden City hotel + 1 night in luxury Desert Camp',
-      'Daily breakfast and traditional buffet dinner',
-      'Camel ride on sand dunes and 4x4 jeep safari',
-      'Cultural evening with Kalbelia dancers and bonfire'
+    "id": "rishikesh-mussoorie-nainital",
+    "subId": "rishikesh-mussoorie-nainital",
+    "slug": "rishikesh-mussoorie-nainital",
+    "name": "Rishikesh River Rafting, Haridwar & Queen of Hills Mussoorie",
+    "packageName": "Rishikesh River Rafting, Haridwar & Queen of Hills Mussoorie",
+    "category": "India",
+    "destination": "Rishikesh & Mussoorie, Uttarakhand",
+    "state": "Uttarakhand",
+    "stateId": "uttarakhand",
+    "subName": "Rishikesh & Mussoorie",
+    "country": "India",
+    "days": 4,
+    "nights": 3,
+    "duration": "4 Days / 3 Nights",
+    "price": 8499,
+    "pricing": {
+      "startingPrice": 12999,
+      "discountedPrice": 8499,
+      "currency": "INR",
+      "perPerson": true
+    },
+    "shortDescription": "White water river rafting in Rishikesh, Ganga Aarti in Haridwar, Kempty Falls, and scenic cable cars in Mussoorie.",
+    "hotelDetails": "3-Star Deluxe & 5-Star Luxury Resort options available",
+    "meals": "Daily Breakfast included",
+    "transportation": "AC Private Sedan / SUV",
+    "modeOfTransport": "AC Private Sedan / SUV",
+    "sightseeing": "White water river rafting in Rishikesh, Ganga Aarti in Haridwar, Kempty Falls, and scenic cable cars in Mussoorie.",
+    "specialOffer": "Complimentary sunset excursion & local food tasting session!",
+    "negotiableText": "Price is negotiable for every destination",
+    "inclusions": [
+      "3 Nights Hotel Stay in Rishikesh & Mussoorie",
+      "Daily Breakfast & Dinners",
+      "16 km White Water Rafting with Cliff Jumping in Rishikesh",
+      "Sightseeing across Haridwar, Rishikesh & Mussoorie",
+      "Dedicated AC Vehicle"
     ],
-    exclusions: ['Airfare to Jaisalmer/Jodhpur', 'Lunch meals'],
-    itinerary: [
-      { day: 1, title: 'Arrival in Jaisalmer & Gadisar Lake', details: 'Arrive in the Golden City. Check in to heritage hotel. Enjoy serene sunset boating at Gadisar Lake.' },
-      { day: 2, title: 'Jaisalmer Fort & Patwon Ki Haveli', details: 'Explore the living Jaisalmer Fort with ancient Jain temples and intricately carved Patwon Ki Haveli.' },
-      { day: 3, title: 'Kuldhara Ghost Village & Sam Sand Dunes Camp', details: 'Visit haunted Kuldhara village. Transfer to desert camp on Sam Sand Dunes. Enjoy camel ride, desert sunset, folk dances, and stargazing.' },
-      { day: 4, title: 'Departure via Jodhpur/Jaisalmer', details: 'Wake up to sunrise over dunes. Check out and transfer to airport/station.' }
+    "exclusions": [
+      "Bungee jumping & zipline tickets",
+      "GST (5%)"
     ],
-    images: [
-      'https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=1200&q=80'
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Haridwar Arrival & Rishikesh Camping",
+        "details": "Pickup from Haridwar/Dehradun. Visit Har Ki Pauri for Aarti. Transfer to Rishikesh luxury riverside camp."
+      },
+      {
+        "day": 2,
+        "title": "White Water Rafting & Laxman Jhula",
+        "details": "Thrilling 16 km white water rafting on the Ganges. Visit Ram Jhula, Beatle's Ashram, and attend Parmarth Niketan Ganga Aarti."
+      },
+      {
+        "day": 3,
+        "title": "Drive to Mussoorie & Kempty Falls",
+        "details": "Drive up to Queen of Hills Mussoorie. Visit Kempty Falls, Gun Hill ropeway, and stroll along Mall Road and Camel's Back Road."
+      },
+      {
+        "day": 4,
+        "title": "Company Garden & Dehradun Drop",
+        "details": "Morning visit to Company Garden and Cloud's End before drop-off at Dehradun airport or railway station."
+      }
     ],
-    isFeatured: false,
-    isActive: true
-  },
-
-  // ==========================================
-  // KERALA
-  // ==========================================
-  {
-    id: 'kerala-backwater-houseboat-escape',
-    slug: 'kerala-backwater-escape',
-    name: 'Kerala Backwaters, Munnar Tea Hills & Houseboat',
-    category: 'Nature & Backwaters',
-    destination: 'Munnar, Thekkady & Alleppey, Kerala',
-    state: 'Kerala',
-    days: 5,
-    nights: 4,
-    price: 27500, // 10% uplift
-    shortDescription: 'Cruise through palm-fringed canals on a private luxury houseboat, tour misty Munnar tea plantations, and explore spice hills.',
-    hotelDetails: '3-Star Premium Homestays & 5-Star Luxury Private Backwater Houseboat & Hill Resort',
-    meals: 'Daily breakfast at hotels + All Meals (Lunch, Dinner, Breakfast) on Houseboat',
-    transportation: 'Dedicated AC private cab for all transfers',
-    sightseeing: 'Munnar Tea Museum, Eravikulam National Park, Mattupetty Dam, Thekkady Spice Plantations, Alleppey Houseboat Cruise',
-    specialOffer: 'Complimentary Guided Spice Plantation Walk & Ayurvedic welcome massage',
-    negotiableText: 'Price is negotiable for every destination',
-    inclusions: [
-      '3 nights in hill resorts + 1 night in fully private AC Deluxe Houseboat',
-      'All meals on houseboat prepared by private onboard chef',
-      'Daily breakfast at all hotels',
-      'Private AC sedan for all sightseeings from Kochi to Kochi',
-      'Spice plantation guided walk'
+    "images": [
+      "/destinations/india/uttarakhand/rishikesh.jpg",
+      "/destinations/india/uttarakhand/mussoorie1.jpg",
+      "/destinations/india/uttarakhand/nainital1.jpg"
     ],
-    exclusions: ['Airfare/Train to Kochi', 'Personal expenses', 'Optional Kathakali show ticket'],
-    itinerary: [
-      { day: 1, title: 'Kochi Arrival & Drive to Munnar Hills', details: 'Arrive at Kochi Airport. Scenic drive through lush greenery past Cheeyappara Waterfalls to Munnar. Check in and relax.' },
-      { day: 2, title: 'Munnar Tea Gardens & Eravikulam National Park', details: 'Spot endangered Nilgiri Tahr at Eravikulam National Park. Visit Tata Tea Museum and Mattupetty Lake.' },
-      { day: 3, title: 'Drive to Thekkady & Spice Gardens', details: 'Drive to Thekkady spice country. Guided walking tour through cardamom, pepper, and cinnamon plantations.' },
-      { day: 4, title: 'Alleppey Houseboat Check-in & Backwater Cruise', details: 'Board your private luxury houseboat in Alleppey. Glide along tranquil canals, enjoying fresh coconut water and traditional Karimeen fish curry.' },
-      { day: 5, title: 'Morning Cruise & Departure via Kochi', details: 'Enjoy sunrise over paddy fields. Check out after breakfast and transfer to Kochi Airport for flight home.' }
+    "photos": [
+      "/destinations/india/uttarakhand/rishikesh.jpg",
+      "/destinations/india/uttarakhand/mussoorie1.jpg",
+      "/destinations/india/uttarakhand/nainital1.jpg"
     ],
-    images: [
-      'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1596176530529-78163a4f7af2?auto=format&fit=crop&w=1200&q=80'
-    ],
-    isFeatured: true,
-    isActive: true
-  },
-
-  // ==========================================
-  // GOA
-  // ==========================================
-  {
-    id: 'goa-sun-sand-heritage-escape',
-    slug: 'goa-beach-escape',
-    name: 'Goa Sun, Sand & Portuguese Heritage Retreat',
-    category: 'Beach & Nightlife',
-    destination: 'North & South Goa, Goa',
-    state: 'Goa',
-    days: 5,
-    nights: 4,
-    price: 24200, // 10% uplift
-    shortDescription: 'Golden beaches of North Goa, Portuguese villas of Fontainhas, Old Goa churches, and serene South Goa luxury.',
-    hotelDetails: '3-Star Beach Resort with Pool & 5-Star Beachfront Luxury Spa Resort',
-    meals: 'Daily Buffet Breakfast included',
-    transportation: 'Dedicated AC private car for full trip',
-    sightseeing: 'Baga & Calangute Beach, Fort Aguada, Chapora Fort, Basilica of Bom Jesus, Fontainhas Latin Quarter, Mandovi Sunset Cruise',
-    specialOffer: 'Complimentary Mandovi River Sunset Boat Cruise Ticket with live Goan music',
-    negotiableText: 'Price is negotiable for every destination',
-    inclusions: [
-      '4 nights beach resort accommodation on twin sharing',
-      'Daily buffet breakfast',
-      'Full day North Goa and South Goa private guided tours',
-      'Mandovi river sunset cruise entry ticket'
-    ],
-    exclusions: ['Airfare/Train to Goa', 'Water sports rentals', 'Lunch and dinner'],
-    itinerary: [
-      { day: 1, title: 'Arrival in Goa & Beach Sunset', details: 'Arrive at Mopa/Dabolim Airport. Check into your beach resort. Spend a relaxed evening by the sea watching the sun dip into the horizon.' },
-      { day: 2, title: 'North Goa Forts, Beaches & Cafes', details: 'Visit 17th-century Fort Aguada, vibrant Baga & Anjuna beaches, and famous Chapora Fort (Dil Chahta Hai point).' },
-      { day: 3, title: 'South Goa Heritage: Old Goa Churches & Fontainhas', details: 'Explore UNESCO Basilica of Bom Jesus and Se Cathedral in Old Goa. Walk through colorful Portuguese streets in Fontainhas, Panjim.' },
-      { day: 4, title: 'Dudhsagar Falls / Spice Farm or Beach Leisure', details: 'Optional trip to magnificent Dudhsagar Waterfalls or relax on the white sands of Palolem Beach in South Goa.' },
-      { day: 5, title: 'Departure Flight from Goa', details: 'After breakfast, enjoy some morning souvenir shopping and transfer to Goa Airport.' }
-    ],
-    images: [
-      'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80'
-    ],
-    isFeatured: true,
-    isActive: true
-  },
-
-  // ==========================================
-  // JAMMU & KASHMIR & LADAKH
-  // ==========================================
-  {
-    id: 'kashmir-paradise-on-earth',
-    slug: 'kashmir-paradise-on-earth-escape',
-    name: 'Kashmir Paradise: Dal Lake, Gulmarg Gondola & Pahalgam',
-    category: 'Snow & Mountains',
-    destination: 'Srinagar, Gulmarg & Pahalgam, Jammu & Kashmir',
-    state: 'Jammu & Kashmir',
-    days: 6,
-    nights: 5,
-    price: 36900,
-    shortDescription: 'Stay in ornate cedar houseboats on Dal Lake, ride Asia’s highest cable car in Gulmarg, and walk through pine valleys of Pahalgam.',
-    hotelDetails: '3-Star Deluxe Houseboat & Boutique Hotels / 5-Star Luxury Alpine Resorts',
-    meals: 'Daily Kashmiri Breakfast and gourmet Dinners',
-    transportation: 'Dedicated AC/Heated Private Vehicle',
-    sightseeing: 'Dal Lake Shikara ride, Mughal Gardens (Nishat & Shalimar), Gulmarg Gondola Phase 1 & 2, Pahalgam Betaab Valley, Aru Valley',
-    specialOffer: 'Complimentary 1-Hour Sunset Shikara Ride on Dal Lake with Kahwa tea',
-    negotiableText: 'Price is negotiable for every destination',
-    inclusions: [
-      '1 night in luxury carved Dal Lake Houseboat + 4 nights in premium hotels',
-      'Daily breakfast and dinner (Wazwan options available)',
-      'Private heated cab for all airport transfers and valley excursions',
-      'Shikara ride on Dal Lake'
-    ],
-    exclusions: ['Airfare to Srinagar', 'Gulmarg Gondola Phase 2 ticket', 'Pony rides'],
-    itinerary: [
-      { day: 1, title: 'Srinagar Arrival & Romantic Shikara on Dal Lake', details: 'Arrive at Sheikh ul-Alam Airport. Check into your deluxe houseboat. Enjoy an enchanting Shikara boat ride past floating gardens.' },
-      { day: 2, title: 'Srinagar Mughal Gardens & Old City', details: 'Visit Nishat Bagh, Shalimar Bagh, and Shankaracharya Temple overlooking the valley.' },
-      { day: 3, title: 'Gulmarg Meadow of Flowers & Gondola Snow Ride', details: 'Drive to Gulmarg. Ride the famous Gondola cable car up to Apharwat peak for snow activities and alpine vistas.' },
-      { day: 4, title: 'Drive to Pahalgam Valley of Shepherds', details: 'Drive through saffron fields of Pampore and pine forests to Pahalgam along Lidder River.' },
-      { day: 5, title: 'Betaab Valley & Aru Valley Exploration', details: 'Explore Bollywood fame Betaab Valley, Chandanwari, and lush Aru Valley meadows.' },
-      { day: 6, title: 'Departure Flight from Srinagar', details: 'After breakfast, transfer to Srinagar Airport with cherished Kashmir memories.' }
-    ],
-    images: [
-      'https://images.unsplash.com/photo-1566837945700-30057527ade0?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1589308078059-be1415eab4c3?auto=format&fit=crop&w=1200&q=80'
-    ],
-    isFeatured: true,
-    isActive: true
+    "isFeatured": true,
+    "isActive": true
   },
   {
-    id: 'ladakh-leh-pangong-nubra',
-    slug: 'ladakh-high-passes-pangong-escape',
-    name: 'Ladakh High Passes: Leh, Pangong Tso & Nubra Valley',
-    category: 'High Altitude Adventure',
-    destination: 'Leh, Nubra Valley & Pangong Tso, Ladakh',
-    state: 'Ladakh',
-    days: 7,
-    nights: 6,
-    price: 43900,
-    shortDescription: 'Cross world’s highest motorable pass Khardung La, ride double-humped camels in Hunder sand dunes, and gaze at blue waters of Pangong Tso.',
-    hotelDetails: '3-Star Deluxe Boutique Hotel & 5-Star Luxury Glamping Swiss Tents',
-    meals: 'Daily Breakfast & Dinners included',
-    transportation: 'Dedicated 4x4 / Luxury Tempo / SUV for high mountain passes',
-    sightseeing: 'Leh Palace, Shanti Stupa, Khardung La Pass (17,982 ft), Diskit Monastery, Hunder Sand Dunes, Pangong Tso Lake, Chang La Pass',
-    specialOffer: 'Complimentary Double-Humped Bactrian Camel Ride in Nubra Valley',
-    negotiableText: 'Price is negotiable for every destination',
-    inclusions: [
-      '6 nights luxury accommodation in Leh, Nubra Valley, and Pangong Lake',
-      'Daily breakfast and dinner',
-      'Inner Line Permits and Wildlife environmental fees',
-      'Dedicated private vehicle with experienced high-altitude driver',
-      'Oxygen cylinder in vehicle'
+    "id": "spiti-valley-circuit-4x4",
+    "subId": "spiti-valley-circuit-4x4",
+    "slug": "spiti-valley-circuit-4x4",
+    "name": "Spiti Valley Ultimate 4x4 Road Trip & Chandratal Lake",
+    "packageName": "Spiti Valley Ultimate 4x4 Road Trip & Chandratal Lake",
+    "category": "India",
+    "destination": "Spiti Valley, Himachal Pradesh",
+    "state": "Himachal Pradesh",
+    "stateId": "himachal-pradesh",
+    "subName": "Spiti Valley",
+    "country": "India",
+    "days": 7,
+    "nights": 6,
+    "duration": "7 Days / 6 Nights",
+    "price": 17999,
+    "pricing": {
+      "startingPrice": 24999,
+      "discountedPrice": 17999,
+      "currency": "INR",
+      "perPerson": true
+    },
+    "shortDescription": "Journey through rugged moonscapes: Key Monastery, world's highest post office at Hikkim, Komic, and camping beside turquoise Chandratal Lake.",
+    "hotelDetails": "3-Star Deluxe & 5-Star Luxury Resort options available",
+    "meals": "Daily Breakfast included",
+    "transportation": "Modified 4x4 Mountain SUV / Tempo",
+    "modeOfTransport": "Modified 4x4 Mountain SUV / Tempo",
+    "sightseeing": "Journey through rugged moonscapes: Key Monastery, world's highest post office at Hikkim, Komic, and camping beside turquoise Chandratal Lake.",
+    "specialOffer": "Complimentary sunset excursion & local food tasting session!",
+    "negotiableText": "Price is negotiable for every destination",
+    "inclusions": [
+      "6 Nights Homestay & Swiss Camps (Shimla, Kalpa, Tabo, Kaza, Chandratal)",
+      "All Meals (Breakfast & Hot Dinners)",
+      "Experienced Spiti Route Road Captain & High-Altitude 4x4 Vehicle",
+      "Inner Line Permits & Monastery Entry Passes",
+      "Oxygen Cylinder on-board & High-Altitude First Aid Kit"
     ],
-    exclusions: ['Airfare to Leh', 'Lunch meals', 'Camel ride fees'],
-    itinerary: [
-      { day: 1, title: 'Arrival in Leh & Complete Rest for Acclimatization', details: 'Arrive at Kushok Bakula Rimpochee Airport. Transfer to hotel. Rest completely for 24 hours to acclimatize to high altitude.' },
-      { day: 2, title: 'Leh Local Sights: Shanti Stupa & Hall of Fame', details: 'Visit Shanti Stupa for panoramic sunset, Leh Palace, and sacred Magnetic Hill.' },
-      { day: 3, title: 'Drive to Nubra Valley via Khardung La Pass', details: 'Drive across Khardung La (17,982 ft). Arrive in Nubra Valley, visit Diskit giant Buddha statue, and experience Hunder sand dunes.' },
-      { day: 4, title: 'Nubra to Pangong Tso Lake via Shyok River', details: 'Drive along rugged Shyok river to the breathtaking Pangong Tso lake whose colors change from blue to green with the sun.' },
-      { day: 5, title: 'Pangong Sunrise & Return to Leh via Chang La', details: 'Witness sunrise over Pangong lake. Drive back to Leh crossing Chang La pass (17,590 ft).' },
-      { day: 6, title: 'Monasteries & Local Shopping in Leh', details: 'Visit Thiksey Monastery and explore Leh market for Tibetan handicrafts and pashmina shawls.' },
-      { day: 7, title: 'Departure Flight from Leh', details: 'Transfer to Leh Airport with indelible memories of the Roof of the World.' }
+    "exclusions": [
+      "Personal expenses & bike rentals",
+      "GST (5%)"
     ],
-    images: [
-      'https://images.unsplash.com/photo-1581793745862-99fde7fa73d2?auto=format&fit=crop&w=1200&q=80'
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Chandigarh to Kalpa (Kinnaur)",
+        "details": "Drive through the dramatic Hindustan-Tibet Highway carving into Himalayan cliffs. Sunset view of Kinner Kailash peak from Kalpa."
+      },
+      {
+        "day": 2,
+        "title": "Kalpa to Tabo via Nako Lake & Mummy Village",
+        "details": "Enter the high desert of Spiti. Visit Nako Lake, the 500-year-old self-mummified monk at Gue Village, and 1000-year-old UNESCO Tabo Monastery."
+      },
+      {
+        "day": 3,
+        "title": "Tabo to Dhankar & Kaza",
+        "details": "Visit cliff-hanging Dhankar Monastery overlooking confluence of Spiti and Pin rivers. Arrive in Kaza, the heart of Spiti Valley."
+      },
+      {
+        "day": 4,
+        "title": "High Altitude Villages (Key, Kibber, Hikkim, Komic, Langza)",
+        "details": "Visit 1000-year-old Key Monastery, Chicham Bridge (highest suspension bridge), world's highest village Komic, post a letter at Hikkim Post Office, and hunt for fossils in Langza."
+      },
+      {
+        "day": 5,
+        "title": "Kaza to Chandratal Lake (The Moon Lake)",
+        "details": "Cross Kunzum Pass (4,551m). Hike to the enchanting crescent-shaped Chandratal Lake reflecting snow peaks. Camp under millions of stars."
+      },
+      {
+        "day": 6,
+        "title": "Chandratal to Manali via Atal Tunnel",
+        "details": "Drive through Batal and the world-renowned Atal Tunnel to lush green Manali. Rest and cafe hopping in Old Manali."
+      },
+      {
+        "day": 7,
+        "title": "Manali to Chandigarh Departure",
+        "details": "Scenic morning drive along the Beas river back to Chandigarh airport/railway station."
+      }
     ],
-    isFeatured: true,
-    isActive: true
-  },
-
-  // ==========================================
-  // SIKKIM & NORTHEAST
-  // ==========================================
-  {
-    id: 'sikkim-gangtok-darjeeling',
-    slug: 'sikkim-gangtok-darjeeling-tea-hills',
-    name: 'Sikkim & Darjeeling: Gangtok, Tsomgo Lake & Tea Hills',
-    category: 'Hills & Nature',
-    destination: 'Gangtok & Darjeeling, Sikkim',
-    state: 'Sikkim & North East',
-    days: 6,
-    nights: 5,
-    price: 33900,
-    shortDescription: 'Gaze at Mount Kanchenjunga, visit holy high-altitude Tsomgo Lake, ride Darjeeling Himalayan Toy Train, and sip organic tea.',
-    hotelDetails: '3-Star Mountain View Stays & 5-Star Colonial Heritage Resorts',
-    meals: 'Daily Breakfast and multi-cuisine Dinners',
-    transportation: 'Dedicated AC private vehicle throughout',
-    sightseeing: 'Tsomgo Lake, Baba Mandir, Rumtek Monastery, MG Marg, Tiger Hill Sunrise, Batasia Loop, Happy Valley Tea Estate',
-    specialOffer: 'Complimentary Darjeeling Heritage Toy Train Joyride Pass',
-    negotiableText: 'Price is negotiable for every destination',
-    inclusions: [
-      '5 nights luxury hotel accommodation on twin sharing',
-      'Daily breakfast and dinner',
-      'All sightseeing and intercity transfers',
-      'Special permits for Tsomgo Lake & Baba Mandir'
+    "images": [
+      "/destinations/india/himachal-pradesh/spiti_kaza.jpg",
+      "/destinations/india/himachal-pradesh/chandratal_lake.jpg",
+      "/destinations/india/himachal-pradesh/manali1.jpg"
     ],
-    exclusions: ['Airfare to Bagdogra / NJP Train tickets', 'Nathula Pass permit fee (if opted)', 'Lunch meals'],
-    itinerary: [
-      { day: 1, title: 'Bagdogra/NJP Pickup & Drive to Gangtok', details: 'Drive along Teesta river into Sikkim. Check in at Gangtok hotel. Evening walk on pedestrian-only MG Marg.' },
-      { day: 2, title: 'Tsomgo Lake & Baba Mandir Excursion', details: 'High-altitude excursion to glacial Tsomgo Lake (12,400 ft) and Baba Harbhajan Singh Memorial.' },
-      { day: 3, title: 'Gangtok City Tour & Drive to Darjeeling', details: 'Visit Rumtek Monastery and Banjhakri Falls. Drive across tea estates to Victorian hill town Darjeeling.' },
-      { day: 4, title: 'Tiger Hill Kanchenjunga Sunrise & Toy Train', details: 'Early morning 4 AM drive to Tiger Hill to watch golden sunrise over Mount Kanchenjunga. Ride the historic Toy Train around Batasia Loop.' },
-      { day: 5, title: 'Darjeeling Tea Gardens & Himalayan Zoo', details: 'Visit Padmaja Naidu Himalayan Zoological Park (home to Red Pandas and Snow Leopards) and Happy Valley Tea Estate.' },
-      { day: 6, title: 'Departure Drive to Bagdogra/NJP', details: 'After breakfast, drive down through tea hills to Bagdogra Airport for departure.' }
+    "photos": [
+      "/destinations/india/himachal-pradesh/spiti_kaza.jpg",
+      "/destinations/india/himachal-pradesh/chandratal_lake.jpg",
+      "/destinations/india/himachal-pradesh/manali1.jpg"
     ],
-    images: [
-      'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=1200&q=80'
-    ],
-    isFeatured: true,
-    isActive: true
-  },
-
-  // ==========================================
-  // TAMIL NADU & GUJARAT
-  // ==========================================
-  {
-    id: 'tamil-nadu-ooty-kodaikanal',
-    slug: 'ooty-kodaikanal-nilgiri-hills',
-    name: 'Ooty & Kodaikanal: Nilgiri Hills & Princess of Hill Stations',
-    category: 'Hills & Nature',
-    destination: 'Ooty & Kodaikanal, Tamil Nadu',
-    state: 'Tamil Nadu',
-    days: 5,
-    nights: 4,
-    price: 28500,
-    shortDescription: 'Ride the UNESCO Nilgiri Mountain Toy Train, stroll through botanical gardens, Doddabetta peak, and star-shaped Kodai Lake.',
-    hotelDetails: '3-Star Colonial Cottages & 5-Star Luxury Tea Plantation Resorts',
-    meals: 'Daily South Indian & Continental Breakfast & Dinners',
-    transportation: 'Dedicated AC sedan from Coimbatore / Bangalore',
-    sightseeing: 'Ooty Botanical Gardens, Nilgiri Toy Train, Doddabetta Peak, Pykara Lake & Falls, Kodai Lake, Coaker’s Walk, Pillar Rocks',
-    specialOffer: 'Complimentary Nilgiri Mountain Toy Train Ticket from Coonoor',
-    negotiableText: 'Price is negotiable for every destination',
-    inclusions: [
-      '4 nights accommodation in colonial heritage properties',
-      'Daily breakfast and dinner',
-      'Private AC cab for all mountain drives and sightseeing',
-      'Toy train experience pass'
-    ],
-    exclusions: ['Airfare/Train to Coimbatore', 'Lunch meals'],
-    itinerary: [
-      { day: 1, title: 'Coimbatore Pickup & Drive to Ooty', details: 'Drive past hairpin bends to Ooty. Visit Botanical Garden and relax.' },
-      { day: 2, title: 'Doddabetta Peak & Coonoor Toy Train', details: 'Climb Doddabetta Peak. Board the heritage steam toy train to Coonoor past tea plantations.' },
-      { day: 3, title: 'Drive to Kodaikanal Princess of Hill Stations', details: 'Drive to Kodaikanal. Check in and take an evening walk around star-shaped Kodai Lake.' },
-      { day: 4, title: 'Pillar Rocks & Coaker’s Walk', details: 'Visit giant Pillar Rocks, Green Valley View, and Coaker’s Walk path overlooking misty plains.' },
-      { day: 5, title: 'Departure Drive to Coimbatore / Madurai', details: 'Check out and transfer to Coimbatore or Madurai airport.' }
-    ],
-    images: [
-      'https://images.unsplash.com/photo-1582510003544-4d00b7f74220?auto=format&fit=crop&w=1200&q=80'
-    ],
-    isFeatured: false,
-    isActive: true
+    "isFeatured": true,
+    "isActive": true
   },
   {
-    id: 'gujarat-rann-of-kutch-gir',
-    slug: 'gujarat-rann-of-kutch-gir-safari',
-    name: 'Rann of Kutch White Desert & Gir Lion Safari',
-    category: 'Desert & Wildlife',
-    destination: 'Kutch & Gir, Gujarat',
-    state: 'Gujarat',
-    days: 5,
-    nights: 4,
-    price: 32500,
-    shortDescription: 'Witness white salt desert shimmering under full moonlight, traditional Kutchi handicrafts, and Asiatic Lions in Gir Forest.',
-    hotelDetails: '3-Star Traditional Bhunga Cottages & 5-Star Luxury Safari Club Resort',
-    meals: 'Daily Gujarati Thali Breakfast, Lunch & Dinners',
-    transportation: 'Dedicated AC private vehicle from Ahmedabad / Bhuj',
-    sightseeing: 'White Rann of Kutch, Kalo Dungar (Black Hill), Hodka Craft Village, Sasan Gir Forest Lion Safari, Somnath Temple',
-    specialOffer: 'Complimentary Asiatic Lion Safari in Open 4x4 Gypsy at Gir National Park',
-    negotiableText: 'Price is negotiable for every destination',
-    inclusions: [
-      '4 nights stay in authentic AC Bhungas & luxury jungle resort',
-      'All meals included during Kutch festival stay + Daily breakfast and dinner',
-      '1 open jeep safari with guide and permit in Gir National Park',
-      'White Rann entry permit'
+    "id": "manali-kasol-solang-escape",
+    "subId": "manali-kasol-solang-escape",
+    "slug": "manali-kasol-solang-escape",
+    "name": "Manali, Solang Valley Snow & Kasol Parvati Trails",
+    "packageName": "Manali, Solang Valley Snow & Kasol Parvati Trails",
+    "category": "India",
+    "destination": "Manali & Kasol, Himachal Pradesh",
+    "state": "Himachal Pradesh",
+    "stateId": "himachal-pradesh",
+    "subName": "Manali & Kasol",
+    "country": "India",
+    "days": 5,
+    "nights": 4,
+    "duration": "5 Days / 4 Nights",
+    "price": 9999,
+    "pricing": {
+      "startingPrice": 14999,
+      "discountedPrice": 9999,
+      "currency": "INR",
+      "perPerson": true
+    },
+    "shortDescription": "Snow activities at Solang Valley, cafe culture in Old Manali, Manikaran hot springs, and serene riverside vibes in Kasol.",
+    "hotelDetails": "3-Star Deluxe & 5-Star Luxury Resort options available",
+    "meals": "Daily Breakfast included",
+    "transportation": "AC Private Sedan / SUV",
+    "modeOfTransport": "AC Private Sedan / SUV",
+    "sightseeing": "Snow activities at Solang Valley, cafe culture in Old Manali, Manikaran hot springs, and serene riverside vibes in Kasol.",
+    "specialOffer": "Complimentary sunset excursion & local food tasting session!",
+    "negotiableText": "Price is negotiable for every destination",
+    "inclusions": [
+      "4 Nights Stay in Premium Mountain Resorts / Riverside Camps",
+      "Daily Breakfast & Dinners with Bonfire Night",
+      "Solang Valley Adventure Sightseeing & Atal Tunnel Drive",
+      "Kasol Cafe Tour & Manikaran Sahib Gurudwara Visit",
+      "Private AC Cab for all Sightseeing"
     ],
-    exclusions: ['Airfare/Train to Bhuj/Ahmedabad', 'Camera fee'],
-    itinerary: [
-      { day: 1, title: 'Bhuj Arrival & Drive to White Rann Tent City', details: 'Arrive at Bhuj. Drive to White Rann. Check in to traditional Bhunga. Evening walk on glowing white salt desert under the sunset.' },
-      { day: 2, title: 'Kalo Dungar & Artisans Village', details: 'Visit Kalo Dungar (highest point in Kutch) and artisan villages of Hodka and Nirona for Rogan art and lacquer woodwork.' },
-      { day: 3, title: 'Drive to Sasan Gir via Junagadh', details: 'Scenic drive to Sasan Gir Forest, home to the Asiatic Lion.' },
-      { day: 4, title: 'Asiatic Lion Safari & Somnath Temple', details: 'Early morning open Gypsy safari in Gir National Park. Afternoon visit to sacred beachfront Somnath Jyotirlinga Temple.' },
-      { day: 5, title: 'Departure via Rajkot / Ahmedabad', details: 'Check out and transfer to Rajkot or Ahmedabad airport.' }
+    "exclusions": [
+      "Paragliding / Skiing / ATV charges at Solang",
+      "Personal expenses & GST (5%)"
     ],
-    images: [
-      'https://images.unsplash.com/photo-1609766857041-ed402ea8069a?auto=format&fit=crop&w=1200&q=80'
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Chandigarh to Manali Scenic Drive",
+        "details": "Drive past Mandi, Pandoh Dam, and Kullu Valley. Check in to Manali mountain resort."
+      },
+      {
+        "day": 2,
+        "title": "Solang Valley & Atal Tunnel Excursion",
+        "details": "Enjoy paragliding, zorbing, and snow activities at Solang Valley. Drive through Atal Tunnel to Sissu waterfall."
+      },
+      {
+        "day": 3,
+        "title": "Manali Local Heritage & Old Manali Cafes",
+        "details": "Visit Hadimba Devi Temple, Vashisht Hot Springs, Manu Temple, and evening shopping on Mall Road."
+      },
+      {
+        "day": 4,
+        "title": "Manali to Kasol & Manikaran Hot Springs",
+        "details": "Drive to Kasol in Parvati Valley. Visit Manikaran Sahib Gurudwara and enjoy riverside cafe hopping."
+      },
+      {
+        "day": 5,
+        "title": "Kasol to Chandigarh Departure",
+        "details": "Morning nature walk along Parvati river before drive back to Chandigarh."
+      }
     ],
-    isFeatured: false,
-    isActive: true
-  },
-
-  // ==========================================
-  // INTERNATIONAL DESTINATIONS
-  // ==========================================
-  {
-    id: 'international-dubai-extravaganza',
-    slug: 'dubai-luxury-dunes-city-escape',
-    name: 'Dubai Luxury Skyline, Desert Safari & Marina Cruise',
-    category: 'International',
-    destination: 'Dubai & Abu Dhabi, UAE',
-    days: 5,
-    nights: 4,
-    price: 49500,
-    shortDescription: 'Stand atop Burj Khalifa, experience thrilling 4x4 red dune bashing with BBQ dinner, Marina luxury yacht cruise, and Abu Dhabi Grand Mosque.',
-    hotelDetails: '4-Star Premium City Hotel & 5-Star Luxury Downtown Skyline Hotel options',
-    meals: 'Daily Buffet Breakfast + BBQ Desert Dinner + Marina Cruise Dinner',
-    transportation: 'Dedicated AC Luxury Sedan airport pickups & private excursions',
-    sightseeing: 'Burj Khalifa 124th Floor, Dubai Mall & Fountain Show, Desert Safari with Tanoura show, Dubai Marina Dhow Cruise, Sheikh Zayed Grand Mosque Abu Dhabi',
-    specialOffer: 'Complimentary 124th Floor Burj Khalifa Observation Deck Ticket',
-    negotiableText: 'Price is negotiable for every destination',
-    inclusions: [
-      '4 nights in 4-Star/5-Star luxury hotel in Dubai',
-      'Daily international buffet breakfast',
-      'Burj Khalifa 124th/125th floor non-prime admission ticket',
-      'Premium Desert Safari with 4x4 dune bashing, camel ride, belly dance, and BBQ dinner',
-      'Dubai Marina Dhow Cruise with international buffet dinner',
-      'Full-day Abu Dhabi city tour including Sheikh Zayed Grand Mosque',
-      'Return Dubai Airport transfers in private AC vehicle'
+    "images": [
+      "/destinations/india/himachal-pradesh/manali1.jpg",
+      "/destinations/india/himachal-pradesh/kasol1.jpg",
+      "/destinations/india/himachal-pradesh/shimla1.jpg"
     ],
-    exclusions: ['International flights & UAE Tourist Visa', 'Tourism Dirham fee (payable directly at hotel)', 'Lunch meals'],
-    itinerary: [
-      { day: 1, title: 'Arrival in Dubai & Marina Dhow Cruise Dinner', details: 'Arrive at Dubai International Airport. Private transfer to hotel. In the evening, board a traditional wooden dhow for a 2-hour dinner cruise along Dubai Marina.' },
-      { day: 2, title: 'Dubai City Tour & Burj Khalifa Top Floor', details: 'Morning city tour covering Dubai Frame, Palm Jumeirah, and Burj Al Arab. Evening visit to Dubai Mall and ascent to the 124th floor of Burj Khalifa.' },
-      { day: 3, title: 'Thrilling Red Dunes Desert Safari with BBQ', details: 'Morning at leisure. Afternoon 4x4 Land Cruiser pickup for high dune bashing in the Lahbab red desert. Enjoy sunset photography, henna painting, fire show, and BBQ dinner.' },
-      { day: 4, title: 'Full Day Abu Dhabi Tour & Grand Mosque', details: 'Day trip to UAE capital Abu Dhabi. Visit the architectural masterpiece Sheikh Zayed Grand Mosque, drive past Corniche, and stop at Ferrari World for photos.' },
-      { day: 5, title: 'Gold Souk Shopping & Departure Flight', details: 'Shop for gold and spices in Deira Souk. Private transfer to Dubai Airport for flight home.' }
+    "photos": [
+      "/destinations/india/himachal-pradesh/manali1.jpg",
+      "/destinations/india/himachal-pradesh/kasol1.jpg",
+      "/destinations/india/himachal-pradesh/shimla1.jpg"
     ],
-    images: [
-      'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1506929562872-bb421503ef21?auto=format&fit=crop&w=1200&q=80'
-    ],
-    isFeatured: true,
-    isActive: true
-  },
-  {
-    id: 'international-swiss-postcard',
-    slug: 'swiss-postcard-trail',
-    name: 'Swiss Postcard Trail & Mount Titlis Alpine Magic',
-    category: 'International',
-    destination: 'Zurich, Lucerne & Interlaken, Switzerland',
-    days: 8,
-    nights: 7,
-    price: 142900, // 10% uplift
-    shortDescription: 'Journey through the heart of the Swiss Alps, visiting Zurich, Lucerne, Interlaken, and revolving cable car to Mount Titlis.',
-    hotelDetails: '3-Star Alpine Boutique Hotels & 5-Star Luxury Panoramic Mountain Resorts',
-    meals: 'Daily Swiss Continental Breakfast at all hotels',
-    transportation: '8-day 2nd Class Swiss Travel Pass for unlimited train, bus, and boat rides',
-    sightseeing: 'Mount Titlis revolving cable car, Jungfraujoch (Top of Europe), Lake Lucerne boat cruise, Chillon Castle, GoldenPass train',
-    specialOffer: 'Swiss Pass Upgrade: Complimentary upgrade to 1st Class Swiss Pass for advance bookings',
-    negotiableText: 'Price is negotiable for every destination',
-    inclusions: [
-      '7 nights accommodation in handpicked alpine hotels',
-      '8-day consecutive Swiss Travel Pass',
-      'Excursion tickets to Mount Titlis (Rotair revolving cable car)',
-      'Excursion tickets to Jungfraujoch - Top of Europe',
-      'Daily continental breakfast',
-      'Local city taxes and tourist fees'
-    ],
-    exclusions: ['International flights to/from Zurich', 'Schengen Visa fee & travel insurance', 'Lunch & dinner meals'],
-    itinerary: [
-      { day: 1, title: 'Arrival in Zurich & Scenic Train to Lucerne', details: 'Arrive in Zurich. Board scenic Swiss train to Lucerne. Check in and explore Chapel Bridge and historic Old Town.' },
-      { day: 2, title: 'Mount Titlis Snow Mountain Excursion', details: 'Take train to Engelberg, then ride the world’s first revolving TITLIS Rotair cable car to 3,020m summit. Walk through glacier cave and suspension bridge.' },
-      { day: 3, title: 'Lake Lucerne Cruise & Panorama Train to Interlaken', details: 'Cruise on Lake Lucerne with your Swiss Pass. Board panorama train to Interlaken nestled between two lakes.' },
-      { day: 4, title: 'Jungfraujoch - Top of Europe Journey', details: 'Cogwheel train ride up to Jungfraujoch, the highest railway station in Europe. Experience the Sphinx Observatory and Ice Palace.' },
-      { day: 5, title: 'Interlaken Leisure Day & Adventure Options', details: 'Free day in Interlaken. Optional paragliding, Harder Kulm viewpoint, or boat ride on Lake Brienz.' },
-      { day: 6, title: 'GoldenPass Panoramic Express to Montreux', details: 'Board GoldenPass panoramic train across mountain passes to lakeside Montreux on Lake Geneva.' },
-      { day: 7, title: 'Chillon Castle Tour & Return to Zurich', details: 'Visit medieval Chillon Castle. Later take train back to Zurich for final night shopping on Bahnhofstrasse.' },
-      { day: 8, title: 'Zurich Departure Flight', details: 'Short train to Zurich Airport and departure flight home.' }
-    ],
-    images: [
-      'https://images.unsplash.com/photo-1502784444187-359ac186c5bb?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1482862549707-f63cb32c5fd9?auto=format&fit=crop&w=1200&q=80'
-    ],
-    isFeatured: true,
-    isActive: true
+    "isFeatured": true,
+    "isActive": true
   },
   {
-    id: 'international-singapore-escape',
-    slug: 'singapore-escape',
-    name: 'Singapore Futuristic Escape & Sentosa Fantasy',
-    category: 'International',
-    destination: 'Singapore',
-    days: 5,
-    nights: 4,
-    price: 54990, // 10% uplift
-    shortDescription: 'Futuristic supertrees at Gardens by the Bay, Marina Bay Sands SkyPark, Universal Studios Singapore, and Sentosa cable car.',
-    hotelDetails: '4-Star Premium City Hotel & 5-Star Marina Bay Luxury Hotel options',
-    meals: 'Daily Buffet Breakfast included',
-    transportation: 'Dedicated AC sedan airport pickup and sightseeing transfers',
-    sightseeing: 'Gardens by the Bay (Flower Dome & Cloud Forest), Marina Bay Sands SkyPark, Sentosa Island, Universal Studios, Night Safari',
-    specialOffer: 'Free admission to Sentosa Mount Faber Scenic Cable Car',
-    negotiableText: 'Price is negotiable for every destination',
-    inclusions: [
-      '4 nights hotel accommodation in central Singapore',
-      'Daily international breakfast',
-      'All private airport and sightseeing transfers in AC vehicle',
-      'Entry tickets to Gardens by the Bay double domes',
-      'Universal Studios 1-Day Pass'
+    "id": "gokarna-kumta-beach-trek",
+    "subId": "gokarna-kumta-beach-trek",
+    "slug": "gokarna-kumta-beach-trek",
+    "name": "Gokarna 5-Beach Trek, Kumta Coast & Murudeshwar",
+    "packageName": "Gokarna 5-Beach Trek, Kumta Coast & Murudeshwar",
+    "category": "India",
+    "destination": "Gokarna & Kumta, Karnataka",
+    "state": "Karnataka",
+    "stateId": "karnataka",
+    "subName": "Gokarna & Kumta",
+    "country": "India",
+    "days": 3,
+    "nights": 2,
+    "duration": "3 Days / 2 Nights",
+    "price": 6999,
+    "pricing": {
+      "startingPrice": 9999,
+      "discountedPrice": 6999,
+      "currency": "INR",
+      "perPerson": true
+    },
+    "shortDescription": "Cliff-side beach trekking connecting Om Beach, Half Moon Beach & Paradise Beach, pristine Kumta Nirvana beach, and giant Murudeshwar Shiva.",
+    "hotelDetails": "3-Star Deluxe & 5-Star Luxury Resort options available",
+    "meals": "Daily Breakfast included",
+    "transportation": "AC Private Sedan / Tempo",
+    "modeOfTransport": "AC Private Sedan / Tempo",
+    "sightseeing": "Cliff-side beach trekking connecting Om Beach, Half Moon Beach & Paradise Beach, pristine Kumta Nirvana beach, and giant Murudeshwar Shiva.",
+    "specialOffer": "Complimentary sunset excursion & local food tasting session!",
+    "negotiableText": "Price is negotiable for every destination",
+    "inclusions": [
+      "2 Nights Stay in Beachfront Shack / Resort in Gokarna",
+      "Daily Breakfast & Dinners",
+      "Guided 5-Beach Cliff Trek & Sunset Point Walk",
+      "Kumta Nirvana Beach & Murudeshwar Shiva Temple Excursion",
+      "Private Cab Transfers from Gokarna / Goa / Hubli"
     ],
-    exclusions: ['Airfare & Singapore Visa', 'Lunch & dinner'],
-    itinerary: [
-      { day: 1, title: 'Arrival in Singapore & Night Safari', details: 'Arrive at Changi Airport. Transfer to hotel. In the evening, explore the world’s first nocturnal zoo on Night Safari tram.' },
-      { day: 2, title: 'City Tour & Gardens by the Bay Supertrees', details: 'Visit Merlion Park, Chinatown, and Little India. Afternoon in Gardens by the Bay Cloud Forest and evening Supertree light show.' },
-      { day: 3, title: 'Universal Studios Full Day Adventure', details: 'Spend a thrilling day at Universal Studios on Sentosa Island with rides, shows, and movie attractions.' },
-      { day: 4, title: 'Sentosa Cable Car & Marina Bay Sands SkyPark', details: 'Ride Mount Faber cable car. Visit Marina Bay Sands SkyPark observation deck overlooking Singapore Strait.' },
-      { day: 5, title: 'Jewel Changi Rain Vortex & Departure', details: 'Explore Jewel Changi indoor waterfall before departure flight.' }
+    "exclusions": [
+      "Water sports charges",
+      "GST (5%)"
     ],
-    images: [
-      'https://images.unsplash.com/photo-1525625293386-3f8f99389edd?auto=format&fit=crop&w=1200&q=80'
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Arrival in Gokarna & Kudle Beach Sunset",
+        "details": "Pickup from Gokarna Road railway station or Goa/Hubli. Check in to beachfront resort. Relax at Kudle Beach with seaside cafe dinner."
+      },
+      {
+        "day": 2,
+        "title": "Famous 5-Beach Trek (Om, Half Moon, Paradise, Belekan)",
+        "details": "Guided morning cliff trek over the Arabian Sea connecting Gokarna main beach, Kudle, Om Beach, Half Moon Beach, and Paradise Beach. Sunset boat ride."
+      },
+      {
+        "day": 3,
+        "title": "Kumta Nirvana Beach, Mirjan Fort & Murudeshwar",
+        "details": "Visit secluded Kumta Nirvana Beach and historic Mirjan Fort. Explore the colossal 123-ft Murudeshwar Shiva statue on the ocean edge before departure."
+      }
     ],
-    isFeatured: true,
-    isActive: true
+    "images": [
+      "/destinations/india/karnataka/gokarna.jpg",
+      "/destinations/india/karnataka/kumta.jpg",
+      "/destinations/india/karnataka/gokarna1.jpg"
+    ],
+    "photos": [
+      "/destinations/india/karnataka/gokarna.jpg",
+      "/destinations/india/karnataka/kumta.jpg",
+      "/destinations/india/karnataka/gokarna1.jpg"
+    ],
+    "isFeatured": true,
+    "isActive": true
   },
   {
-    id: 'international-thailand-getaway',
-    slug: 'thailand-getaway',
-    name: 'Thailand Getaway: Bangkok Temples & Pattaya Coral Island',
-    category: 'International',
-    destination: 'Bangkok & Pattaya, Thailand',
-    days: 5,
-    nights: 4,
-    price: 43900,
-    shortDescription: 'Golden Buddha temples, speedboat to crystal clear Coral Island, vibrant nightlife, and floating markets.',
-    hotelDetails: '4-Star Beachfront Resort in Pattaya & 4-Star/5-Star City Hotel in Bangkok',
-    meals: 'Daily Breakfast and Coral Island seafood lunch',
-    transportation: 'Dedicated AC private taxi for all transfers',
-    sightseeing: 'Coral Island speed boating, Pattaya Viewpoint, Alcazar Show, Bangkok Golden Buddha, Chao Phraya river cruise',
-    specialOffer: 'Complimentary VIP tickets to world famous Alcazar Cabaret Show',
-    negotiableText: 'Price is negotiable for every destination',
-    inclusions: [
-      '2 nights stay in Pattaya + 2 nights stay in Bangkok',
-      'Daily breakfast + Indian lunch on Coral Island',
-      'Speedboat transfer to Coral Island with parasailing option',
-      'All intercity transfers in private AC cab'
+    "id": "hampi-unesco-heritage-backpack",
+    "subId": "hampi-unesco-heritage-backpack",
+    "slug": "hampi-unesco-heritage-backpack",
+    "name": "Hampi UNESCO Bouldering & Vijayanagara Empire Heritage",
+    "packageName": "Hampi UNESCO Bouldering & Vijayanagara Empire Heritage",
+    "category": "India",
+    "destination": "Hampi, Karnataka",
+    "state": "Karnataka",
+    "stateId": "karnataka",
+    "subName": "Hampi",
+    "country": "India",
+    "days": 3,
+    "nights": 2,
+    "duration": "3 Days / 2 Nights",
+    "price": 5999,
+    "pricing": {
+      "startingPrice": 8999,
+      "discountedPrice": 5999,
+      "currency": "INR",
+      "perPerson": true
+    },
+    "shortDescription": "Step back in time to the world's 2nd largest medieval era city: Virupaksha Temple, Stone Chariot, and Hippie Island sunsets.",
+    "hotelDetails": "3-Star Deluxe & 5-Star Luxury Resort options available",
+    "meals": "Daily Breakfast included",
+    "transportation": "Heritage Cab / Bicycle / Moped",
+    "modeOfTransport": "Heritage Cab / Bicycle / Moped",
+    "sightseeing": "Step back in time to the world's 2nd largest medieval era city: Virupaksha Temple, Stone Chariot, and Hippie Island sunsets.",
+    "specialOffer": "Complimentary sunset excursion & local food tasting session!",
+    "negotiableText": "Price is negotiable for every destination",
+    "inclusions": [
+      "2 Nights Stay in Boutique Heritage Resort / Riverside Stay",
+      "Daily Breakfast & South Indian Thali Lunches",
+      "Licensed Archaeological Guide for Royal Enclosure & Vittala Temple",
+      "Coracle Boat Ride across Tungabhadra River",
+      "All Sightseeing Transfers & Entry Tickets"
     ],
-    exclusions: ['Airfare & Thailand Visa on Arrival', 'Water sports rentals'],
-    itinerary: [
-      { day: 1, title: 'Bangkok Arrival & Drive to Pattaya', details: 'Arrive at Suvarnabhumi Airport. Drive to seaside resort town Pattaya. Evening Alcazar show.' },
-      { day: 2, title: 'Coral Island Speedboat Tour with Lunch', details: 'Speedboat to Coral Island (Koh Larn) for snorkeling, water sports, and beach lunch.' },
-      { day: 3, title: 'Drive to Bangkok & Golden Buddha Temple', details: 'Drive to Bangkok. Visit Wat Traimit (Golden Buddha) and Wat Mahaprutharam.' },
-      { day: 4, title: 'Chao Phraya River Cruise & Shopping', details: 'Explore Chatuchak / MBK Center for shopping. Evening international buffet dinner cruise on Chao Phraya River.' },
-      { day: 5, title: 'Departure Flight from Bangkok', details: 'Check out and transfer to airport for return flight.' }
+    "exclusions": [
+      "Bicycle / Moped rentals",
+      "GST (5%)"
     ],
-    images: [
-      'https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?auto=format&fit=crop&w=1200&q=80'
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Hampi Arrival & Virupaksha Sunset at Hemakuta Hill",
+        "details": "Pickup from Hospet railway station. Settle into riverside resort. Afternoon visit to Virupaksha Temple and watch golden sunset from Hemakuta Hill boulders."
+      },
+      {
+        "day": 2,
+        "title": "Vittala Temple Stone Chariot & Royal Center",
+        "details": "Explore the iconic Stone Chariot and musical pillars at Vijaya Vittala Temple, Lotus Mahal, Elephant Stables, and Queen's Bath with expert historian."
+      },
+      {
+        "day": 3,
+        "title": "Anjaneya Hill Sunrise, Coracle Ride & Departure",
+        "details": "Climb Anjaneya Hill (birthplace of Lord Hanuman) for 360-degree boulder landscape sunrise. Enjoy traditional coracle boat ride on Tungabhadra river before departure."
+      }
     ],
-    isFeatured: true,
-    isActive: true
+    "images": [
+      "/destinations/india/karnataka/hampi.jpg",
+      "/destinations/india/karnataka/hampi1.jpg"
+    ],
+    "photos": [
+      "/destinations/india/karnataka/hampi.jpg",
+      "/destinations/india/karnataka/hampi1.jpg"
+    ],
+    "isFeatured": true,
+    "isActive": true
   },
   {
-    id: 'international-maldives-paradise',
-    slug: 'maldives-paradise',
-    name: 'Maldives Luxury Overwater Villa Paradise',
-    category: 'International',
-    destination: 'Maldives',
-    days: 4,
-    nights: 3,
-    price: 62500,
-    shortDescription: 'Unwind in tropical overwater villas perched over turquoise lagoons, house reef snorkeling, and dolphin sunset cruise.',
-    hotelDetails: '4-Star Beachfront Deluxe Villa & 5-Star Luxury Overwater Pool Villa',
-    meals: 'All-Inclusive Meals (Daily Breakfast, Lunch, Dinner & Drinks)',
-    transportation: 'Return Speedboat / Seaplane transfers from Male Airport',
-    sightseeing: 'House reef snorkeling, sunset dolphin cruise, private island beach walk',
-    specialOffer: 'Honeymoon Special: Complimentary candle-lit beach dinner & bed decoration',
-    negotiableText: 'Price is negotiable for every destination',
-    inclusions: [
-      '3 nights stay in Luxury Overwater Lagoon Villa',
-      'Daily breakfast, lunch, and dinner buffet with live cooking stations',
-      'Unlimited soft drinks, juices, and select beverages',
-      'Return speedboat transfers from Velana International Airport (Male)',
-      'Complimentary snorkeling equipment use throughout stay'
+    "id": "rameshwaram-dhanushkodi-madurai",
+    "subId": "rameshwaram-dhanushkodi-madurai",
+    "slug": "rameshwaram-dhanushkodi-madurai",
+    "name": "Rameshwaram Jyotirlinga, Dhanushkodi Ram Setu & Madurai Meenakshi",
+    "packageName": "Rameshwaram Jyotirlinga, Dhanushkodi Ram Setu & Madurai Meenakshi",
+    "category": "India",
+    "destination": "Rameshwaram & Madurai, Tamil Nadu",
+    "state": "Tamil Nadu",
+    "stateId": "tamil-nadu",
+    "subName": "Rameshwaram & Madurai",
+    "country": "India",
+    "days": 4,
+    "nights": 3,
+    "duration": "4 Days / 3 Nights",
+    "price": 8999,
+    "pricing": {
+      "startingPrice": 13999,
+      "discountedPrice": 8999,
+      "currency": "INR",
+      "perPerson": true
+    },
+    "shortDescription": "Sacred Pamban Sea Bridge, 22 Holy Teerthams at Ramanathaswamy Temple, ghost town Dhanushkodi, and Madurai Meenakshi Amman.",
+    "hotelDetails": "3-Star Deluxe & 5-Star Luxury Resort options available",
+    "meals": "Daily Breakfast included",
+    "transportation": "AC Private Sedan / SUV",
+    "modeOfTransport": "AC Private Sedan / SUV",
+    "sightseeing": "Sacred Pamban Sea Bridge, 22 Holy Teerthams at Ramanathaswamy Temple, ghost town Dhanushkodi, and Madurai Meenakshi Amman.",
+    "specialOffer": "Complimentary sunset excursion & local food tasting session!",
+    "negotiableText": "Price is negotiable for every destination",
+    "inclusions": [
+      "2 Nights in Rameshwaram Hotel + 1 Night in Madurai Hotel",
+      "Daily Breakfast & Authentic Tamil Meals",
+      "Pamban Bridge Scenic Crossing & Dhanushkodi 4x4 Beach Trip",
+      "Madurai Meenakshi Amman Temple VIP Darshan Pass",
+      "All Sightseeing Transfers in Private AC Cab"
     ],
-    exclusions: ['International airfare to Male', 'Motorized water sports (Jet ski)', 'Spa massages'],
-    itinerary: [
-      { day: 1, title: 'Male Arrival & Speedboat to Private Island', details: 'Arrive at Male Airport. Meet resort representative and board speedboat to private island resort. Check into your overwater villa.' },
-      { day: 2, title: 'Coral Reef Snorkeling & Marine Life', details: 'Step directly from your private villa deck into crystal lagoon. Snorkel with colorful tropical fish and baby reef sharks.' },
-      { day: 3, title: 'Sunset Dolphin Cruise & Candlelight Dinner', details: 'Enjoy relaxing afternoon at infinity pool. In the evening, sail on a traditional Dhoni for sunset dolphin watching, followed by romantic dinner on the sand.' },
-      { day: 4, title: 'Morning Lagoon Dip & Departure', details: 'Final morning swim in the azure waters. Check out and speedboat transfer back to Male Airport.' }
+    "exclusions": [
+      "22 Teertham holy bath assistance fees",
+      "GST (5%)"
     ],
-    images: [
-      'https://images.unsplash.com/photo-1439066615861-d1af74d74000?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80'
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Madurai Arrival to Rameshwaram via Pamban Bridge",
+        "details": "Pickup from Madurai airport/station. Drive to Rameshwaram crossing the magnificent Pamban Sea Bridge over the Indian Ocean. Evening Darshan at Ramanathaswamy Temple."
+      },
+      {
+        "day": 2,
+        "title": "22 Holy Teerthams & APJ Abdul Kalam Memorial",
+        "details": "Early morning holy bath in the 22 consecrated water wells inside Ramanathaswamy Temple corridor (longest pillared corridor in the world). Visit Dr. APJ Abdul Kalam National Memorial."
+      },
+      {
+        "day": 3,
+        "title": "Dhanushkodi Ghost Town, Ram Setu & Drive to Madurai",
+        "details": "Explore Dhanushkodi, the lost city destroyed in the 1964 cyclone, and Arichal Munai (starting point of Ram Setu where Indian Ocean meets Bay of Bengal). Drive to Madurai."
+      },
+      {
+        "day": 4,
+        "title": "Madurai Meenakshi Temple & Thirumalai Nayakkar Mahal",
+        "details": "Morning visit to the thousand-pillared Meenakshi Amman Temple and royal Thirumalai Nayakkar Palace. Drop at Madurai airport."
+      }
     ],
-    isFeatured: true,
-    isActive: true
+    "images": [
+      "/destinations/india/tamil-nadu/rameshwaram_temple.jpg",
+      "/destinations/india/tamil-nadu/dhanushkodi.jpg",
+      "/destinations/india/tamil-nadu/madurai_meenakshi.jpg",
+      "/destinations/india/tamil-nadu/ooty_lake.jpg"
+    ],
+    "photos": [
+      "/destinations/india/tamil-nadu/rameshwaram_temple.jpg",
+      "/destinations/india/tamil-nadu/dhanushkodi.jpg",
+      "/destinations/india/tamil-nadu/madurai_meenakshi.jpg",
+      "/destinations/india/tamil-nadu/ooty_lake.jpg"
+    ],
+    "isFeatured": true,
+    "isActive": true
   },
   {
-    id: 'international-bali-tropical-escape',
-    slug: 'bali-tropical-escape',
-    name: 'Bali Tropical Paradise: Ubud Terraces, Private Villa & Uluwatu',
-    category: 'International',
-    destination: 'Bali, Indonesia',
-    days: 5,
-    nights: 4,
-    price: 49500,
-    shortDescription: 'Private pool villas, sacred Monkey Forest, Tegallalang rice terraces, Bali Swing, and Uluwatu cliff temple sunset with Kecak dance.',
-    hotelDetails: '3-Star Deluxe Private Pool Villa & 5-Star Luxury Jungle Resort',
-    meals: 'Daily Breakfast & Floating Villa Breakfast included',
-    transportation: 'Dedicated Private AC Vehicle with English-speaking Balinese driver',
-    sightseeing: 'Tegallalang Rice Terraces, Bali Swing, Ubud Sacred Monkey Forest, Kintamani Volcano view, Uluwatu Cliff Temple, Tanahlot Sunset',
-    specialOffer: 'Complimentary Floating Breakfast experience in your Private Pool Villa',
-    negotiableText: 'Price is negotiable for every destination',
-    inclusions: [
-      '4 nights in private pool villa (twin sharing)',
-      'Daily breakfast including 1 floating breakfast',
-      'Private AC car for all tours and airport pickups with dedicated driver',
-      'Entry tickets to Uluwatu Temple, Monkey Forest, and Tegenungan Waterfall',
-      'Bali swing admission and safety harness'
+    "id": "kashmir-paradise-luxury",
+    "subId": "kashmir-paradise-luxury",
+    "slug": "kashmir-paradise-luxury",
+    "name": "Kashmir Paradise: Luxury Houseboat, Gulmarg & Pahalgam",
+    "packageName": "Kashmir Paradise: Luxury Houseboat, Gulmarg & Pahalgam",
+    "category": "India",
+    "destination": "Srinagar & Gulmarg, Jammu & Kashmir",
+    "state": "Jammu & Kashmir",
+    "stateId": "kashmir",
+    "subName": "Srinagar & Gulmarg",
+    "country": "India",
+    "days": 6,
+    "nights": 5,
+    "duration": "6 Days / 5 Nights",
+    "price": 16999,
+    "pricing": {
+      "startingPrice": 23999,
+      "discountedPrice": 16999,
+      "currency": "INR",
+      "perPerson": true
+    },
+    "shortDescription": "Glide on Dal Lake in a royal Shikara, ride the world's second highest Gondola in Gulmarg, and stroll Betaab Valley in Pahalgam.",
+    "hotelDetails": "3-Star Deluxe & 5-Star Luxury Resort options available",
+    "meals": "Daily Breakfast included",
+    "transportation": "AC Private Sedan / SUV",
+    "modeOfTransport": "AC Private Sedan / SUV",
+    "sightseeing": "Glide on Dal Lake in a royal Shikara, ride the world's second highest Gondola in Gulmarg, and stroll Betaab Valley in Pahalgam.",
+    "specialOffer": "Complimentary sunset excursion & local food tasting session!",
+    "negotiableText": "Price is negotiable for every destination",
+    "inclusions": [
+      "1 Night in Luxury Dal Lake Houseboat + 4 Nights in 4-Star Mountain Hotels",
+      "Daily Breakfast & Kashmiri Wazwan Dinners",
+      "Private 2-Hour Shikara Sunset Ride on Dal Lake",
+      "Mughal Gardens Entry (Nishat, Shalimar, Chashme Shahi)",
+      "Private AC Cab for all transfers and mountain excursions"
     ],
-    exclusions: ['International airfare to Denpasar (DPS)', 'Visa on Arrival ($35)', 'Lunch & dinner'],
-    itinerary: [
-      { day: 1, title: 'Arrival in Bali & Private Villa Check-in', details: 'Arrive at Ngurah Rai Airport. Welcome flower garland and transfer to private pool villa in Seminyak / Ubud.' },
-      { day: 2, title: 'Ubud Cultural Highlights & Bali Swing', details: 'Explore Ubud Sacred Monkey Forest, Tegallalang Rice Terrace, and fly high over jungle canopy on the famous Bali Swing.' },
-      { day: 3, title: 'Kintamani Volcano & Coffee Plantation', details: 'Scenic drive to Kintamani overlooking Mount Batur active volcano and lake. Taste authentic Luwak coffee at spice plantation.' },
-      { day: 4, title: 'Uluwatu Sunset Temple & Fire Dance', details: 'Visit iconic Tanah Lot temple in the ocean. Later head to southern cliff of Uluwatu for dramatic sunset and Kecak Fire Dance.' },
-      { day: 5, title: 'Souvenir Shopping & Departure Flight', details: 'Shop for Balinese rattan bags, silver jewelry, and aromatherapy oils. Transfer to airport for flight home.' }
+    "exclusions": [
+      "Gulmarg Gondola Phase 1 & 2 tickets",
+      "Pony rides in Pahalgam & Sonamarg",
+      "GST (5%)"
     ],
-    images: [
-      'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1506929562872-bb421503ef21?auto=format&fit=crop&w=1200&q=80'
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Arrival in Srinagar & Dal Lake Shikara",
+        "details": "Arrive at Srinagar Airport. Transfer to luxury carved wooden houseboat. Enjoy evening romantic Shikara ride across floating vegetable markets."
+      },
+      {
+        "day": 2,
+        "title": "Srinagar Mughal Gardens & Old City",
+        "details": "Explore Nishat Bagh, Shalimar Bagh, Chashme Shahi, and Hazratbal Shrine. Evening shopping for Pashmina shawls and saffron."
+      },
+      {
+        "day": 3,
+        "title": "Gulmarg Meadow of Flowers & Gondola Ride",
+        "details": "Day excursion to Gulmarg. Take the world-famous Gondola cable car to Apharwat Peak (13,780 ft) for skiing and snow activities."
+      },
+      {
+        "day": 4,
+        "title": "Srinagar to Pahalgam (Valley of Shepherds)",
+        "details": "Drive past saffron fields of Pampore and Awantipora ruins to Pahalgam. Check into riverside hotel along Lidder River."
+      },
+      {
+        "day": 5,
+        "title": "Betaab Valley, Aru Valley & Chandanwari",
+        "details": "Full day exploration of picturesque Betaab Valley, scenic Aru Valley, and Chandanwari (starting point of Amarnath Yatra)."
+      },
+      {
+        "day": 6,
+        "title": "Srinagar Airport Departure",
+        "details": "Morning breakfast by Lidder river and comfortable transfer back to Srinagar airport."
+      }
     ],
-    isFeatured: true,
-    isActive: true
+    "images": [
+      "/destinations/india/kashmir/kashmir.jpg",
+      "/destinations/india/kashmir/kashmir1.jpg"
+    ],
+    "photos": [
+      "/destinations/india/kashmir/kashmir.jpg",
+      "/destinations/india/kashmir/kashmir1.jpg"
+    ],
+    "isFeatured": true,
+    "isActive": true
+  },
+  {
+    "id": "ladakh-high-passes-adventure",
+    "subId": "ladakh-high-passes-adventure",
+    "slug": "ladakh-high-passes-adventure",
+    "name": "Leh Ladakh Pangong Tso, Nubra & Khardung La 4x4 Circuit",
+    "packageName": "Leh Ladakh Pangong Tso, Nubra & Khardung La 4x4 Circuit",
+    "category": "India",
+    "destination": "Leh & Pangong Tso, Ladakh",
+    "state": "Ladakh",
+    "stateId": "ladakh",
+    "subName": "Leh & Pangong Tso",
+    "country": "India",
+    "days": 6,
+    "nights": 5,
+    "duration": "6 Days / 5 Nights",
+    "price": 19999,
+    "pricing": {
+      "startingPrice": 28999,
+      "discountedPrice": 19999,
+      "currency": "INR",
+      "perPerson": true
+    },
+    "shortDescription": "Traverse the highest motorable road Khardung La, ride double-humped Bactrian camels at Nubra, and camp by changing blue Pangong Tso.",
+    "hotelDetails": "3-Star Deluxe & 5-Star Luxury Resort options available",
+    "meals": "Daily Breakfast included",
+    "transportation": "AC Himalayan SUV / 4x4",
+    "modeOfTransport": "AC Himalayan SUV / 4x4",
+    "sightseeing": "Traverse the highest motorable road Khardung La, ride double-humped Bactrian camels at Nubra, and camp by changing blue Pangong Tso.",
+    "specialOffer": "Complimentary sunset excursion & local food tasting session!",
+    "negotiableText": "Price is negotiable for every destination",
+    "inclusions": [
+      "3 Nights Hotel in Leh + 1 Night Deluxe Camp in Nubra + 1 Night Lake Camp at Pangong",
+      "Daily Breakfast & Warm Buffet Dinners",
+      "Inner Line Protected Area Permits & Environmental Fees",
+      "Dedicated Leh Chauffeur & Oxygen Cylinder in Vehicle",
+      "All Sightseeing & Monastery Entrances"
+    ],
+    "exclusions": [
+      "Double-humped camel ride / ATV rides",
+      "Flight tickets to Leh",
+      "GST (5%)"
+    ],
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Leh Arrival & Acclimatization",
+        "details": "Arrive at Leh Airport (11,500 ft). Check into hotel and rest for high-altitude acclimatization. Evening sunset visit to Shanti Stupa."
+      },
+      {
+        "day": 2,
+        "title": "Sham Valley (Magnetic Hill, Sangam, Hall of Fame)",
+        "details": "Visit Hall of Fame war museum, Kali Mata Temple, Magnetic Hill gravity-defying spot, and confluence of Indus and Zanskar rivers."
+      },
+      {
+        "day": 3,
+        "title": "Leh to Nubra Valley via Khardung La (17,582 ft)",
+        "details": "Cross the iconic Khardung La Pass. Descend into Nubra Valley. Visit Diskit Monastery (106-ft Maitreya Buddha) and ride Bactrian camels at Hunder sand dunes."
+      },
+      {
+        "day": 4,
+        "title": "Nubra to Pangong Tso via Shyok River",
+        "details": "Drive along scenic Shyok River to world-famous Pangong Tso Lake (14,270 ft). Witness changing shades of turquoise and deep blue. Camp under night sky."
+      },
+      {
+        "day": 5,
+        "title": "Pangong to Leh via Chang La Pass (17,590 ft)",
+        "details": "Catch mesmerizing sunrise over Pangong Lake. Return drive to Leh via Chang La Pass. Visit Thiksey and Shey Monasteries."
+      },
+      {
+        "day": 6,
+        "title": "Leh Airport Departure",
+        "details": "Transfer to Leh Kushok Bakula Rimpochee Airport with lifelong memories."
+      }
+    ],
+    "images": [
+      "/destinations/india/ladakh/ladakh1.jpg",
+      "/destinations/india/ladakh/ladakh2.jpg",
+      "/destinations/india/ladakh/ladakh3.jpg"
+    ],
+    "photos": [
+      "/destinations/india/ladakh/ladakh1.jpg",
+      "/destinations/india/ladakh/ladakh2.jpg",
+      "/destinations/india/ladakh/ladakh3.jpg"
+    ],
+    "isFeatured": true,
+    "isActive": true
+  },
+  {
+    "id": "royal-rajasthan-grand-circuit",
+    "subId": "royal-rajasthan-grand-circuit",
+    "slug": "royal-rajasthan-grand-circuit",
+    "name": "Royal Rajasthan: Jaipur, Jodhpur & Lake City Udaipur",
+    "packageName": "Royal Rajasthan: Jaipur, Jodhpur & Lake City Udaipur",
+    "category": "India",
+    "destination": "Jaipur, Jodhpur & Udaipur, Rajasthan",
+    "state": "Rajasthan",
+    "stateId": "rajasthan",
+    "subName": "Jaipur, Jodhpur & Udaipur",
+    "country": "India",
+    "days": 6,
+    "nights": 5,
+    "duration": "6 Days / 5 Nights",
+    "price": 14999,
+    "pricing": {
+      "startingPrice": 21999,
+      "discountedPrice": 14999,
+      "currency": "INR",
+      "perPerson": true
+    },
+    "shortDescription": "Amber Fort elephant trails, Mehrangarh cliff-top fortress, romantic boat ride on Lake Pichola, and grand Rajasthani folk dances.",
+    "hotelDetails": "3-Star Deluxe & 5-Star Luxury Resort options available",
+    "meals": "Daily Breakfast included",
+    "transportation": "AC Private Sedan / SUV",
+    "modeOfTransport": "AC Private Sedan / SUV",
+    "sightseeing": "Amber Fort elephant trails, Mehrangarh cliff-top fortress, romantic boat ride on Lake Pichola, and grand Rajasthani folk dances.",
+    "specialOffer": "Complimentary sunset excursion & local food tasting session!",
+    "negotiableText": "Price is negotiable for every destination",
+    "inclusions": [
+      "5 Nights Stay in Heritage 4-Star Haveli Hotels",
+      "Daily Royal Breakfast & Authentic Rajasthani Dinners (Dal Baati Churma)",
+      "Private AC Cab for inter-city travel & local sightseeing",
+      "Lake Pichola Sunset Boat Cruise in Udaipur",
+      "Chokhi Dhani Cultural Village Entry & Dinner Experience"
+    ],
+    "exclusions": [
+      "Fort entry tickets & camera fees",
+      "GST (5%)"
+    ],
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Jaipur Arrival & City Palace",
+        "details": "Arrive in Jaipur Pink City. Visit City Palace, Jantar Mantar observatory, and photo stop at Hawa Mahal. Evening traditional dinner at Chokhi Dhani."
+      },
+      {
+        "day": 2,
+        "title": "Amber Fort, Nahargarh & Jal Mahal",
+        "details": "Ascend grand Amber Fort. Explore Sheesh Mahal (Palace of Mirrors), Jaigarh Fort, Nahargarh panoramic sunset, and water palace Jal Mahal."
+      },
+      {
+        "day": 3,
+        "title": "Jaipur to Jodhpur (The Blue City)",
+        "details": "Drive to Sun City Jodhpur. Check into heritage hotel. Visit majestic Mehrangarh Fort perched 400 ft above the blue city, and Jaswant Thada."
+      },
+      {
+        "day": 4,
+        "title": "Jodhpur to Udaipur via Ranakpur Jain Temples",
+        "details": "Drive to Udaipur stopping at the 1,444 uniquely carved marble pillars of Ranakpur Jain Temple. Arrive in Udaipur City of Lakes."
+      },
+      {
+        "day": 5,
+        "title": "Udaipur City Palace & Lake Pichola Boat Cruise",
+        "details": "Tour majestic City Palace overlooking Lake Pichola. Visit Saheliyon Ki Bari and enjoy evening sunset boat cruise admiring Lake Palace & Jagmandir."
+      },
+      {
+        "day": 6,
+        "title": "Udaipur Departure",
+        "details": "Morning shopping for miniature paintings and silver jewelry before transfer to Udaipur Airport."
+      }
+    ],
+    "images": [
+      "/destinations/india/rajasthan/jaipur_hawa_mahal.jpg",
+      "/destinations/india/rajasthan/udaipur_lake_palace.jpg",
+      "/destinations/india/rajasthan/jaisalmer_fort.jpg",
+      "/destinations/india/rajasthan/jodhpur.jpg"
+    ],
+    "photos": [
+      "/destinations/india/rajasthan/jaipur_hawa_mahal.jpg",
+      "/destinations/india/rajasthan/udaipur_lake_palace.jpg",
+      "/destinations/india/rajasthan/jaisalmer_fort.jpg",
+      "/destinations/india/rajasthan/jodhpur.jpg"
+    ],
+    "isFeatured": true,
+    "isActive": true
+  },
+  {
+    "id": "kerala-tea-backwaters-bliss",
+    "subId": "kerala-tea-backwaters-bliss",
+    "slug": "kerala-tea-backwaters-bliss",
+    "name": "Munnar Misty Tea Hills & Alleppey Private Houseboat Cruise",
+    "packageName": "Munnar Misty Tea Hills & Alleppey Private Houseboat Cruise",
+    "category": "India",
+    "destination": "Munnar & Alleppey, Kerala",
+    "state": "Kerala",
+    "stateId": "kerala",
+    "subName": "Munnar & Alleppey",
+    "country": "India",
+    "days": 5,
+    "nights": 4,
+    "duration": "5 Days / 4 Nights",
+    "price": 13499,
+    "pricing": {
+      "startingPrice": 18999,
+      "discountedPrice": 13499,
+      "currency": "INR",
+      "perPerson": true
+    },
+    "shortDescription": "Explore sprawling tea estates of Munnar, spot Nilgiri Tahr in Eravikulam, and drift through palm-fringed backwaters on a private AC houseboat.",
+    "hotelDetails": "3-Star Deluxe & 5-Star Luxury Resort options available",
+    "meals": "Daily Breakfast included",
+    "transportation": "AC Private Sedan / SUV",
+    "modeOfTransport": "AC Private Sedan / SUV",
+    "sightseeing": "Explore sprawling tea estates of Munnar, spot Nilgiri Tahr in Eravikulam, and drift through palm-fringed backwaters on a private AC houseboat.",
+    "specialOffer": "Complimentary sunset excursion & local food tasting session!",
+    "negotiableText": "Price is negotiable for every destination",
+    "inclusions": [
+      "2 Nights in Munnar Valley View Resort + 1 Night in Thekkady + 1 Night Private AC Houseboat in Alleppey",
+      "All Meals on Houseboat (Authentic Kerala Sadhya, Fish Fry, Coconut Curry)",
+      "Breakfasts included at all hotels",
+      "Tea Museum & Spice Plantation Tour with Tasting",
+      "Private AC Sedan with dedicated Chauffeur"
+    ],
+    "exclusions": [
+      "Ayurvedic massage sessions",
+      "GST (5%)"
+    ],
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Cochin to Munnar Tea Gardens",
+        "details": "Pickup from Cochin Airport/railway station. Drive past Cheeyappara and Valara waterfalls to hill station Munnar. Settle into valley resort."
+      },
+      {
+        "day": 2,
+        "title": "Munnar Sightseeing (Eravikulam & Mattupetty)",
+        "details": "Visit Eravikulam National Park (home to endangered Nilgiri Tahr), Mattupetty Dam, Echo Point, and Tata Tea Museum."
+      },
+      {
+        "day": 3,
+        "title": "Munnar to Thekkady Spice Plantations",
+        "details": "Scenic drive to Thekkady (Periyar). Guided aromatic spice plantation tour (cardamom, pepper, vanilla) and attend Kathakali cultural show."
+      },
+      {
+        "day": 4,
+        "title": "Thekkady to Alleppey Private Houseboat Cruise",
+        "details": "Board traditional Kerala Kettuvallam (Houseboat) in Alleppey. Cruise tranquil lagoons, paddy fields, and canals. On-board freshly cooked Kerala feast."
+      },
+      {
+        "day": 5,
+        "title": "Alleppey to Cochin Departure",
+        "details": "Disembark houseboat after breakfast. Visit Fort Kochi Chinese Fishing Nets and Jew Town before Cochin Airport transfer."
+      }
+    ],
+    "images": [
+      "/destinations/india/kerala/munnar_tea.jpg",
+      "/destinations/india/kerala/alleppey_houseboat.jpg",
+      "/destinations/india/kerala/wayanad_chembra.jpg"
+    ],
+    "photos": [
+      "/destinations/india/kerala/munnar_tea.jpg",
+      "/destinations/india/kerala/alleppey_houseboat.jpg",
+      "/destinations/india/kerala/wayanad_chembra.jpg"
+    ],
+    "isFeatured": true,
+    "isActive": true
+  },
+  {
+    "id": "goa-beaches-dudhsagar-vibe",
+    "subId": "goa-beaches-dudhsagar-vibe",
+    "slug": "goa-beaches-dudhsagar-vibe",
+    "name": "Goa Sun & Surf: North Goa Nightlife, Dudhsagar Safari & South Goa Serenity",
+    "packageName": "Goa Sun & Surf: North Goa Nightlife, Dudhsagar Safari & South Goa Serenity",
+    "category": "India",
+    "destination": "North & South Goa, Goa",
+    "state": "Goa",
+    "stateId": "goa",
+    "subName": "North & South Goa",
+    "country": "India",
+    "days": 4,
+    "nights": 3,
+    "duration": "4 Days / 3 Nights",
+    "price": 8999,
+    "pricing": {
+      "startingPrice": 13999,
+      "discountedPrice": 8999,
+      "currency": "INR",
+      "perPerson": true
+    },
+    "shortDescription": "Exciting water sports, 4x4 jungle jeep safari to Dudhsagar Waterfalls, Portuguese heritage of Old Goa, and pristine South Goa beaches.",
+    "hotelDetails": "3-Star Deluxe & 5-Star Luxury Resort options available",
+    "meals": "Daily Breakfast included",
+    "transportation": "AC Private Sedan / SUV",
+    "modeOfTransport": "AC Private Sedan / SUV",
+    "sightseeing": "Exciting water sports, 4x4 jungle jeep safari to Dudhsagar Waterfalls, Portuguese heritage of Old Goa, and pristine South Goa beaches.",
+    "specialOffer": "Complimentary sunset excursion & local food tasting session!",
+    "negotiableText": "Price is negotiable for every destination",
+    "inclusions": [
+      "3 Nights 4-Star Resort Stay with Swimming Pool near Beach",
+      "Daily Buffet Breakfast",
+      "Dudhsagar 4x4 Jeep Safari with Spice Plantation Lunch",
+      "Mandovi River Sunset Cruise with Goan Folk Dance",
+      "Airport / Railway Station Transfers & Sightseeing Cab"
+    ],
+    "exclusions": [
+      "Water sports charges at Baga / Calangute",
+      "GST (5%)"
+    ],
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Goa Arrival & North Goa Beaches",
+        "details": "Pickup from Goa Airport (GOI/GOX) or Madgaon/Thivim station. Check into resort. Evening relaxation at Baga and Calangute beach shacks."
+      },
+      {
+        "day": 2,
+        "title": "Dudhsagar Waterfall Jeep Safari & Spice Plantation",
+        "details": "Thrilling 4x4 open jeep safari through Mollem National Park jungle to the milky cascade of Dudhsagar. Traditional Goan buffet lunch at spice plantation."
+      },
+      {
+        "day": 3,
+        "title": "South Goa Heritage, Miramar Beach & Sunset Cruise",
+        "details": "Visit Basilica of Bom Jesus and Se Cathedral in Old Goa, Dona Paula viewpoint, Miramar Beach, and 1-hour sunset cruise on Mandovi River."
+      },
+      {
+        "day": 4,
+        "title": "Souvenir Shopping & Departure",
+        "details": "Shop for Goan feni, cashews, and handicrafts in Panaji before airport drop-off."
+      }
+    ],
+    "images": [
+      "/destinations/india/goa/goa_beach_shack.jpg",
+      "/destinations/india/goa/dudhsagar_falls.jpg"
+    ],
+    "photos": [
+      "/destinations/india/goa/goa_beach_shack.jpg",
+      "/destinations/india/goa/dudhsagar_falls.jpg"
+    ],
+    "isFeatured": true,
+    "isActive": true
+  },
+  {
+    "id": "amritsar-golden-temple-wagah",
+    "subId": "amritsar-golden-temple-wagah",
+    "slug": "amritsar-golden-temple-wagah",
+    "name": "Amritsar Golden Temple, Wagah Border & Punjabi Culinary Journey",
+    "packageName": "Amritsar Golden Temple, Wagah Border & Punjabi Culinary Journey",
+    "category": "India",
+    "destination": "Amritsar, Punjab",
+    "state": "Punjab",
+    "stateId": "punjab",
+    "subName": "Amritsar",
+    "country": "India",
+    "days": 3,
+    "nights": 2,
+    "duration": "3 Days / 2 Nights",
+    "price": 5499,
+    "pricing": {
+      "startingPrice": 8999,
+      "discountedPrice": 5499,
+      "currency": "INR",
+      "perPerson": true
+    },
+    "shortDescription": "Spiritual bliss at the glistening Golden Temple, world's largest free community kitchen (Langar), and electrifying Wagah Border beating retreat.",
+    "hotelDetails": "3-Star Deluxe & 5-Star Luxury Resort options available",
+    "meals": "Daily Breakfast included",
+    "transportation": "AC Private Sedan",
+    "modeOfTransport": "AC Private Sedan",
+    "sightseeing": "Spiritual bliss at the glistening Golden Temple, world's largest free community kitchen (Langar), and electrifying Wagah Border beating retreat.",
+    "specialOffer": "Complimentary sunset excursion & local food tasting session!",
+    "negotiableText": "Price is negotiable for every destination",
+    "inclusions": [
+      "2 Nights Stay in 4-Star Hotel near Golden Temple",
+      "Daily Breakfast & Authentic Amritsari Kulcha / Lassi Food Tour",
+      "Special Reserved Seating Assistance for Wagah Border Ceremony",
+      "Jallianwala Bagh & Partition Museum Tour",
+      "Private AC Cab for all Sightseeing & Transfers"
+    ],
+    "exclusions": [
+      "Train / Flight to Amritsar",
+      "Personal shopping (Phulkari dupattas, juttis)"
+    ],
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Amritsar Arrival & Night Golden Temple Palki Sahib",
+        "details": "Arrive at Amritsar. Visit Sri Harmandir Sahib (Golden Temple). Volunteer at Guru Ka Langar and witness the serene Night Palki Sahib ceremony."
+      },
+      {
+        "day": 2,
+        "title": "Jallianwala Bagh, Partition Museum & Wagah Border",
+        "details": "Morning visit to historic Jallianwala Bagh and the emotional Partition Museum. Afternoon excursion to India-Pakistan Wagah Border for the high-energy military ceremony."
+      },
+      {
+        "day": 3,
+        "title": "Gobindgarh Fort, Food Walk & Departure",
+        "details": "Explore Maharaja Ranjit Singh's Gobindgarh Fort, indulge in authentic Amritsari Kulchas and sweet Lassi at famous street joints before airport drop."
+      }
+    ],
+    "images": [
+      "/destinations/india/punjab/golden_temple_day.jpg",
+      "/destinations/india/punjab/wagah_border.jpg"
+    ],
+    "photos": [
+      "/destinations/india/punjab/golden_temple_day.jpg",
+      "/destinations/india/punjab/wagah_border.jpg"
+    ],
+    "isFeatured": true,
+    "isActive": true
+  },
+  {
+    "id": "sikkim-darjeeling-himalayan-delight",
+    "subId": "sikkim-darjeeling-himalayan-delight",
+    "slug": "sikkim-darjeeling-himalayan-delight",
+    "name": "Gangtok, Tsomgo High-Altitude Lake & Darjeeling Tiger Hill",
+    "packageName": "Gangtok, Tsomgo High-Altitude Lake & Darjeeling Tiger Hill",
+    "category": "India",
+    "destination": "Gangtok & Darjeeling, Sikkim & North East",
+    "state": "Sikkim & North East",
+    "stateId": "sikkim-northeast",
+    "subName": "Gangtok & Darjeeling",
+    "country": "India",
+    "days": 6,
+    "nights": 5,
+    "duration": "6 Days / 5 Nights",
+    "price": 16999,
+    "pricing": {
+      "startingPrice": 24999,
+      "discountedPrice": 16999,
+      "currency": "INR",
+      "perPerson": true
+    },
+    "shortDescription": "Marvel at Mt. Kanchenjunga sunrise from Tiger Hill, ride the Darjeeling Himalayan Toy Train, and visit glacial Tsomgo Lake & Baba Mandir.",
+    "hotelDetails": "3-Star Deluxe & 5-Star Luxury Resort options available",
+    "meals": "Daily Breakfast included",
+    "transportation": "AC Private SUV / Innova",
+    "modeOfTransport": "AC Private SUV / Innova",
+    "sightseeing": "Marvel at Mt. Kanchenjunga sunrise from Tiger Hill, ride the Darjeeling Himalayan Toy Train, and visit glacial Tsomgo Lake & Baba Mandir.",
+    "specialOffer": "Complimentary sunset excursion & local food tasting session!",
+    "negotiableText": "Price is negotiable for every destination",
+    "inclusions": [
+      "3 Nights Hotel in Gangtok + 2 Nights in Darjeeling",
+      "Daily Breakfast & Dinners",
+      "Tsomgo Lake & Baba Mandir Special Permit & 4x4 Transfer",
+      "Darjeeling 7-Point Sightseeing & Tiger Hill Sunrise Tour",
+      "Dedicated Mountain Cab with Experienced Chauffeur"
+    ],
+    "exclusions": [
+      "Toy train tickets",
+      "Nathula Pass permit fee (subject to army availability)",
+      "GST (5%)"
+    ],
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Bagdogra/NJP to Gangtok",
+        "details": "Pickup from Bagdogra Airport or NJP railway station. Scenic drive along Teesta River to Gangtok (5,500 ft). Evening stroll on MG Marg."
+      },
+      {
+        "day": 2,
+        "title": "Tsomgo Glacial Lake & Baba Mandir Excursion",
+        "details": "Drive up to the sacred, mirror-like Tsomgo Lake (12,400 ft) surrounded by alpine peaks. Visit historic Baba Harbhajan Singh Mandir."
+      },
+      {
+        "day": 3,
+        "title": "Gangtok Local Sights to Darjeeling",
+        "details": "Visit Rumtek Monastery, Ban Jhakri Waterfall, and Ropeway. Afternoon scenic drive through lush tea hills to Darjeeling (6,700 ft)."
+      },
+      {
+        "day": 4,
+        "title": "Tiger Hill Sunrise & Darjeeling Heritage",
+        "details": "Early 4:00 AM trip to Tiger Hill to watch golden sunrise over Mt. Kanchenjunga. Visit Ghoom Monastery, Batasia Loop, Himalayan Mountaineering Institute, and Happy Valley Tea Estate."
+      },
+      {
+        "day": 5,
+        "title": "Darjeeling Mountain Leisure & Toy Train",
+        "details": "Ride the UNESCO World Heritage Darjeeling Himalayan Toy Train. Enjoy tea tasting at Glenary's bakery."
+      },
+      {
+        "day": 6,
+        "title": "Darjeeling to Bagdogra Departure",
+        "details": "Descent through Kurseong tea gardens to Bagdogra airport for onward journey."
+      }
+    ],
+    "images": [
+      "/destinations/india/sikkim-northeast/gangtok_tsomgo.jpg",
+      "/destinations/india/sikkim-northeast/darjeeling_kanchenjunga.jpg",
+      "/destinations/india/sikkim-northeast/cherrapunji_bridge.jpg",
+      "/destinations/india/sikkim-northeast/dawki_river.jpg"
+    ],
+    "photos": [
+      "/destinations/india/sikkim-northeast/gangtok_tsomgo.jpg",
+      "/destinations/india/sikkim-northeast/darjeeling_kanchenjunga.jpg",
+      "/destinations/india/sikkim-northeast/cherrapunji_bridge.jpg",
+      "/destinations/india/sikkim-northeast/dawki_river.jpg"
+    ],
+    "isFeatured": true,
+    "isActive": true
+  },
+  {
+    "id": "andaman-havelock-neil-island-bliss",
+    "subId": "andaman-havelock-neil-island-bliss",
+    "slug": "andaman-havelock-neil-island-bliss",
+    "name": "Havelock Island Radhanagar Beach, Neil Island & Cellular Jail",
+    "packageName": "Havelock Island Radhanagar Beach, Neil Island & Cellular Jail",
+    "category": "India",
+    "destination": "Havelock & Neil Island, Andaman & Nicobar",
+    "state": "Andaman & Nicobar",
+    "stateId": "andaman-nicobar",
+    "subName": "Havelock & Neil Island",
+    "country": "India",
+    "days": 5,
+    "nights": 4,
+    "duration": "5 Days / 4 Nights",
+    "price": 17999,
+    "pricing": {
+      "startingPrice": 26999,
+      "discountedPrice": 17999,
+      "currency": "INR",
+      "perPerson": true
+    },
+    "shortDescription": "Asia's best beach at Radhanagar Havelock, coral reef snorkeling at Elephant beach, natural rock bridge at Neil Island, and Cellular Jail Light & Sound.",
+    "hotelDetails": "3-Star Deluxe & 5-Star Luxury Resort options available",
+    "meals": "Daily Breakfast included",
+    "transportation": "High-Speed Makruzz AC Catamaran Cruise",
+    "modeOfTransport": "High-Speed Makruzz AC Catamaran Cruise",
+    "sightseeing": "Asia's best beach at Radhanagar Havelock, coral reef snorkeling at Elephant beach, natural rock bridge at Neil Island, and Cellular Jail Light & Sound.",
+    "specialOffer": "Complimentary sunset excursion & local food tasting session!",
+    "negotiableText": "Price is negotiable for every destination",
+    "inclusions": [
+      "2 Nights Luxury Beach Resort in Havelock + 1 Night in Neil + 1 Night in Port Blair",
+      "Daily Breakfast & Oceanfront Dinners",
+      "High-Speed Luxury AC Cruise Tickets (Makruzz/Nautika between islands)",
+      "Complimentary 1 Snorkeling Session with Guide at Elephant Beach",
+      "Cellular Jail Entry & Sound & Light Show Tickets"
+    ],
+    "exclusions": [
+      "Flight tickets to Port Blair (IXZ)",
+      "Scuba diving / Sea karting / Parasailing optional add-ons",
+      "GST (5%)"
+    ],
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Port Blair Arrival & Cellular Jail Light Show",
+        "details": "Arrive at Port Blair Airport. Settle in hotel. Afternoon visit to historic Cellular Jail (Kala Pani) and attend the moving Light & Sound Show."
+      },
+      {
+        "day": 2,
+        "title": "Port Blair to Havelock Island & Radhanagar Beach",
+        "details": "Board luxury high-speed catamaran cruise to Havelock Island. Check in to beachfront resort. Spend the evening at Radhanagar Beach (Time Magazine's Best Beach in Asia) watching breathtaking sunset."
+      },
+      {
+        "day": 3,
+        "title": "Elephant Beach Snorkeling & Neil Island Cruise",
+        "details": "Speedboat ride to Elephant Beach for snorkeling amidst vibrant coral reefs and marine life. Afternoon cruise to tranquil Neil Island. Sunset at Laxmanpur Beach."
+      },
+      {
+        "day": 4,
+        "title": "Neil Island Natural Bridge & Return to Port Blair",
+        "details": "Visit the unique Howrah Natural Coral Bridge and Bharatpur beach. Cruise back to Port Blair. Evening souvenir shopping for shell crafts at Sagarika Emporium."
+      },
+      {
+        "day": 5,
+        "title": "Port Blair Departure",
+        "details": "Breakfast by the sea and transfer to Veer Savarkar International Airport."
+      }
+    ],
+    "images": [
+      "/destinations/india/andaman-nicobar/havelock_radhanagar.jpg",
+      "/destinations/india/andaman-nicobar/neil_island_reef.jpg"
+    ],
+    "photos": [
+      "/destinations/india/andaman-nicobar/havelock_radhanagar.jpg",
+      "/destinations/india/andaman-nicobar/neil_island_reef.jpg"
+    ],
+    "isFeatured": true,
+    "isActive": true
+  },
+  {
+    "id": "swiss-alpine-glory",
+    "subId": "swiss-alpine-glory",
+    "slug": "swiss-alpine-glory",
+    "name": "Switzerland Grand Alpine: Zurich, Lucerne, Interlaken & Jungfraujoch",
+    "packageName": "Switzerland Grand Alpine: Zurich, Lucerne, Interlaken & Jungfraujoch",
+    "category": "International",
+    "destination": "Switzerland",
+    "country": "Switzerland",
+    "days": 7,
+    "nights": 6,
+    "duration": "7 Days / 6 Nights",
+    "price": 119999,
+    "pricing": {
+      "startingPrice": 149999,
+      "discountedPrice": 119999,
+      "currency": "INR",
+      "perPerson": true
+    },
+    "shortDescription": "Top of Europe Jungfraujoch, Mount Titlis revolving Rotair cable car, Lake Lucerne cruise, and chocolate tasting in Zurich.",
+    "hotelDetails": "4-Star & 5-Star Luxury Hotels",
+    "meals": "Daily Breakfast included",
+    "transportation": "Swiss All-in-One First Class Rail Pass",
+    "modeOfTransport": "Swiss All-in-One First Class Rail Pass",
+    "sightseeing": "Top of Europe Jungfraujoch, Mount Titlis revolving Rotair cable car, Lake Lucerne cruise, and chocolate tasting in Zurich.",
+    "specialOffer": "Complimentary city tour pass & visa assistance!",
+    "negotiableText": "Price is negotiable for every destination",
+    "inclusions": [
+      "6 Nights in 4-Star Scenic Alpine Hotels",
+      "Daily Swiss Buffet Breakfast",
+      "8-Day Consecutive Swiss Travel Pass (Unlimited Trains, Boats & Buses)",
+      "Jungfraujoch 'Top of Europe' Cogwheel Train Excursion",
+      "Mount Titlis Cable Car with Ice Flyer & Cliff Walk"
+    ],
+    "exclusions": [
+      "International flights & Swiss Schengen Visa fees",
+      "Lunches and dinners not specified"
+    ],
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Zurich Arrival & Lucerne",
+        "details": "Arrive at Zurich Airport. Board Swiss train to Lucerne. Walk across Chapel Bridge and Lion Monument. Evening Lake Lucerne cruise."
+      },
+      {
+        "day": 2,
+        "title": "Mount Titlis Snow Mountain Excursion",
+        "details": "Ride the world's first revolving Rotair cable car to Mount Titlis (10,000 ft). Experience Ice Cliff Walk and Glacier Cave."
+      },
+      {
+        "day": 3,
+        "title": "Lucerne to Interlaken via GoldenPass Line",
+        "details": "Take the scenic GoldenPass Express through emerald mountain lakes and alpine chalets to Interlaken."
+      },
+      {
+        "day": 4,
+        "title": "Jungfraujoch - Top of Europe (11,333 ft)",
+        "details": "Cogwheel train ride past Eiger north face up to Jungfraujoch. Walk through Ice Palace and step onto the Aletsch Glacier."
+      },
+      {
+        "day": 5,
+        "title": "Grindelwald First & Lauterbrunnen Valley of 72 Waterfalls",
+        "details": "Explore fairy tale Lauterbrunnen valley, Staubbach Falls, and the First Cliff Walk at Grindelwald."
+      },
+      {
+        "day": 6,
+        "title": "Interlaken to Zurich & Old Town Tour",
+        "details": "Train back to Zurich. Stroll along Bahnhofstrasse, Lake Zurich promenade, and historic Lindenhof."
+      },
+      {
+        "day": 7,
+        "title": "Zurich Airport Departure",
+        "details": "Swiss chocolate shopping at Lindt Home of Chocolate before flight home."
+      }
+    ],
+    "images": [
+      "/destinations/international/switzerland1.jpg",
+      "/destinations/international/switzerland2.jpg"
+    ],
+    "photos": [
+      "/destinations/international/switzerland1.jpg",
+      "/destinations/international/switzerland2.jpg"
+    ],
+    "isFeatured": true,
+    "isActive": true
+  },
+  {
+    "id": "dubai-luxury-safari-skyline",
+    "subId": "dubai-luxury-safari-skyline",
+    "slug": "dubai-luxury-safari-skyline",
+    "name": "Dubai Ultra-Luxury: Burj Khalifa At The Top, Desert Safari & Marina Yacht Cruise",
+    "packageName": "Dubai Ultra-Luxury: Burj Khalifa At The Top, Desert Safari & Marina Yacht Cruise",
+    "category": "International",
+    "destination": "United Arab Emirates",
+    "country": "United Arab Emirates",
+    "days": 5,
+    "nights": 4,
+    "duration": "5 Days / 4 Nights",
+    "price": 44999,
+    "pricing": {
+      "startingPrice": 59999,
+      "discountedPrice": 44999,
+      "currency": "INR",
+      "perPerson": true
+    },
+    "shortDescription": "124th floor Burj Khalifa observation deck, 4x4 red dune bashing with BBQ dinner, Dubai Mall fountains, and private Marina yacht cruise.",
+    "hotelDetails": "4-Star & 5-Star Luxury Hotels",
+    "meals": "Daily Breakfast included",
+    "transportation": "Private AC Luxury Van / Limousine",
+    "modeOfTransport": "Private AC Luxury Van / Limousine",
+    "sightseeing": "124th floor Burj Khalifa observation deck, 4x4 red dune bashing with BBQ dinner, Dubai Mall fountains, and private Marina yacht cruise.",
+    "specialOffer": "Complimentary city tour pass & visa assistance!",
+    "negotiableText": "Price is negotiable for every destination",
+    "inclusions": [
+      "4 Nights Stay in 4-Star/5-Star City or Marina Hotel",
+      "Daily International Buffet Breakfast",
+      "Burj Khalifa 124th & 125th Floor Observation Deck Tickets",
+      "Premium Desert Safari with 4x4 Dune Bashing, Camel Ride, Tanoura Show & BBQ",
+      "2-Hour Dubai Marina Luxury Yacht Cruise with Dinner",
+      "UAE Tourist Visa with Insurance & Airport Transfers"
+    ],
+    "exclusions": [
+      "International flights",
+      "Tourism Dirham fee (payable directly at hotel check-in)"
+    ],
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Dubai Arrival & Dhow Cruise Dinner",
+        "details": "Arrive at Dubai International Airport (DXB). Check into hotel. Evening 5-star Marina Dhow Cruise with international buffet."
+      },
+      {
+        "day": 2,
+        "title": "Dubai City Tour & Burj Khalifa At The Top",
+        "details": "Tour Dubai Frame, Palm Jumeirah, Atlantis photo stop, and Dubai Mall. Ascend Burj Khalifa 124th floor and watch fountain show."
+      },
+      {
+        "day": 3,
+        "title": "Museum of The Future & Premium Desert Safari",
+        "details": "Morning visit to iconic Museum of the Future. Afternoon 4x4 dune bashing on high red dunes, sandboarding, falconry, and Arabian night BBQ under the stars."
+      },
+      {
+        "day": 4,
+        "title": "Miracle Garden & Global Village",
+        "details": "Explore millions of blooming flowers at Dubai Miracle Garden and cultural pavilions with world street food at Global Village."
+      },
+      {
+        "day": 5,
+        "title": "Gold Souk & Airport Departure",
+        "details": "Shop for gold and perfumes at Deira Gold Souk before airport drop-off."
+      }
+    ],
+    "images": [
+      "/destinations/international/dubai1.jpg",
+      "/destinations/international/dubai2.jpg"
+    ],
+    "photos": [
+      "/destinations/international/dubai1.jpg",
+      "/destinations/international/dubai2.jpg"
+    ],
+    "isFeatured": true,
+    "isActive": true
+  },
+  {
+    "id": "egypt-pyramids-nile-wonders",
+    "subId": "egypt-pyramids-nile-wonders",
+    "slug": "egypt-pyramids-nile-wonders",
+    "name": "Egypt Wonders: Great Pyramids of Giza, Luxor & 5-Star Nile Cruise",
+    "packageName": "Egypt Wonders: Great Pyramids of Giza, Luxor & 5-Star Nile Cruise",
+    "category": "International",
+    "destination": "Egypt",
+    "country": "Egypt",
+    "days": 7,
+    "nights": 6,
+    "duration": "7 Days / 6 Nights",
+    "price": 69999,
+    "pricing": {
+      "startingPrice": 89999,
+      "discountedPrice": 69999,
+      "currency": "INR",
+      "perPerson": true
+    },
+    "shortDescription": "Step inside Great Pyramid of Khufu, gaze at the Sphinx, and sail the historic Nile from Luxor to Aswan exploring Valley of the Kings.",
+    "hotelDetails": "4-Star & 5-Star Luxury Hotels",
+    "meals": "Daily Breakfast included",
+    "transportation": "5-Star Nile Cruise Ship & AC Coach",
+    "modeOfTransport": "5-Star Nile Cruise Ship & AC Coach",
+    "sightseeing": "Step inside Great Pyramid of Khufu, gaze at the Sphinx, and sail the historic Nile from Luxor to Aswan exploring Valley of the Kings.",
+    "specialOffer": "Complimentary city tour pass & visa assistance!",
+    "negotiableText": "Price is negotiable for every destination",
+    "inclusions": [
+      "3 Nights 5-Star Cairo Hotel + 3 Nights 5-Star Luxury Nile River Cruise Ship",
+      "All Meals on Cruise (Breakfast, Lunch, Dinner) + Daily Cairo Breakfast",
+      "Licensed Egyptologist Guide throughout all temple excursions",
+      "Entry Tickets to Giza Pyramids, Sphinx, Luxor Temple, Karnak, Valley of the Kings",
+      "Domestic Flight Cairo - Luxor / Aswan - Cairo"
+    ],
+    "exclusions": [
+      "International flights & Egypt Visa fees",
+      "Hot air balloon ride in Luxor (optional add-on)"
+    ],
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Cairo Arrival & Welcome",
+        "details": "Arrive at Cairo International Airport. Transfer to 5-star hotel overlooking the Nile."
+      },
+      {
+        "day": 2,
+        "title": "Giza Pyramids, Sphinx & Egyptian Museum",
+        "details": "Guided tour of the Great Pyramids of Giza, Sphinx, and the Grand Egyptian Museum with King Tutankhamun's golden treasures."
+      },
+      {
+        "day": 3,
+        "title": "Flight to Luxor & Embark Nile Cruise",
+        "details": "Fly to Luxor. Embark luxury Nile cruise ship. Explore Karnak Temple and Luxor Temple by night."
+      },
+      {
+        "day": 4,
+        "title": "Valley of the Kings & Sail to Edfu",
+        "details": "Visit royal tombs in Valley of the Kings, Hatshepsut Temple, and Colossi of Memnon. Sail towards Edfu past Esna lock."
+      },
+      {
+        "day": 5,
+        "title": "Edfu Horus Temple & Kom Ombo Crocodile Temple",
+        "details": "Horse carriage ride to Edfu Temple. Afternoon sail to the dual temple of Kom Ombo. Sail towards Aswan."
+      },
+      {
+        "day": 6,
+        "title": "Aswan High Dam, Philae Temple & Felucca Ride",
+        "details": "Visit Philae Island Temple of Isis, Aswan High Dam, and sail traditional Nile felucca around Elephantine Island."
+      },
+      {
+        "day": 7,
+        "title": "Fly to Cairo & International Departure",
+        "details": "Morning flight back to Cairo. Explore Khan el-Khalili bazaar before departure flight."
+      }
+    ],
+    "images": [
+      "/destinations/international/egypt1.jpg",
+      "/destinations/international/egypt2.jpg"
+    ],
+    "photos": [
+      "/destinations/international/egypt1.jpg",
+      "/destinations/international/egypt2.jpg"
+    ],
+    "isFeatured": true,
+    "isActive": true
+  },
+  {
+    "id": "london-royal-heritage",
+    "subId": "london-royal-heritage",
+    "slug": "london-royal-heritage",
+    "name": "London Royal Explorer: Big Ben, London Eye, Thames Cruise & Windsor Castle",
+    "packageName": "London Royal Explorer: Big Ben, London Eye, Thames Cruise & Windsor Castle",
+    "category": "International",
+    "destination": "United Kingdom",
+    "country": "United Kingdom",
+    "days": 6,
+    "nights": 5,
+    "duration": "6 Days / 5 Nights",
+    "price": 99999,
+    "pricing": {
+      "startingPrice": 129999,
+      "discountedPrice": 99999,
+      "currency": "INR",
+      "perPerson": true
+    },
+    "shortDescription": "Watch Changing of the Guard at Buckingham Palace, ride the London Eye, explore Tower Bridge, and day trip to royal Windsor Castle.",
+    "hotelDetails": "4-Star & 5-Star Luxury Hotels",
+    "meals": "Daily Breakfast included",
+    "transportation": "London Underground Oyster & AC Coach",
+    "modeOfTransport": "London Underground Oyster & AC Coach",
+    "sightseeing": "Watch Changing of the Guard at Buckingham Palace, ride the London Eye, explore Tower Bridge, and day trip to royal Windsor Castle.",
+    "specialOffer": "Complimentary city tour pass & visa assistance!",
+    "negotiableText": "Price is negotiable for every destination",
+    "inclusions": [
+      "5 Nights Stay in 4-Star Central London Hotel",
+      "Daily English Buffet Breakfast",
+      "London Eye VIP Fast-Track Capsule Ticket",
+      "Thames River Sightseeing Hop-On Hop-Off Cruise Pass",
+      "Full Day Excursion to Windsor Castle, Stonehenge & Oxford",
+      "London Visitor Oyster Card with preloaded credit"
+    ],
+    "exclusions": [
+      "International flights & UK Visa fees",
+      "Personal expenses & West End theater tickets"
+    ],
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "London Arrival & Thames Evening Walk",
+        "details": "Arrive at London Heathrow (LHR). Check into hotel. Evening walk along South Bank with illuminated views of Big Ben and London Eye."
+      },
+      {
+        "day": 2,
+        "title": "Royal London: Buckingham Palace & Westminster Abbey",
+        "details": "Watch Changing of the Guard at Buckingham Palace. Tour Westminster Abbey, Parliament Square, and 10 Downing Street."
+      },
+      {
+        "day": 3,
+        "title": "Tower of London, Tower Bridge & London Eye",
+        "details": "See Crown Jewels at the Tower of London, walk across Tower Bridge glass floor, and sunset flight on the London Eye."
+      },
+      {
+        "day": 4,
+        "title": "Windsor Castle, Stonehenge & Roman Baths Day Trip",
+        "details": "Full day guided luxury coach tour to HM The King's residence at Windsor Castle and mystical Stonehenge."
+      },
+      {
+        "day": 5,
+        "title": "British Museum, Covent Garden & West End",
+        "details": "Explore Rosetta Stone at the British Museum, street performers in Covent Garden, and evening shopping on Oxford Street."
+      },
+      {
+        "day": 6,
+        "title": "Hyde Park & Heathrow Airport Departure",
+        "details": "Morning stroll through Hyde Park and Kensington Gardens before airport transfer."
+      }
+    ],
+    "images": [
+      "/destinations/international/london1.jpg",
+      "/destinations/international/london2.jpg"
+    ],
+    "photos": [
+      "/destinations/international/london1.jpg",
+      "/destinations/international/london2.jpg"
+    ],
+    "isFeatured": true,
+    "isActive": true
+  },
+  {
+    "id": "paris-romance-culture",
+    "subId": "paris-romance-culture",
+    "slug": "paris-romance-culture",
+    "name": "Paris Enchantment: Eiffel Tower Summit, Louvre, Versailles & Seine Cruise",
+    "packageName": "Paris Enchantment: Eiffel Tower Summit, Louvre, Versailles & Seine Cruise",
+    "category": "International",
+    "destination": "France",
+    "country": "France",
+    "days": 6,
+    "nights": 5,
+    "duration": "6 Days / 5 Nights",
+    "price": 94999,
+    "pricing": {
+      "startingPrice": 124999,
+      "discountedPrice": 94999,
+      "currency": "INR",
+      "perPerson": true
+    },
+    "shortDescription": "Ascend to the top of the Eiffel Tower, gaze upon Mona Lisa at the Louvre, stroll Champs-Élysées, and explore royal Palace of Versailles.",
+    "hotelDetails": "4-Star & 5-Star Luxury Hotels",
+    "meals": "Daily Breakfast included",
+    "transportation": "Paris Metro Pass & AC Coach",
+    "modeOfTransport": "Paris Metro Pass & AC Coach",
+    "sightseeing": "Ascend to the top of the Eiffel Tower, gaze upon Mona Lisa at the Louvre, stroll Champs-Élysées, and explore royal Palace of Versailles.",
+    "specialOffer": "Complimentary city tour pass & visa assistance!",
+    "negotiableText": "Price is negotiable for every destination",
+    "inclusions": [
+      "5 Nights Stay in 4-Star Boutique Hotel in Central Paris",
+      "Daily French Breakfast with fresh croissants",
+      "Skip-the-Line Eiffel Tower 3rd Tier Summit Access",
+      "Louvre Museum Timed Entry Pass & Mona Lisa Audio Guide",
+      "Seine River Romantic Evening Illuminated Cruise",
+      "Full Day Tour to Palace of Versailles with Hall of Mirrors & Gardens"
+    ],
+    "exclusions": [
+      "International flights & Schengen Visa fees",
+      "Disneyland Paris tickets (optional add-on)"
+    ],
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Paris Arrival & Seine River Cruise",
+        "details": "Arrive at Paris Charles de Gaulle (CDG). Check into hotel. Evening 1-hour Seine River cruise witnessing Eiffel Tower sparkle."
+      },
+      {
+        "day": 2,
+        "title": "Eiffel Tower Summit & Arc de Triomphe",
+        "details": "Ascend to Eiffel Tower Summit for panoramic Paris views. Stroll Champs-Élysées and climb Arc de Triomphe."
+      },
+      {
+        "day": 3,
+        "title": "The Louvre Museum & Montmartre Sacré-Cœur",
+        "details": "Tour the world-famous Louvre Museum (Mona Lisa, Venus de Milo). Afternoon walk through bohemian Montmartre and Sacré-Cœur Basilica."
+      },
+      {
+        "day": 4,
+        "title": "Palace of Versailles Grand Tour",
+        "details": "Day excursion to the golden Palace of Versailles. Explore Hall of Mirrors, King's State Apartments, and sprawling fountains."
+      },
+      {
+        "day": 5,
+        "title": "Notre-Dame, Latin Quarter & Shopping at Galeries Lafayette",
+        "details": "Visit Notre-Dame Cathedral facade, Latin Quarter cafes, and rooftop views at Galeries Lafayette."
+      },
+      {
+        "day": 6,
+        "title": "Paris Airport Departure",
+        "details": "French bakery breakfast and transfer to CDG Airport."
+      }
+    ],
+    "images": [
+      "/destinations/international/paris1.jpg",
+      "/destinations/international/paris2.jpg"
+    ],
+    "photos": [
+      "/destinations/international/paris1.jpg",
+      "/destinations/international/paris2.jpg"
+    ],
+    "isFeatured": true,
+    "isActive": true
+  },
+  {
+    "id": "thailand-phuket-bangkok-island-bliss",
+    "subId": "thailand-phuket-bangkok-island-bliss",
+    "slug": "thailand-phuket-bangkok-island-bliss",
+    "name": "Thailand Tropical Getaway: Phuket, Phi Phi Speedboat & Bangkok City",
+    "packageName": "Thailand Tropical Getaway: Phuket, Phi Phi Speedboat & Bangkok City",
+    "category": "International",
+    "destination": "Thailand",
+    "country": "Thailand",
+    "days": 5,
+    "nights": 4,
+    "duration": "5 Days / 4 Nights",
+    "price": 29999,
+    "pricing": {
+      "startingPrice": 39999,
+      "discountedPrice": 29999,
+      "currency": "INR",
+      "perPerson": true
+    },
+    "shortDescription": "Emerald waters and limestone cliffs of Phi Phi Islands, Maya Bay, Phuket Big Buddha, and Bangkok Grand Palace & Chao Phraya Dinner Cruise.",
+    "hotelDetails": "4-Star & 5-Star Luxury Hotels",
+    "meals": "Daily Breakfast included",
+    "transportation": "Speedboat & AC Private Cab",
+    "modeOfTransport": "Speedboat & AC Private Cab",
+    "sightseeing": "Emerald waters and limestone cliffs of Phi Phi Islands, Maya Bay, Phuket Big Buddha, and Bangkok Grand Palace & Chao Phraya Dinner Cruise.",
+    "specialOffer": "Complimentary city tour pass & visa assistance!",
+    "negotiableText": "Price is negotiable for every destination",
+    "inclusions": [
+      "2 Nights in 4-Star Phuket Beachfront Resort + 2 Nights in 4-Star Bangkok Hotel",
+      "Daily Breakfast & Buffet Lunch on Phi Phi Island Tour",
+      "Full Day Phi Phi Island & Maya Bay Speedboat Tour with Snorkeling Gear",
+      "Bangkok Chao Phraya Princess Luxury Dinner Cruise",
+      "All Airport Transfers & Inter-City Domestic Flight Included"
+    ],
+    "exclusions": [
+      "International flights",
+      "National Park fee (approx 400 THB)"
+    ],
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Phuket Arrival & Patong Beach",
+        "details": "Arrive at Phuket Airport. Transfer to beachfront resort in Patong. Evening leisure at Bangla Road night market."
+      },
+      {
+        "day": 2,
+        "title": "Phi Phi Islands & Maya Bay Speedboat Tour",
+        "details": "Full day speedboat tour to Maya Bay (from The Beach movie), Pileh Lagoon cliff jumping, Monkey Beach, and snorkeling."
+      },
+      {
+        "day": 3,
+        "title": "Phuket to Bangkok & Chao Phraya Dinner Cruise",
+        "details": "Fly to Bangkok. Check into city hotel. Evening luxury cruise along Chao Phraya river with live band and Thai feast."
+      },
+      {
+        "day": 4,
+        "title": "Bangkok Temples & Shopping Extravaganza",
+        "details": "Visit Wat Traimit (Golden Buddha) and Wat Pho (Reclining Buddha). Afternoon shopping at MBK Center and Platinum Mall."
+      },
+      {
+        "day": 5,
+        "title": "Bangkok Airport Departure",
+        "details": "Transfer to Suvarnabhumi Airport (BKK) with memorable Thai souvenirs."
+      }
+    ],
+    "images": [
+      "/destinations/international/thailand1.jpg",
+      "/destinations/international/thailand2.jpg"
+    ],
+    "photos": [
+      "/destinations/international/thailand1.jpg",
+      "/destinations/international/thailand2.jpg"
+    ],
+    "isFeatured": true,
+    "isActive": true
+  },
+  {
+    "id": "maldives-overwater-paradise",
+    "subId": "maldives-overwater-paradise",
+    "slug": "maldives-overwater-paradise",
+    "name": "Maldives Luxury Escape: All-Inclusive Overwater Villa & Coral Safari",
+    "packageName": "Maldives Luxury Escape: All-Inclusive Overwater Villa & Coral Safari",
+    "category": "International",
+    "destination": "Maldives",
+    "country": "Maldives",
+    "days": 4,
+    "nights": 3,
+    "duration": "4 Days / 3 Nights",
+    "price": 64999,
+    "pricing": {
+      "startingPrice": 84999,
+      "discountedPrice": 64999,
+      "currency": "INR",
+      "perPerson": true
+    },
+    "shortDescription": "Stay suspended over turquoise lagoons in a 5-star Overwater Villa, enjoy all-inclusive gourmet dining, sunset dolphin cruises, and nurse shark snorkeling.",
+    "hotelDetails": "4-Star & 5-Star Luxury Hotels",
+    "meals": "Daily Breakfast included",
+    "transportation": "Speedboat / Seaplane Transfer",
+    "modeOfTransport": "Speedboat / Seaplane Transfer",
+    "sightseeing": "Stay suspended over turquoise lagoons in a 5-star Overwater Villa, enjoy all-inclusive gourmet dining, sunset dolphin cruises, and nurse shark snorkeling.",
+    "specialOffer": "Complimentary city tour pass & visa assistance!",
+    "negotiableText": "Price is negotiable for every destination",
+    "inclusions": [
+      "3 Nights in Luxury 5-Star Overwater Pool Villa",
+      "All-Inclusive Meal Plan (Breakfast, Lunch, Multi-Cuisine Dinner & Unlimited Beverages)",
+      "Return Speedboat / Seaplane Transfers from Malé Airport",
+      "Complimentary Sunset Dolphin Cruise & Snorkeling Gear",
+      "All Maldives Green Taxes & Service Charges Included"
+    ],
+    "exclusions": [
+      "International flights",
+      "Spa treatments & motorized water sports"
+    ],
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Malé Arrival & Seaplane/Speedboat Transfer",
+        "details": "Arrive at Velana International Airport in Malé. Scenic speedboat/seaplane transfer to island resort. Check in to Overwater Villa."
+      },
+      {
+        "day": 2,
+        "title": "Lagoon Snorkeling & Sunset Dolphin Cruise",
+        "details": "Step directly into crystal waters from your private sun deck. Afternoon boat cruise tracking wild spinner dolphins."
+      },
+      {
+        "day": 3,
+        "title": "Water Sports & Romantic Beachside Candlelight Dinner",
+        "details": "Enjoy complimentary paddleboarding and kayaking. Evening romantic private 4-course dinner set directly on the white sand beach."
+      },
+      {
+        "day": 4,
+        "title": "Floating Breakfast & Departure",
+        "details": "Experience signature Maldivian floating breakfast in your private plunge pool before transfer back to Malé airport."
+      }
+    ],
+    "images": [
+      "/destinations/international/maldives1.jpg",
+      "/destinations/international/maldives2.jpg"
+    ],
+    "photos": [
+      "/destinations/international/maldives1.jpg",
+      "/destinations/international/maldives2.jpg"
+    ],
+    "isFeatured": true,
+    "isActive": true
+  },
+  {
+    "id": "bali-ubud-kuta-tropical-bliss",
+    "subId": "bali-ubud-kuta-tropical-bliss",
+    "slug": "bali-ubud-kuta-tropical-bliss",
+    "name": "Bali Exotic Escape: Ubud Rice Terraces, Mount Batur, Nusa Penida & Kuta",
+    "packageName": "Bali Exotic Escape: Ubud Rice Terraces, Mount Batur, Nusa Penida & Kuta",
+    "category": "International",
+    "destination": "Indonesia",
+    "country": "Indonesia",
+    "days": 6,
+    "nights": 5,
+    "duration": "6 Days / 5 Nights",
+    "price": 34999,
+    "pricing": {
+      "startingPrice": 46999,
+      "discountedPrice": 34999,
+      "currency": "INR",
+      "perPerson": true
+    },
+    "shortDescription": "Tegallalang emerald rice terraces, iconic Bali Jungle Swing, T-Rex cliff at Nusa Penida Island, and sunset seafood at Jimbaran Bay.",
+    "hotelDetails": "4-Star & 5-Star Luxury Hotels",
+    "meals": "Daily Breakfast included",
+    "transportation": "AC Private Vehicle & Speedboat",
+    "modeOfTransport": "AC Private Vehicle & Speedboat",
+    "sightseeing": "Tegallalang emerald rice terraces, iconic Bali Jungle Swing, T-Rex cliff at Nusa Penida Island, and sunset seafood at Jimbaran Bay.",
+    "specialOffer": "Complimentary city tour pass & visa assistance!",
+    "negotiableText": "Price is negotiable for every destination",
+    "inclusions": [
+      "3 Nights Ubud Rainforest Villa with Private Pool + 2 Nights Kuta/Seminyak Resort",
+      "Daily Breakfast & Candlelight Seafood Dinner at Jimbaran Beach",
+      "Full Day Nusa Penida Island Speedboat Excursion (Kelingking T-Rex Beach, Broken Beach, Angel's Billabong)",
+      "Bali Jungle Swing & Luwak Coffee Plantation Tour",
+      "All Sightseeing Transfers in Private AC Cab"
+    ],
+    "exclusions": [
+      "International flights & Bali Visa on Arrival (approx 35 USD)",
+      "Personal expenses & spa treatments"
+    ],
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Bali Arrival & Ubud Jungle Villa",
+        "details": "Arrive at Ngurah Rai International Airport (DPS). Transfer to lush private pool villa in Ubud. Relax amidst tropical nature."
+      },
+      {
+        "day": 2,
+        "title": "Tegallalang Rice Terrace, Bali Swing & Monkey Forest",
+        "details": "Visit Tegallalang Rice Terraces, ride the giant Bali Jungle Swing, tour sacred Ubud Monkey Forest, and taste authentic Luwak coffee."
+      },
+      {
+        "day": 3,
+        "title": "Mount Batur View & Tirta Empul Holy Water Temple",
+        "details": "Panoramic lunch overlooking active Mount Batur volcano and Lake Batur in Kintamani. Holy spring purification at Tirta Empul Temple."
+      },
+      {
+        "day": 4,
+        "title": "Nusa Penida Island Day Tour (Kelingking Beach)",
+        "details": "Speedboat to Nusa Penida. Visit world-famous Kelingking T-Rex cliff, Angel's Billabong natural infinity pool, and Broken Beach."
+      },
+      {
+        "day": 5,
+        "title": "Tanah Lot Sea Temple & Jimbaran Sunset Dinner",
+        "details": "Visit Tanah Lot temple perched on offshore rock. Evening romantic grilled seafood dinner with toes in the sand at Jimbaran Bay."
+      },
+      {
+        "day": 6,
+        "title": "Seminyak Shopping & DPS Airport Drop",
+        "details": "Shop for rattan bags and silver jewelry in Seminyak before airport transfer."
+      }
+    ],
+    "images": [
+      "/destinations/international/bali1.jpg",
+      "/destinations/international/bali2.jpg"
+    ],
+    "photos": [
+      "/destinations/international/bali1.jpg",
+      "/destinations/international/bali2.jpg"
+    ],
+    "isFeatured": true,
+    "isActive": true
+  },
+  {
+    "id": "singapore-gardens-sentosa-future",
+    "subId": "singapore-gardens-sentosa-future",
+    "slug": "singapore-gardens-sentosa-future",
+    "name": "Singapore Futuristic Wonders: Marina Bay Sands, Universal Studios & Sentosa",
+    "packageName": "Singapore Futuristic Wonders: Marina Bay Sands, Universal Studios & Sentosa",
+    "category": "International",
+    "destination": "Singapore",
+    "country": "Singapore",
+    "days": 5,
+    "nights": 4,
+    "duration": "5 Days / 4 Nights",
+    "price": 49999,
+    "pricing": {
+      "startingPrice": 65999,
+      "discountedPrice": 49999,
+      "currency": "INR",
+      "perPerson": true
+    },
+    "shortDescription": "Gardens by the Bay Supertree Grove, Universal Studios Hollywood rides, Night Safari open tram, and panoramic SkyPark observation deck.",
+    "hotelDetails": "4-Star & 5-Star Luxury Hotels",
+    "meals": "Daily Breakfast included",
+    "transportation": "AC Private Sedan / Coach",
+    "modeOfTransport": "AC Private Sedan / Coach",
+    "sightseeing": "Gardens by the Bay Supertree Grove, Universal Studios Hollywood rides, Night Safari open tram, and panoramic SkyPark observation deck.",
+    "specialOffer": "Complimentary city tour pass & visa assistance!",
+    "negotiableText": "Price is negotiable for every destination",
+    "inclusions": [
+      "4 Nights Stay in 4-Star Central Singapore Hotel",
+      "Daily International Buffet Breakfast",
+      "Gardens by the Bay (Flower Dome & Cloud Forest Avatar Experience) Tickets",
+      "Full Day Universal Studios Singapore Theme Park Pass",
+      "Sentosa Cable Car & Wings of Time Ocean Laser Spectacular",
+      "Singapore Tourist Visa Assistance & All Transfers"
+    ],
+    "exclusions": [
+      "International flights",
+      "Personal meals and shopping"
+    ],
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Singapore Arrival & Night Safari",
+        "details": "Arrive at world's best Changi Airport. Transfer to hotel. Evening open-air tram ride through Singapore Night Safari observing nocturnal wildlife."
+      },
+      {
+        "day": 2,
+        "title": "Gardens by the Bay & Marina Bay Sands SkyPark",
+        "details": "Explore Flower Dome, misty Cloud Forest with world's tallest indoor waterfall, walk Supertree Observatory, and evening light show."
+      },
+      {
+        "day": 3,
+        "title": "Universal Studios Singapore Full Day Thrills",
+        "details": "Full day at Universal Studios on Sentosa Island: Battlestar Galactica rollercoasters, Transformers 3D ride, and Jurassic Park."
+      },
+      {
+        "day": 4,
+        "title": "Sentosa Island Cable Car, S.E.A. Aquarium & Wings of Time",
+        "details": "Ride Sentosa Cable Car, see 100,000 marine animals at S.E.A. Aquarium, Madame Tussauds, and Wings of Time pyrotechnic water show."
+      },
+      {
+        "day": 5,
+        "title": "Jewel Changi Rain Vortex & Departure",
+        "details": "Explore the indoor HSBC Rain Vortex waterfall and Canopy Park at Jewel Changi before departure flight."
+      }
+    ],
+    "images": [
+      "/destinations/international/singapore1.jpg",
+      "/destinations/international/singapore2.jpg"
+    ],
+    "photos": [
+      "/destinations/international/singapore1.jpg",
+      "/destinations/international/singapore2.jpg"
+    ],
+    "isFeatured": true,
+    "isActive": true
   }
 ];

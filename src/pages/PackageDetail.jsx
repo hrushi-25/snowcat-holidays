@@ -1,468 +1,534 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useMemo } from 'react';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { usePackages } from '../context/PackageContext';
 import { motion, AnimatePresence } from 'framer-motion';
-import FadeIn from '../components/animations/FadeIn';
+import localDestinationsData from '../data/destinations_data.json';
+import { STATIC_PACKAGES } from '../data/staticPackages';
 import ShareModal from '../components/ShareModal';
 import Footer from '../components/Footer';
-import { 
-  ArrowLeft, 
-  Share2, 
-  MapPin, 
-  Calendar, 
-  Hotel, 
-  Utensils, 
-  Car, 
-  Eye, 
-  CheckCircle2, 
-  XCircle, 
+import FadeIn from '../components/animations/FadeIn';
+import {
+  ArrowLeft,
+  Share2,
+  MapPin,
+  Calendar,
+  Clock,
+  Car,
+  Hotel,
+  CheckCircle2,
+  XCircle,
   Percent,
   Mail,
-  ChevronDown,
+  MessageCircle,
+  ChevronRight,
+  ChevronLeft,
+  ShieldCheck,
   Sparkles,
-  Star,
-  MessageCircle
+  Utensils,
+  Camera
 } from 'lucide-react';
 
 export default function PackageDetail() {
   const { slug, id } = useParams();
-  const target = slug || id;
+  const target = (slug || id || '').toLowerCase().trim();
   const navigate = useNavigate();
   const { packages } = usePackages();
-  
-  const [pkg, setPkg] = useState(null);
-  const [activeTab, setActiveTab] = useState('itinerary'); // 'itinerary' | 'hotels' | 'inclusions'
-  const [expandedDay, setExpandedDay] = useState(0); // Accordion active day
+
+  const [activePhotoIdx, setActivePhotoIdx] = useState(0);
+  const [expandedDay, setExpandedDay] = useState(0);
+  const [activeTab, setActiveTab] = useState('itinerary'); // 'itinerary' | 'inclusions' | 'transport'
   const [shareModalOpen, setShareModalOpen] = useState(false);
 
-  useEffect(() => {
-    if (!packages || packages.length === 0) return;
+  // Helper to normalize any package record
+  const normalizePackage = (p) => {
+    if (!p) return null;
+    const pricing = p.pricing || {
+      startingPrice: Math.round(Number(p.price || 0) * 1.15),
+      discountedPrice: p.price || 0,
+      currency: 'INR',
+      perPerson: true
+    };
+    const startPrice = pricing.startingPrice || Math.round(Number(pricing.discountedPrice || p.price || 0) * 1.15);
+    const discPrice = pricing.discountedPrice || p.price || 0;
+    const currency = pricing.currency || 'INR';
 
-    // Normalizing slug lookup
-    const normalizedTarget = target ? target.toLowerCase().trim() : '';
-    
-    let found = packages.find(p => 
-      p.slug === target || 
-      String(p.id) === target || 
-      p.id === target ||
-      (p.name && p.name.toLowerCase().replace(/[^\w\s-]/g, '').replace(/[\s_-]+/g, '-') === normalizedTarget)
+    const photos = (Array.isArray(p.photos) && p.photos.length > 0)
+      ? p.photos
+      : ((Array.isArray(p.images) && p.images.length > 0)
+        ? p.images.map(img => typeof img === 'string' ? img : img.image)
+        : ['https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1200&q=80']);
+
+    return {
+      ...p,
+      id: p.id || p.subId || p.slug,
+      slug: p.slug || p.id || p.subId,
+      name: p.packageName || p.name || 'Curated Itinerary',
+      packageName: p.packageName || p.name || 'Curated Itinerary',
+      destination: p.destination || p.country || p.subName || 'Explore',
+      category: p.category || (p.country ? 'International' : 'India'),
+      duration: p.duration || `${p.nights || 0} Nights / ${p.days || 1} Days`,
+      modeOfTransport: p.modeOfTransport || p.transportation || 'Private AC Vehicle with Chauffeur',
+      shortDescription: p.shortDescription || p.short_description || '',
+      hotelDetails: p.hotelDetails || p.hotel_details || '3-Star Deluxe & 5-Star Luxury Resort options available',
+      meals: p.meals || 'Daily Breakfast included',
+      inclusions: Array.isArray(p.inclusions) ? p.inclusions : [],
+      exclusions: Array.isArray(p.exclusions) ? p.exclusions : [],
+      itinerary: Array.isArray(p.itinerary) ? p.itinerary : [],
+      photos,
+      images: photos,
+      startingPrice: startPrice,
+      discountedPrice: discPrice,
+      currency,
+    };
+  };
+
+  // Build comprehensive searchable dataset synchronously for 0ms lookup
+  const allKnownPackages = useMemo(() => {
+    const list = [];
+
+    // 1. From destinations_data.json
+    if (localDestinationsData.international) {
+      localDestinationsData.international.forEach(p => list.push(normalizePackage(p)));
+    }
+    if (localDestinationsData.india) {
+      localDestinationsData.india.forEach(st => {
+        (st.subDestinations || []).forEach(sub => {
+          list.push(normalizePackage({ ...sub, stateName: st.stateName, stateId: st.stateId }));
+        });
+      });
+    }
+
+    // 2. From staticPackages.js
+    if (Array.isArray(STATIC_PACKAGES)) {
+      STATIC_PACKAGES.forEach(p => list.push(normalizePackage(p)));
+    }
+
+    // 3. From PackageContext
+    if (Array.isArray(packages)) {
+      packages.forEach(p => list.push(normalizePackage(p)));
+    }
+
+    return list;
+  }, [packages]);
+
+  // Synchronous resolution of target package
+  const pkg = useMemo(() => {
+    if (!target) return allKnownPackages[0] || null;
+
+    // 1. Exact slug / id match
+    let match = allKnownPackages.find(p =>
+      (p.slug && p.slug.toLowerCase() === target) ||
+      (p.id && String(p.id).toLowerCase() === target) ||
+      (p.subId && String(p.subId).toLowerCase() === target)
     );
 
-    // Fallback: If not exact slug, check if name/destination includes target keywords
-    if (!found && normalizedTarget) {
-      found = packages.find(p => 
-        (p.name && p.name.toLowerCase().includes(normalizedTarget)) ||
-        (p.destination && p.destination.toLowerCase().includes(normalizedTarget))
+    // 2. Slugified name match
+    if (!match) {
+      match = allKnownPackages.find(p => {
+        const slugified = (p.name || '').toLowerCase().replace(/[^\w\s-]/g, '').replace(/[\s_-]+/g, '-');
+        return slugified === target || target.includes(slugified) || slugified.includes(target);
+      });
+    }
+
+    // 3. Partial keyword match
+    if (!match) {
+      match = allKnownPackages.find(p =>
+        (p.name && p.name.toLowerCase().includes(target)) ||
+        (p.destination && p.destination.toLowerCase().includes(target))
       );
     }
 
-    // Default fallback to first package if still not found (never show broken error state)
-    if (!found) {
-      found = packages[0];
+    return match || allKnownPackages[0] || null;
+  }, [target, allKnownPackages]);
+
+  // Scroll to top on load
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [target]);
+
+  const handleBack = () => {
+    if (window.history.length > 2) {
+      navigate(-1);
+    } else {
+      navigate('/explore?tab=india');
     }
+  };
 
-    setPkg(found);
-  }, [target, packages]);
-
-  // Loading state
   if (!pkg) {
     return (
-      <div className="container error-container mobile-nav-padding">
-        <div className="loading-spinner"></div>
-        <p>Loading journey details...</p>
+      <div className="container error-container mobile-nav-padding" style={{ padding: '80px 20px', textAlign: 'center' }}>
+        <h2>Loading itinerary details...</h2>
+        <button onClick={() => navigate('/explore')} className="btn-return-explore">
+          &larr; Return to Explore
+        </button>
       </div>
     );
   }
 
-  // Formatting currency
-  const formatPrice = (price) => {
+  // Currency Formatter
+  const formatPrice = (val) => {
     return new Intl.NumberFormat('en-IN', {
       style: 'currency',
-      currency: 'INR',
+      currency: pkg.currency || 'INR',
       maximumFractionDigits: 0
-    }).format(price || 0);
+    }).format(val || 0);
   };
+
+  const discountPercent = pkg.startingPrice > pkg.discountedPrice
+    ? Math.round(((pkg.startingPrice - pkg.discountedPrice) / pkg.startingPrice) * 100)
+    : 0;
 
   // WhatsApp Enquiry Link
   const getWhatsAppLink = () => {
-    const message = `Hello Snowcat Holidays, I am interested in the "${pkg.name}" package (${pkg.days} Days / ${pkg.nights} Nights) to ${pkg.destination}. Please share full details and current pricing.`;
+    const message = `Hello Snowcat Holidays! I am interested in booking the "${pkg.name}" package (${pkg.duration}) to ${pkg.destination}. Starting Price: ${formatPrice(pkg.discountedPrice)}. Please share custom details and availability.`;
     return `https://wa.me/917887778652?text=${encodeURIComponent(message)}`;
   };
 
   // Email Enquiry Link
   const getEmailLink = () => {
-    const subject = `Enquiry for ${pkg.name}`;
-    const body = `Hello Snowcat Holidays,\n\nI am interested in booking the "${pkg.name}" trip (${pkg.days} Days / ${pkg.nights} Nights) to ${pkg.destination}.\n\nPlease share more details and availability.\n\nThank you!`;
+    const subject = `Itinerary Enquiry: ${pkg.name}`;
+    const body = `Hello Snowcat Holidays,\n\nI am interested in booking the "${pkg.name}" tour (${pkg.duration}) to ${pkg.destination}.\n\nStarting Price: ${formatPrice(pkg.discountedPrice)}\nMode of Transport: ${pkg.modeOfTransport}\n\nPlease share availability, customized dates, and pricing.\n\nThank you!`;
     return `mailto:snowcatholidays@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   };
 
   return (
     <div className="package-detail-page">
-      {/* Hero Header with Overlay Navigation */}
-      <section className="detail-hero">
-        <img
-          src={pkg.images?.[0] || 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1200&q=80'}
-          alt={pkg.name}
-          className="hero-img"
-        />
-        <div className="hero-gradient"></div>
-        
-        <div className="hero-nav-bar container">
+      {/* ---------------------------------------------------- */}
+      {/* HERO BANNER WITH CONTROLS & BREADCRUMBS */}
+      {/* ---------------------------------------------------- */}
+      <section className="detail-hero-section">
+        <div className="hero-image-wrapper">
+          <img
+            src={pkg.photos[activePhotoIdx] || pkg.photos[0]}
+            alt={pkg.name}
+            className="detail-hero-bg"
+            loading="eager"
+            decoding="async"
+          />
+          <div className="hero-gradient-overlay"></div>
+        </div>
+
+        {/* Top Floating Action Bar */}
+        <div className="hero-floating-nav container">
           <motion.button
-            onClick={() => navigate(-1)}
-            className="hero-circle-btn shadow-realistic-md"
-            aria-label="Go back"
-            whileHover={{ scale: 1.08 }}
-            whileTap={{ scale: 0.92 }}
+            onClick={handleBack}
+            className="hero-nav-btn shadow-realistic-md"
+            aria-label="Back to last page"
+            whileHover={{ scale: 1.06 }}
+            whileTap={{ scale: 0.94 }}
           >
-            <ArrowLeft size={20} />
+            <ArrowLeft size={18} />
+            <span>Back</span>
           </motion.button>
 
           <motion.button
             onClick={() => setShareModalOpen(true)}
-            className="hero-circle-btn shadow-realistic-md"
+            className="hero-nav-btn shadow-realistic-md"
             aria-label="Share package"
             title="Share Itinerary"
-            whileHover={{ scale: 1.08 }}
-            whileTap={{ scale: 0.92 }}
+            whileHover={{ scale: 1.06 }}
+            whileTap={{ scale: 0.94 }}
           >
-            <Share2 size={20} />
+            <Share2 size={18} />
+            <span>Share</span>
           </motion.button>
         </div>
-      </section>
 
-      {/* Package Header Content Section */}
-      <section className="detail-header-section">
-        <div className="container">
+        {/* Hero Title & Badges Content */}
+        <div className="hero-bottom-content container">
           <FadeIn direction="up" delay={0.05}>
-            <div className="detail-meta">
-              <span className="package-badge">{pkg.category}</span>
-              <span className="detail-duration-pill">
-                <Calendar size={14} />
-                {pkg.days} Days / {pkg.nights} Nights
+            <div className="hero-badges-row">
+              <span className="hero-category-chip">
+                <MapPin size={12} /> {pkg.category}
               </span>
+              <span className="hero-duration-chip">
+                <Clock size={12} /> {pkg.duration}
+              </span>
+              {discountPercent > 0 && (
+                <span className="hero-discount-chip">
+                  <Percent size={11} /> {discountPercent}% OFF
+                </span>
+              )}
             </div>
           </FadeIn>
 
           <FadeIn direction="up" delay={0.15}>
-            <h1 className="detail-title">{pkg.name}</h1>
+            <h1 className="hero-package-title">{pkg.name}</h1>
           </FadeIn>
-          
+
           <FadeIn direction="up" delay={0.25}>
-            <div className="detail-loc-price">
-              <div className="detail-location">
-                <MapPin size={18} className="loc-icon" />
+            <div className="hero-meta-summary">
+              <div className="hero-loc">
+                <MapPin size={16} className="text-turquoise" />
                 <span>{pkg.destination}</span>
               </div>
-              <div className="detail-price-box">
-                <div className="price-tag-row">
-                  <span className="price-tag">{formatPrice(pkg.price)}</span>
-                  <span className="price-sub">per person</span>
-                </div>
-                <span className="price-negotiable-note">
-                  * Price is negotiable for every destination
-                </span>
+              <div className="hero-transport-tag">
+                <Car size={16} className="text-turquoise" />
+                <span>{pkg.modeOfTransport}</span>
               </div>
             </div>
           </FadeIn>
-
-          <FadeIn direction="up" delay={0.35}>
-            <p className="detail-desc">{pkg.shortDescription}</p>
-          </FadeIn>
-
-          {/* Special Offer Card */}
-          {pkg.specialOffer && (
-            <FadeIn direction="up" delay={0.4}>
-              <div className="special-offer-card shadow-realistic-sm">
-                <div className="offer-icon-box">
-                  <Percent size={20} />
-                </div>
-                <div className="offer-content">
-                  <h4>Special Seasonal Offer</h4>
-                  <p>{pkg.specialOffer}</p>
-                </div>
-              </div>
-            </FadeIn>
-          )}
         </div>
       </section>
 
-      {/* Navigation Tabs (Itinerary, Hotels & Services, Inclusions) */}
-      <section className="tabs-nav-section container">
-        <div className="detail-tabs shadow-realistic-sm">
-          {[
-            { id: 'itinerary', label: 'Day-by-Day Itinerary' },
-            { id: 'hotels', label: '3-Star & 5-Star Hotels' },
-            { id: 'inclusions', label: 'Inclusions & Exclusions' },
-          ].map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`tab-btn ${activeTab === tab.id ? 'active' : ''}`}
-            >
-              <span>{tab.label}</span>
-              {activeTab === tab.id && (
-                <motion.div
-                  layoutId="detailTabActiveBg"
-                  className="tab-btn-active-bg"
-                  transition={{ type: 'spring', stiffness: 450, damping: 35 }}
-                />
-              )}
-            </button>
-          ))}
-        </div>
-      </section>
-
-      {/* Tab Panels */}
-      <section className="tab-panels-section container">
-        {/* Tab 1: Day by Day Itinerary */}
-        {activeTab === 'itinerary' && (
-          <motion.div
-            key="itinerary"
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3 }}
-            className="itinerary-panel"
-          >
-            <div className="panel-header-row">
-              <h3 className="tab-title">Day-by-Day Travel Plan</h3>
+      {/* ---------------------------------------------------- */}
+      {/* THUMBNAIL GALLERY BAR (IF MULTIPLE PHOTOS) */}
+      {/* ---------------------------------------------------- */}
+      {pkg.photos.length > 1 && (
+        <section className="gallery-thumbnails-strip container">
+          <div className="thumbnails-scroll-row">
+            {pkg.photos.map((photoUrl, idx) => (
               <button
-                onClick={() => setShareModalOpen(true)}
-                className="btn-share-itinerary-inline"
+                key={idx}
+                className={`thumb-item ${activePhotoIdx === idx ? 'active' : ''}`}
+                onClick={() => setActivePhotoIdx(idx)}
+                aria-label={`View photo ${idx + 1}`}
               >
-                <Share2 size={15} />
-                <span>Share Plan</span>
+                <img src={photoUrl} alt={`Thumbnail ${idx + 1}`} loading="lazy" />
               </button>
-            </div>
-
-            <div className="accordion-list">
-              {pkg.itinerary && pkg.itinerary.length > 0 ? (
-                pkg.itinerary.map((day, idx) => {
-                  const isOpen = expandedDay === idx;
-                  return (
-                    <div key={idx} className={`accordion-item ${isOpen ? 'open' : ''} shadow-realistic-sm`}>
-                      <button
-                        onClick={() => setExpandedDay(isOpen ? -1 : idx)}
-                        className="accordion-header"
-                      >
-                        <span className="day-number">Day {day.day}</span>
-                        <span className="day-title">{day.title}</span>
-                        <motion.span
-                          className="accordion-chevron"
-                          animate={{ rotate: isOpen ? 180 : 0 }}
-                          transition={{ duration: 0.25 }}
-                        >
-                          <ChevronDown size={18} />
-                        </motion.span>
-                      </button>
-                      <AnimatePresence initial={false}>
-                        {isOpen && (
-                          <motion.div
-                            key="content"
-                            initial={{ height: 0, opacity: 0 }}
-                            animate={{ height: 'auto', opacity: 1 }}
-                            exit={{ height: 0, opacity: 0 }}
-                            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                            style={{ overflow: 'hidden' }}
-                          >
-                            <div className="accordion-content">
-                              <p>{day.details}</p>
-                            </div>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                    </div>
-                  );
-                })
-              ) : (
-                <div className="accordion-item open shadow-realistic-sm">
-                  <div className="accordion-content pt-16">
-                    <p>Detailed day-by-day itinerary will be customized to your preferred travel dates and group preferences.</p>
-                  </div>
-                </div>
-              )}
-            </div>
-          </motion.div>
-        )}
-
-        {/* Tab 2: 3-Star & 5-Star Hotels & Services */}
-        {activeTab === 'hotels' && (
-          <motion.div
-            key="hotels"
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3 }}
-            className="details-panel"
-          >
-            <h3 className="tab-title">Accommodation & Services</h3>
-            
-            {/* 3-Star & 5-Star Hotel Options Grid */}
-            <div className="hotel-tiers-container mb-24">
-              <div className="hotel-tier-card tier-3star shadow-realistic-sm">
-                <div className="tier-header">
-                  <div className="tier-icon-circle star3">
-                    <Star size={18} fill="currentColor" />
-                  </div>
-                  <div>
-                    <h4 className="tier-title">3-Star Deluxe Accommodations</h4>
-                    <span className="tier-sub">Comfortable, sanitized boutique hotels & mountain stays</span>
-                  </div>
-                </div>
-                <ul className="tier-perks">
-                  <li>✔ Premium category room on twin/triple sharing</li>
-                  <li>✔ Daily complimentary hot breakfast buffet</li>
-                  <li>✔ Free high-speed Wi-Fi & tea/coffee maker</li>
-                  <li>✔ Prime tourist location with easy local market access</li>
-                </ul>
-              </div>
-
-              <div className="hotel-tier-card tier-5star shadow-realistic-sm">
-                <div className="tier-header">
-                  <div className="tier-icon-circle star5">
-                    <Sparkles size={18} />
-                  </div>
-                  <div>
-                    <h4 className="tier-title">5-Star Luxury Resorts & Villas</h4>
-                    <span className="tier-sub">World-class hospitality, panoramic views & private amenities</span>
-                  </div>
-                </div>
-                <ul className="tier-perks">
-                  <li>✔ Luxury suite / private pool villa / club rooms</li>
-                  <li>✔ Gourmet breakfast & chef-special dining options</li>
-                  <li>✔ Infinity pool, spa access & evening bonfire lounges</li>
-                  <li>✔ VIP early check-in & priority concierge service</li>
-                </ul>
-              </div>
-            </div>
-
-            <div className="services-grid">
-              <div className="service-card shadow-realistic-sm">
-                <div className="service-header">
-                  <Hotel size={20} className="service-icon" />
-                  <h4>Hotel Overview</h4>
-                </div>
-                <p>{pkg.hotelDetails || '3-Star Deluxe & 5-Star Luxury options available based on your preference.'}</p>
-              </div>
-
-              <div className="service-card shadow-realistic-sm">
-                <div className="service-header">
-                  <Utensils size={20} className="service-icon" />
-                  <h4>Meals Included</h4>
-                </div>
-                <p>{pkg.meals || 'Daily Breakfast included at all hotels. Full board available on request.'}</p>
-              </div>
-
-              <div className="service-card shadow-realistic-sm">
-                <div className="service-header">
-                  <Car size={20} className="service-icon" />
-                  <h4>Transportation</h4>
-                </div>
-                <p>{pkg.transportation || 'Dedicated private AC sedan/SUV with experienced local chauffeur for all transfers.'}</p>
-              </div>
-
-              <div className="service-card shadow-realistic-sm">
-                <div className="service-header">
-                  <Eye size={20} className="service-icon" />
-                  <h4>Sightseeing</h4>
-                </div>
-                <p>{pkg.sightseeing || 'All major viewpoints, heritage monuments, lakes, and local attractions included.'}</p>
-              </div>
-            </div>
-          </motion.div>
-        )}
-
-        {/* Tab 3: Inclusions & Exclusions */}
-        {activeTab === 'inclusions' && (
-          <motion.div
-            key="inclusions"
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3 }}
-            className="inclusions-panel"
-          >
-            <div className="inc-exc-grid">
-              <div className="inc-card shadow-realistic-sm">
-                <h4 className="inc-title">What's Included</h4>
-                <ul className="inc-list">
-                  {pkg.inclusions && pkg.inclusions.length > 0 ? (
-                    pkg.inclusions.map((inc, index) => (
-                      <li key={index}>
-                        <CheckCircle2 size={16} className="check-icon" />
-                        <span>{inc}</span>
-                      </li>
-                    ))
-                  ) : (
-                    <>
-                      <li><CheckCircle2 size={16} className="check-icon" /><span>Hotel accommodations on twin-sharing basis</span></li>
-                      <li><CheckCircle2 size={16} className="check-icon" /><span>Daily breakfast at all hotels</span></li>
-                      <li><CheckCircle2 size={16} className="check-icon" /><span>Dedicated private vehicle for all transfers</span></li>
-                      <li><CheckCircle2 size={16} className="check-icon" /><span>Driver allowances, toll taxes, and parking fees</span></li>
-                    </>
-                  )}
-                </ul>
-              </div>
-
-              <div className="exc-card shadow-realistic-sm">
-                <h4 className="exc-title">What's Excluded</h4>
-                <ul className="exc-list">
-                  {pkg.exclusions && pkg.exclusions.length > 0 ? (
-                    pkg.exclusions.map((exc, index) => (
-                      <li key={index}>
-                        <XCircle size={16} className="cross-icon" />
-                        <span>{exc}</span>
-                      </li>
-                    ))
-                  ) : (
-                    <>
-                      <li><XCircle size={16} className="cross-icon" /><span>Airfare / Train tickets to destination</span></li>
-                      <li><XCircle size={16} className="cross-icon" /><span>Lunch meals and personal drinks/snacks</span></li>
-                      <li><XCircle size={16} className="cross-icon" /><span>Optional adventure sports and personal shopping</span></li>
-                      <li><XCircle size={16} className="cross-icon" /><span>Travel insurance and medical expenses</span></li>
-                    </>
-                  )}
-                </ul>
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </section>
-
-      {/* Package Image Gallery */}
-      {pkg.images && pkg.images.length > 1 && (
-        <section className="gallery-section container">
-          <h3 className="section-title mb-20">Journey Gallery</h3>
-          <div className="gallery-grid">
-            {pkg.images.map((imgUrl, index) => (
-              <div key={index} className="gallery-item shadow-realistic-md">
-                <img src={imgUrl} alt={`${pkg.name} photo ${index + 1}`} loading="lazy" />
-              </div>
             ))}
           </div>
         </section>
       )}
 
-      {/* Official Footer */}
-      <Footer />
+      {/* ---------------------------------------------------- */}
+      {/* MAIN TWO-COLUMN LAYOUT */}
+      {/* ---------------------------------------------------- */}
+      <div className="detail-main-layout container">
+        {/* Left Column: Itinerary, Inclusions & Overview */}
+        <div className="detail-left-col">
+          {/* Quick Overview Card */}
+          {pkg.shortDescription && (
+            <div className="detail-overview-card shadow-subtle">
+              <h2 className="overview-title">
+                <Sparkles size={18} className="overview-icon" /> Journey Overview
+              </h2>
+              <p className="overview-text">{pkg.shortDescription}</p>
+            </div>
+          )}
 
-      {/* Sticky Bottom Action Panel (WhatsApp + Email + Share) */}
-      <div className="sticky-bottom-bar shadow-realistic-lg">
-        <a href={getWhatsAppLink()} target="_blank" rel="noopener noreferrer" className="btn-primary btn-whatsapp-action flex-2">
-          <MessageCircle size={18} />
-          <span>Quick Enquiry (WhatsApp)</span>
-        </a>
-        <a href={getEmailLink()} className="btn-secondary flex-1">
-          <Mail size={18} />
-          <span>Email Details</span>
-        </a>
-        <button
-          onClick={() => setShareModalOpen(true)}
-          className="btn-share-icon shadow-realistic-sm"
-          aria-label="Share package"
-          title="Share"
-        >
-          <Share2 size={20} />
-        </button>
+          {/* Section Navigation Tabs */}
+          <div className="detail-tabs-bar">
+            <button
+              className={`detail-tab-btn ${activeTab === 'itinerary' ? 'active' : ''}`}
+              onClick={() => setActiveTab('itinerary')}
+            >
+              <span>Day-by-Day Itinerary ({pkg.itinerary.length} Days)</span>
+            </button>
+            <button
+              className={`detail-tab-btn ${activeTab === 'inclusions' ? 'active' : ''}`}
+              onClick={() => setActiveTab('inclusions')}
+            >
+              <span>Inclusions & Exclusions</span>
+            </button>
+            <button
+              className={`detail-tab-btn ${activeTab === 'transport' ? 'active' : ''}`}
+              onClick={() => setActiveTab('transport')}
+            >
+              <span>Stay & Transport</span>
+            </button>
+          </div>
+
+          {/* TAB 1: DAY-BY-DAY ITINERARY */}
+          {activeTab === 'itinerary' && (
+            <div className="itinerary-tab-content">
+              {pkg.itinerary && pkg.itinerary.length > 0 ? (
+                <div className="itinerary-timeline-list">
+                  {pkg.itinerary.map((dayItem, idx) => {
+                    const isExpanded = expandedDay === idx;
+                    return (
+                      <motion.div
+                        key={dayItem.day || idx}
+                        className={`itinerary-day-box shadow-subtle ${isExpanded ? 'expanded' : ''}`}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        <button
+                          className="day-box-header"
+                          onClick={() => setExpandedDay(isExpanded ? null : idx)}
+                          aria-expanded={isExpanded}
+                        >
+                          <div className="day-number-pill">
+                            Day {dayItem.day || idx + 1}
+                          </div>
+                          <span className="day-title-text">{dayItem.title}</span>
+                          <ChevronRight
+                            size={18}
+                            className={`day-chevron-icon ${isExpanded ? 'rotated' : ''}`}
+                          />
+                        </button>
+
+                        <AnimatePresence initial={false}>
+                          {isExpanded && (
+                            <motion.div
+                              className="day-box-body"
+                              initial={{ height: 0, opacity: 0 }}
+                              animate={{ height: 'auto', opacity: 1 }}
+                              exit={{ height: 0, opacity: 0 }}
+                              transition={{ duration: 0.25 }}
+                            >
+                              <p className="day-details-paragraph">{dayItem.details}</p>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </motion.div>
+                    );
+                  })}
+                </div>
+              ) : (
+                <p className="empty-tab-text">Day-by-day itinerary will be customized for your travel dates upon request.</p>
+              )}
+            </div>
+          )}
+
+          {/* TAB 2: INCLUSIONS & EXCLUSIONS */}
+          {activeTab === 'inclusions' && (
+            <div className="inclusions-tab-content">
+              <div className="inc-exc-grid">
+                <div className="inc-box shadow-subtle">
+                  <h3 className="inc-title">
+                    <CheckCircle2 size={18} className="text-emerald-500" /> What's Included
+                  </h3>
+                  {pkg.inclusions.length > 0 ? (
+                    <ul className="inc-list">
+                      {pkg.inclusions.map((item, idx) => (
+                        <li key={idx}>
+                          <CheckCircle2 size={15} className="inc-check" />
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="empty-tab-text">Full list provided with tailored proposal.</p>
+                  )}
+                </div>
+
+                <div className="exc-box shadow-subtle">
+                  <h3 className="exc-title">
+                    <XCircle size={18} className="text-rose-500" /> What's Excluded
+                  </h3>
+                  {pkg.exclusions.length > 0 ? (
+                    <ul className="exc-list">
+                      {pkg.exclusions.map((item, idx) => (
+                        <li key={idx}>
+                          <XCircle size={15} className="exc-cross" />
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="empty-tab-text">Standard exclusions apply (flights, personal shopping).</p>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* TAB 3: STAY & TRANSPORT */}
+          {activeTab === 'transport' && (
+            <div className="transport-tab-content shadow-subtle">
+              <div className="spec-row-item">
+                <div className="spec-icon-circle">
+                  <Car size={20} />
+                </div>
+                <div>
+                  <h4 className="spec-item-title">Mode of Transport</h4>
+                  <p className="spec-item-val">{pkg.modeOfTransport}</p>
+                </div>
+              </div>
+
+              <div className="spec-row-item">
+                <div className="spec-icon-circle">
+                  <Hotel size={20} />
+                </div>
+                <div>
+                  <h4 className="spec-item-title">Accommodation Category</h4>
+                  <p className="spec-item-val">{pkg.hotelDetails}</p>
+                </div>
+              </div>
+
+              <div className="spec-row-item">
+                <div className="spec-icon-circle">
+                  <Utensils size={20} />
+                </div>
+                <div>
+                  <h4 className="spec-item-title">Meal Plans</h4>
+                  <p className="spec-item-val">{pkg.meals}</p>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Right Column: Sticky Pricing & Direct Enquiry Card */}
+        <aside className="detail-right-col">
+          <div className="sticky-booking-card shadow-realistic-lg">
+            <div className="booking-card-header">
+              <span className="booking-curated-label">CURATED PRICING</span>
+              <div className="booking-price-row">
+                {pkg.startingPrice > pkg.discountedPrice && (
+                  <span className="booking-starting-cross">
+                    {formatPrice(pkg.startingPrice)}
+                  </span>
+                )}
+                <span className="booking-discounted-bold">
+                  {formatPrice(pkg.discountedPrice)}
+                </span>
+                <span className="booking-per-person">/ Person</span>
+              </div>
+              <div className="booking-negotiable-badge">
+                <ShieldCheck size={14} /> 100% Negotiable for Custom Group Sizes
+              </div>
+            </div>
+
+            <div className="booking-features-list">
+              <div className="booking-feature">
+                <Clock size={16} className="feature-icon" />
+                <span>{pkg.duration} Handcrafted Tour</span>
+              </div>
+              <div className="booking-feature">
+                <Car size={16} className="feature-icon" />
+                <span>{pkg.modeOfTransport}</span>
+              </div>
+              <div className="booking-feature">
+                <CheckCircle2 size={16} className="feature-icon" />
+                <span>{pkg.inclusions.length} Premium Inclusions Included</span>
+              </div>
+            </div>
+
+            {/* Direct Consultation CTAs */}
+            <div className="booking-action-buttons">
+              <a
+                href={getWhatsAppLink()}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-whatsapp-booking shadow-realistic-sm"
+              >
+                <MessageCircle size={18} />
+                <span>Enquire via WhatsApp</span>
+              </a>
+
+              <a
+                href={getEmailLink()}
+                className="btn-email-booking shadow-realistic-sm"
+              >
+                <Mail size={18} />
+                <span>Request Custom Quote</span>
+              </a>
+
+              <Link
+                to={`/enquire?package=${encodeURIComponent(pkg.name)}`}
+                className="btn-form-booking"
+              >
+                <span>Fill Booking Enquiry Form &rarr;</span>
+              </Link>
+            </div>
+          </div>
+        </aside>
       </div>
+
+      <Footer />
 
       {/* Share Modal Dialog */}
       <ShareModal
@@ -471,522 +537,378 @@ export default function PackageDetail() {
         packageData={pkg}
       />
 
+      {/* Component Styles */}
       <style>{`
         .package-detail-page {
           background-color: var(--bg-primary);
-          /* Crucial: ensures full scroll clearance above fixed bottom enquiry bar */
-          padding-bottom: 120px;
           min-height: 100vh;
         }
 
-        .error-container {
-          text-align: center;
-          padding: 80px 20px;
-        }
-
-        .loading-spinner {
-          width: 40px;
-          height: 40px;
-          border: 3px solid var(--border-color);
-          border-top-color: var(--accent-teal);
-          border-radius: 50%;
-          animation: spin 0.8s linear infinite;
-          margin: 0 auto 16px auto;
-        }
-        @keyframes spin {
-          to { transform: rotate(360deg); }
-        }
-
         /* Hero */
-        .detail-hero {
+        .detail-hero-section {
           position: relative;
-          width: 100%;
-          height: 340px;
-          overflow: hidden;
-          background-color: var(--text-primary);
-        }
-        @media (min-width: 768px) {
-          .detail-hero { height: 460px; }
+          min-height: 440px;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          padding: 24px 0 40px 0;
+          background: #0B2D48;
+          color: #FFFFFF;
         }
 
-        .hero-img {
+        .hero-image-wrapper {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          overflow: hidden;
+        }
+
+        .detail-hero-bg {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          opacity: 0.45;
+          transform: scale(1.02);
+        }
+
+        .hero-gradient-overlay {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(180deg, rgba(11, 45, 72, 0.4) 0%, rgba(11, 45, 72, 0.95) 100%);
+        }
+
+        .hero-floating-nav {
+          position: relative;
+          z-index: 10;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        .hero-nav-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          background: rgba(255, 255, 255, 0.94);
+          backdrop-filter: blur(8px);
+          border: none;
+          color: var(--text-primary);
+          font-size: 13px;
+          font-weight: 700;
+          padding: 8px 18px;
+          border-radius: 50px;
+          cursor: pointer;
+          transition: all 0.2s ease;
+        }
+
+        .hero-nav-btn:hover {
+          background: #FFFFFF;
+          color: var(--accent-teal);
+        }
+
+        .hero-bottom-content {
+          position: relative;
+          z-index: 10;
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+        }
+
+        .hero-badges-row {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          flex-wrap: wrap;
+        }
+
+        .hero-category-chip, .hero-duration-chip, .hero-discount-chip {
+          display: inline-flex;
+          align-items: center;
+          gap: 4px;
+          font-size: 11px;
+          font-weight: 700;
+          padding: 4px 12px;
+          border-radius: 50px;
+          text-transform: uppercase;
+        }
+
+        .hero-category-chip {
+          background: var(--accent-turquoise-light);
+          color: var(--accent-teal);
+        }
+
+        .hero-duration-chip {
+          background: rgba(255, 255, 255, 0.2);
+          backdrop-filter: blur(4px);
+          color: #FFFFFF;
+        }
+
+        .hero-discount-chip {
+          background: #DC2626;
+          color: #FFFFFF;
+        }
+
+        .hero-package-title {
+          font-size: 36px;
+          font-weight: 800;
+          color: #FFFFFF;
+          margin: 0;
+          line-height: 1.2;
+        }
+
+        .hero-meta-summary {
+          display: flex;
+          align-items: center;
+          gap: 20px;
+          flex-wrap: wrap;
+          font-size: 14px;
+          color: rgba(255, 255, 255, 0.9);
+        }
+
+        .hero-loc, .hero-transport-tag {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+        }
+
+        .text-turquoise {
+          color: #38BDF8;
+        }
+
+        /* Thumbnails Strip */
+        .gallery-thumbnails-strip {
+          margin-top: -24px;
+          position: relative;
+          z-index: 20;
+        }
+
+        .thumbnails-scroll-row {
+          display: flex;
+          gap: 10px;
+          background: #FFFFFF;
+          padding: 10px 14px;
+          border-radius: var(--radius-lg);
+          box-shadow: var(--shadow-realistic-md);
+          overflow-x: auto;
+          border: 1px solid var(--border-color);
+        }
+
+        .thumb-item {
+          width: 70px;
+          height: 50px;
+          border-radius: 8px;
+          overflow: hidden;
+          border: 2px solid transparent;
+          cursor: pointer;
+          padding: 0;
+          background: transparent;
+          flex-shrink: 0;
+          opacity: 0.65;
+          transition: all 0.2s ease;
+        }
+
+        .thumb-item.active {
+          border-color: var(--accent-teal);
+          opacity: 1;
+          transform: scale(1.05);
+        }
+
+        .thumb-item img {
           width: 100%;
           height: 100%;
           object-fit: cover;
         }
 
-        .hero-gradient {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background: linear-gradient(to bottom, rgba(11, 45, 72, 0.5) 0%, rgba(0,0,0,0) 40%, rgba(11, 45, 72, 0.7) 100%);
+        /* Main Layout */
+        .detail-main-layout {
+          display: grid;
+          grid-template-columns: 1fr 360px;
+          gap: 32px;
+          padding-top: 32px;
+          padding-bottom: 60px;
         }
 
-        .hero-nav-bar {
-          position: absolute;
-          top: 20px;
-          left: 0;
-          right: 0;
-          display: flex;
-          justify-content: space-between;
-          z-index: 10;
-        }
-
-        .hero-circle-btn {
-          width: 44px;
-          height: 44px;
-          border-radius: 50%;
-          background-color: rgba(255, 255, 255, 0.92);
-          backdrop-filter: blur(8px);
-          -webkit-backdrop-filter: blur(8px);
-          border: 1px solid rgba(255, 255, 255, 0.5);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          color: var(--text-primary);
-          cursor: pointer;
-          transition: all var(--transition-fast);
-        }
-
-        .hero-circle-btn:hover {
-          background-color: #FFFFFF;
-          color: var(--accent-teal);
-        }
-
-        /* Header section */
-        .detail-header-section {
-          padding-top: 28px;
-          padding-bottom: 28px;
-          background-color: var(--bg-secondary);
-          border-bottom: 1px solid var(--border-color);
-        }
-
-        .detail-meta {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          margin-bottom: 10px;
-        }
-
-        .detail-duration-pill {
-          display: flex;
-          align-items: center;
-          gap: 6px;
-          font-size: 13px;
-          font-weight: 600;
-          color: var(--text-secondary);
-        }
-
-        .detail-title {
-          font-size: 28px;
-          font-weight: 800;
-          margin-bottom: 14px;
-          line-height: 1.25;
-          color: var(--text-primary);
-        }
-        @media (min-width: 768px) {
-          .detail-title { font-size: 38px; }
-        }
-
-        .detail-loc-price {
-          display: flex;
-          justify-content: space-between;
-          align-items: flex-end;
-          margin-bottom: 20px;
-          flex-wrap: wrap;
-          gap: 16px;
-        }
-
-        .detail-location {
-          display: flex;
-          align-items: center;
-          gap: 6px;
-          color: var(--text-secondary);
-          font-weight: 600;
-          font-size: 16px;
-        }
-
-        .loc-icon {
-          color: var(--accent-teal);
-        }
-
-        .detail-price-box {
+        /* Left Column */
+        .detail-left-col {
           display: flex;
           flex-direction: column;
-          align-items: flex-start;
-        }
-        @media (min-width: 768px) {
-          .detail-price-box {
-            align-items: flex-end;
-          }
+          gap: 24px;
         }
 
-        .price-tag-row {
-          display: flex;
-          align-items: baseline;
-          gap: 8px;
-        }
-
-        .price-tag {
-          font-size: 28px;
-          font-weight: 800;
-          color: var(--text-primary);
-          line-height: 1;
-        }
-
-        .price-sub {
-          font-size: 13px;
-          color: var(--text-secondary);
-        }
-
-        .price-negotiable-note {
-          font-size: 11px;
-          font-weight: 700;
-          color: var(--accent-teal);
-          margin-top: 4px;
-        }
-
-        .detail-desc {
-          font-size: 16px;
-          line-height: 1.6;
-          color: var(--text-secondary);
-          margin-bottom: 0;
-        }
-
-        /* Special Offer */
-        .special-offer-card {
-          background-color: var(--accent-tan);
-          border-radius: var(--radius-md);
-          padding: 16px 20px;
-          display: flex;
-          gap: 16px;
-          align-items: center;
-          margin-top: 24px;
-          border: 1px solid rgba(226, 236, 239, 0.5);
-        }
-
-        .offer-icon-box {
-          width: 44px;
-          height: 44px;
-          border-radius: 50%;
-          background-color: rgba(255, 255, 255, 0.8);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          color: var(--accent-teal);
-          flex-shrink: 0;
-        }
-
-        .offer-content h4 {
-          margin: 0 0 2px 0;
-          font-size: 14px;
-          font-weight: 700;
-          color: var(--text-primary);
-          text-transform: uppercase;
-          letter-spacing: 0.5px;
-        }
-
-        .offer-content p {
-          margin: 0;
-          font-size: 13px;
-          color: var(--text-secondary);
-          font-weight: 500;
-          line-height: 1.4;
-        }
-
-        /* Tabs Nav */
-        .tabs-nav-section {
-          margin-top: 24px;
-          margin-bottom: 24px;
-        }
-
-        .detail-tabs {
-          display: flex;
-          background-color: var(--bg-secondary);
-          border-radius: var(--radius-lg);
-          padding: 4px;
-          border: 1px solid var(--border-color);
-          overflow-x: auto;
-        }
-
-        .tab-btn {
-          flex: 1;
-          background: none;
-          border: none;
-          padding: 12px 16px;
-          font-family: var(--font-sans);
-          font-weight: 700;
-          font-size: 13px;
-          color: var(--text-secondary);
-          cursor: pointer;
-          border-radius: var(--radius-md);
-          transition: all var(--transition-fast);
-          position: relative;
-          white-space: nowrap;
-          text-align: center;
-        }
-
-        .tab-btn.active {
-          color: #FFFFFF;
-        }
-
-        .tab-btn span {
-          position: relative;
-          z-index: 2;
-        }
-
-        .tab-btn-active-bg {
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background-color: var(--accent-teal);
-          border-radius: var(--radius-md);
-          z-index: 1;
-        }
-
-        /* Tab Panels */
-        .tab-panels-section {
-          background-color: var(--bg-secondary);
+        .detail-overview-card {
+          background: #FFFFFF;
           border-radius: var(--radius-xl);
-          padding: 30px 24px;
-          border: 1px solid rgba(226, 236, 239, 0.8);
-          margin-bottom: 40px;
-        }
-        @media (min-width: 768px) {
-          .tab-panels-section {
-            padding: 40px;
-          }
-        }
-
-        .panel-header-row {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          margin-bottom: 20px;
-        }
-
-        .tab-title {
-          font-size: 22px;
-          font-weight: 800;
-          margin: 0;
-          color: var(--text-primary);
-        }
-
-        .btn-share-itinerary-inline {
-          background: var(--accent-turquoise-light);
-          color: var(--accent-teal);
-          border: 1px solid var(--accent-teal);
-          padding: 6px 14px;
-          border-radius: 50px;
-          font-size: 12px;
-          font-weight: 700;
-          display: inline-flex;
-          align-items: center;
-          gap: 6px;
-          cursor: pointer;
-          transition: all 0.2s ease;
-        }
-        .btn-share-itinerary-inline:hover {
-          background: var(--accent-teal);
-          color: #FFFFFF;
-        }
-
-        /* Accordion List */
-        .accordion-list {
-          display: flex;
-          flex-direction: column;
-          gap: 12px;
-        }
-
-        .accordion-item {
-          border: 1px solid var(--border-color);
-          border-radius: var(--radius-md);
-          overflow: hidden;
-          background: var(--bg-secondary);
-          transition: border-color var(--transition-fast);
-        }
-
-        .accordion-item.open {
-          border-color: var(--accent-teal);
-        }
-
-        .accordion-header {
-          width: 100%;
-          display: flex;
-          align-items: center;
-          padding: 16px 20px;
-          background-color: var(--bg-secondary);
-          border: none;
-          cursor: pointer;
-          text-align: left;
-          gap: 12px;
-        }
-
-        .day-number {
-          font-size: 12px;
-          font-weight: 800;
-          color: var(--accent-teal);
-          background-color: var(--accent-turquoise-light);
-          padding: 4px 10px;
-          border-radius: 50px;
-          flex-shrink: 0;
-        }
-
-        .day-title {
-          font-size: 15px;
-          font-weight: 700;
-          color: var(--text-primary);
-          flex-grow: 1;
-        }
-
-        .accordion-content {
-          padding: 0 20px 16px 20px;
-          color: var(--text-secondary);
-          font-size: 14px;
-          line-height: 1.6;
-        }
-
-        /* Hotel Tiers Showcase */
-        .hotel-tiers-container {
-          display: grid;
-          grid-template-columns: 1fr;
-          gap: 16px;
-        }
-        @media (min-width: 768px) {
-          .hotel-tiers-container {
-            grid-template-columns: 1fr 1fr;
-          }
-        }
-
-        .hotel-tier-card {
-          background: var(--bg-primary);
-          border-radius: var(--radius-lg);
-          padding: 20px;
-          border: 1px solid var(--border-color);
-        }
-        .hotel-tier-card.tier-5star {
-          border-color: var(--accent-turquoise);
-          background: linear-gradient(135deg, var(--bg-primary) 0%, var(--accent-turquoise-light) 100%);
-        }
-
-        .tier-header {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          margin-bottom: 14px;
-        }
-
-        .tier-icon-circle {
-          width: 36px;
-          height: 36px;
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-shrink: 0;
-        }
-        .tier-icon-circle.star3 {
-          background-color: #F59E0B;
-          color: #FFFFFF;
-        }
-        .tier-icon-circle.star5 {
-          background-color: var(--accent-teal);
-          color: #FFFFFF;
-        }
-
-        .tier-title {
-          font-size: 15px;
-          font-weight: 800;
-          margin: 0;
-          color: var(--text-primary);
-        }
-
-        .tier-sub {
-          font-size: 12px;
-          color: var(--text-secondary);
-        }
-
-        .tier-perks {
-          list-style: none;
-          padding: 0;
-          margin: 0;
-          display: flex;
-          flex-direction: column;
-          gap: 6px;
-          font-size: 13px;
-          color: var(--text-primary);
-        }
-
-        .services-grid {
-          display: grid;
-          grid-template-columns: 1fr;
-          gap: 16px;
-        }
-        @media (min-width: 768px) {
-          .services-grid {
-            grid-template-columns: 1fr 1fr;
-          }
-        }
-
-        .service-card {
-          padding: 20px;
-          background-color: var(--bg-primary);
-          border-radius: var(--radius-md);
-          border: 1px solid var(--border-color);
-        }
-
-        .service-header {
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          margin-bottom: 8px;
-          color: var(--accent-teal);
-        }
-
-        .service-header h4 {
-          margin: 0;
-          font-size: 15px;
-          color: var(--text-primary);
-        }
-
-        .service-card p {
-          margin: 0;
-          font-size: 14px;
-          color: var(--text-secondary);
-          line-height: 1.5;
-        }
-
-        /* Inc / Exc */
-        .inc-exc-grid {
-          display: grid;
-          grid-template-columns: 1fr;
-          gap: 20px;
-        }
-        @media (min-width: 768px) {
-          .inc-exc-grid {
-            grid-template-columns: 1fr 1fr;
-          }
-        }
-
-        .inc-card, .exc-card {
-          background: var(--bg-primary);
-          border-radius: var(--radius-lg);
           padding: 24px;
           border: 1px solid var(--border-color);
         }
 
-        .inc-title, .exc-title {
-          font-size: 17px;
+        .overview-title {
+          font-size: 18px;
           font-weight: 800;
-          margin-bottom: 16px;
+          color: var(--text-primary);
+          margin: 0 0 10px 0;
+          display: flex;
+          align-items: center;
+          gap: 8px;
         }
 
-        .inc-title { color: var(--accent-teal); }
-        .exc-title { color: var(--danger-color); }
+        .overview-icon {
+          color: var(--accent-teal);
+        }
+
+        .overview-text {
+          font-size: 14.5px;
+          color: var(--text-secondary);
+          line-height: 1.6;
+          margin: 0;
+        }
+
+        /* Tabs Bar */
+        .detail-tabs-bar {
+          display: flex;
+          gap: 8px;
+          border-bottom: 2px solid var(--border-color);
+          overflow-x: auto;
+          padding-bottom: 4px;
+        }
+
+        .detail-tab-btn {
+          background: none;
+          border: none;
+          padding: 10px 18px;
+          font-size: 14px;
+          font-weight: 700;
+          color: var(--text-secondary);
+          cursor: pointer;
+          position: relative;
+          white-space: nowrap;
+          transition: all 0.2s ease;
+        }
+
+        .detail-tab-btn:hover {
+          color: var(--text-primary);
+        }
+
+        .detail-tab-btn.active {
+          color: var(--accent-teal);
+        }
+
+        .detail-tab-btn.active::after {
+          content: '';
+          position: absolute;
+          bottom: -6px;
+          left: 0;
+          right: 0;
+          height: 3px;
+          background: var(--accent-teal);
+          border-radius: 3px;
+        }
+
+        /* Itinerary Timeline */
+        .itinerary-timeline-list {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+        }
+
+        .itinerary-day-box {
+          background: #FFFFFF;
+          border: 1px solid var(--border-color);
+          border-radius: var(--radius-lg);
+          overflow: hidden;
+          transition: all 0.2s ease;
+        }
+
+        .itinerary-day-box.expanded {
+          border-color: var(--accent-teal);
+          box-shadow: var(--shadow-realistic-sm);
+        }
+
+        .day-box-header {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          gap: 14px;
+          padding: 16px 20px;
+          background: #FFFFFF;
+          border: none;
+          cursor: pointer;
+          text-align: left;
+        }
+
+        .day-number-pill {
+          background: var(--accent-turquoise-light);
+          color: var(--accent-teal);
+          font-size: 12px;
+          font-weight: 800;
+          padding: 5px 10px;
+          border-radius: 6px;
+          flex-shrink: 0;
+        }
+
+        .day-title-text {
+          font-size: 15px;
+          font-weight: 700;
+          color: var(--text-primary);
+          flex: 1;
+        }
+
+        .day-chevron-icon {
+          color: var(--text-muted);
+          transition: transform 0.2s ease;
+        }
+
+        .day-chevron-icon.rotated {
+          transform: rotate(90deg);
+          color: var(--accent-teal);
+        }
+
+        .day-box-body {
+          padding: 0 20px 18px 58px;
+        }
+
+        .day-details-paragraph {
+          font-size: 14px;
+          color: var(--text-secondary);
+          line-height: 1.6;
+          margin: 0;
+        }
+
+        /* Inclusions & Exclusions */
+        .inc-exc-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 16px;
+        }
+
+        .inc-box, .exc-box {
+          background: #FFFFFF;
+          border-radius: var(--radius-xl);
+          padding: 24px;
+          border: 1px solid var(--border-color);
+        }
+
+        .inc-box {
+          border-left: 4px solid #10B981;
+        }
+
+        .exc-box {
+          border-left: 4px solid #EF4444;
+        }
+
+        .inc-title, .exc-title {
+          font-size: 15px;
+          font-weight: 800;
+          margin: 0 0 14px 0;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
 
         .inc-list, .exc-list {
           list-style: none;
@@ -994,102 +916,232 @@ export default function PackageDetail() {
           margin: 0;
           display: flex;
           flex-direction: column;
-          gap: 12px;
+          gap: 10px;
         }
 
         .inc-list li, .exc-list li {
+          font-size: 13.5px;
           display: flex;
           align-items: flex-start;
           gap: 10px;
-          font-size: 14px;
           color: var(--text-primary);
           line-height: 1.4;
         }
 
-        .check-icon { color: var(--accent-teal); flex-shrink: 0; margin-top: 2px; }
-        .cross-icon { color: var(--danger-color); flex-shrink: 0; margin-top: 2px; }
-
-        /* Gallery */
-        .gallery-section {
-          margin-bottom: 40px;
+        .inc-check {
+          color: #10B981;
+          flex-shrink: 0;
+          margin-top: 2px;
         }
 
-        .gallery-grid {
-          display: grid;
-          grid-template-columns: repeat(2, 1fr);
-          gap: 14px;
-        }
-        @media (min-width: 768px) {
-          .gallery-grid {
-            grid-template-columns: repeat(3, 1fr);
-          }
+        .exc-cross {
+          color: #EF4444;
+          flex-shrink: 0;
+          margin-top: 2px;
         }
 
-        .gallery-item {
-          aspect-ratio: 4 / 3;
-          border-radius: var(--radius-lg);
-          overflow: hidden;
-        }
-
-        .gallery-item img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          transition: transform 0.4s ease;
-        }
-        .gallery-item:hover img {
-          transform: scale(1.06);
-        }
-
-        /* Sticky Bottom action bar */
-        .sticky-bottom-bar {
-          position: fixed;
-          bottom: 0;
-          left: 0;
-          right: 0;
-          background-color: rgba(255, 255, 255, 0.95);
-          backdrop-filter: blur(12px);
-          -webkit-backdrop-filter: blur(12px);
-          padding: 14px 20px;
-          display: flex;
-          gap: 12px;
-          align-items: center;
-          z-index: 1000;
-          border-top: 1px solid var(--border-color);
-        }
-
-        .btn-whatsapp-action {
-          background-color: var(--accent-green);
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          gap: 8px;
-        }
-        .btn-whatsapp-action:hover {
-          background-color: var(--accent-green-hover);
-        }
-
-        .btn-share-icon {
-          width: 48px;
-          height: 48px;
-          border-radius: 50%;
-          background: var(--bg-primary);
+        /* Transport Tab */
+        .transport-tab-content {
+          background: #FFFFFF;
+          border-radius: var(--radius-xl);
+          padding: 24px;
           border: 1px solid var(--border-color);
           display: flex;
-          align-items: center;
-          justify-content: center;
-          color: var(--text-primary);
-          cursor: pointer;
-          flex-shrink: 0;
-          transition: all 0.2s ease;
-        }
-        .btn-share-icon:hover {
-          background: var(--accent-turquoise-light);
-          color: var(--accent-teal);
-          border-color: var(--accent-teal);
+          flex-direction: column;
+          gap: 18px;
         }
 
-        .flex-2 { flex: 2; }
+        .spec-row-item {
+          display: flex;
+          align-items: flex-start;
+          gap: 16px;
+        }
+
+        .spec-icon-circle {
+          width: 44px;
+          height: 44px;
+          border-radius: 50%;
+          background: var(--accent-turquoise-light);
+          color: var(--accent-teal);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-shrink: 0;
+        }
+
+        .spec-item-title {
+          font-size: 12px;
+          font-weight: 700;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          color: var(--text-muted);
+          margin: 0 0 2px 0;
+        }
+
+        .spec-item-val {
+          font-size: 14.5px;
+          font-weight: 600;
+          color: var(--text-primary);
+          margin: 0;
+        }
+
+        /* Sticky Booking Card */
+        .sticky-booking-card {
+          position: sticky;
+          top: 80px;
+          background: #FFFFFF;
+          border-radius: var(--radius-xl);
+          padding: 28px;
+          border: 1px solid var(--border-color);
+          display: flex;
+          flex-direction: column;
+          gap: 20px;
+        }
+
+        .booking-curated-label {
+          font-size: 10px;
+          font-weight: 800;
+          letter-spacing: 1.5px;
+          color: var(--accent-teal);
+          text-transform: uppercase;
+        }
+
+        .booking-price-row {
+          display: flex;
+          align-items: baseline;
+          gap: 8px;
+          flex-wrap: wrap;
+          margin: 4px 0;
+        }
+
+        .booking-starting-cross {
+          font-size: 14px;
+          color: var(--text-muted);
+          text-decoration: line-through;
+        }
+
+        .booking-discounted-bold {
+          font-size: 28px;
+          font-weight: 900;
+          color: var(--text-primary);
+          line-height: 1;
+        }
+
+        .booking-per-person {
+          font-size: 12px;
+          color: var(--text-secondary);
+        }
+
+        .booking-negotiable-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          font-size: 11px;
+          font-weight: 700;
+          color: #1D4ED8;
+          background: #EFF6FF;
+          padding: 4px 10px;
+          border-radius: 50px;
+          margin-top: 4px;
+        }
+
+        .booking-features-list {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+          padding: 14px 0;
+          border-top: 1px solid var(--border-color);
+          border-bottom: 1px solid var(--border-color);
+        }
+
+        .booking-feature {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          font-size: 13px;
+          font-weight: 500;
+          color: var(--text-secondary);
+        }
+
+        .feature-icon {
+          color: var(--accent-teal);
+          flex-shrink: 0;
+        }
+
+        .booking-action-buttons {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+        }
+
+        .btn-whatsapp-booking {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 10px;
+          background: #25D366;
+          color: #FFFFFF;
+          padding: 12px 20px;
+          border-radius: var(--radius-sm);
+          font-size: 14px;
+          font-weight: 700;
+          text-decoration: none;
+          transition: all 0.2s ease;
+        }
+
+        .btn-whatsapp-booking:hover {
+          background: #1EBE5D;
+          transform: translateY(-1px);
+        }
+
+        .btn-email-booking {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 10px;
+          background: var(--accent-teal);
+          color: #FFFFFF;
+          padding: 12px 20px;
+          border-radius: var(--radius-sm);
+          font-size: 14px;
+          font-weight: 700;
+          text-decoration: none;
+          transition: all 0.2s ease;
+        }
+
+        .btn-email-booking:hover {
+          background: var(--accent-teal-hover);
+          transform: translateY(-1px);
+        }
+
+        .btn-form-booking {
+          text-align: center;
+          font-size: 12.5px;
+          font-weight: 700;
+          color: var(--accent-teal);
+          padding: 6px 0;
+          transition: color 0.2s ease;
+        }
+
+        .btn-form-booking:hover {
+          color: var(--accent-teal-hover);
+          text-decoration: underline;
+        }
+
+        @media (max-width: 900px) {
+          .detail-main-layout {
+            grid-template-columns: 1fr;
+          }
+          .sticky-booking-card {
+            position: static;
+          }
+          .hero-package-title {
+            font-size: 26px;
+          }
+          .inc-exc-grid {
+            grid-template-columns: 1fr;
+          }
+        }
       `}</style>
     </div>
   );
