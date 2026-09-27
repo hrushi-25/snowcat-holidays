@@ -42,7 +42,8 @@ export default function Explore() {
   const [indiaStates, setIndiaStates] = useState(localDestinationsData.india || []);
   const [internationalPackages, setInternationalPackages] = useState(localDestinationsData.international || []);
 
-  // Background revalidation with live backend
+  // [OLD DJANGO BACKEND REVALIDATION - CUT OFF / COMMENTED OUT]
+  /*
   useEffect(() => {
     let isMounted = true;
     const fetchLiveUpdates = async () => {
@@ -51,32 +52,13 @@ export default function Explore() {
           fetch(`${API_URL}/api/packages/india/`),
           fetch(`${API_URL}/api/packages/international/`),
         ]);
-
-        if (!isMounted) return;
-
-        if (indiaRes.status === 'fulfilled' && indiaRes.value.ok) {
-          const data = await indiaRes.value.json();
-          if (Array.isArray(data) && data.length > 0) {
-            setIndiaStates(data);
-          }
-        }
-
-        if (intlRes.status === 'fulfilled' && intlRes.value.ok) {
-          const data = await intlRes.value.json();
-          if (Array.isArray(data) && data.length > 0) {
-            setInternationalPackages(data);
-          }
-        }
-      } catch (err) {
-        // Silent fallback to bundled data
-      }
+        ...
+      } catch (err) {}
     };
-
     fetchLiveUpdates();
-    return () => {
-      isMounted = false;
-    };
+    return () => { isMounted = false; };
   }, []);
+  */
 
   // Navigation handlers with clean History Push for proper browser Back button
   const handleTabChange = (newTab) => {

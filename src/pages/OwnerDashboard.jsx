@@ -2,6 +2,12 @@ import { API_URL } from '../utils/api';
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { usePackages } from '../context/PackageContext';
+import {
+  subscribeToEnquiries,
+  toggleEnquiryContactedInFirestore,
+  deleteEnquiryFromFirestore,
+  isFirebaseConfigured
+} from '../firebase';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useToast } from '../components/animations/Toast';
 import {
@@ -21,7 +27,9 @@ import {
   User,
   CheckCircle,
   Clock,
-  RefreshCw
+  RefreshCw,
+  Database,
+  Check
 } from 'lucide-react';
 
 const PRESET_IMAGES = [
@@ -40,8 +48,12 @@ export default function OwnerDashboard() {
     addPackage,
     updatePackage,
     deletePackage,
-    togglePackageActive
+    togglePackageActive,
+    syncPackagesToFirebase,
+    isFirebaseConnected
   } = usePackages();
+
+  const [syncingFirebase, setSyncingFirebase] = useState(false);
 
   // Active dashboard tab: 'catalog' | 'leads'
   const [activeTab, setActiveTab] = useState('catalog');
@@ -85,69 +97,107 @@ export default function OwnerDashboard() {
   const [enquiries, setEnquiries] = useState([]);
   const [loadingEnquiries, setLoadingEnquiries] = useState(false);
 
-  const fetchEnquiries = useCallback(() => {
+  // Load / subscribe to enquiries
+  useEffect(() => {
+    let unsubscribeFirestore = () => {};
+
+    if (isFirebaseConfigured) {
+      setLoadingEnquiries(true);
+      unsubscribeFirestore = subscribeToEnquiries((liveLeads) => {
+        setEnquiries(liveLeads);
+        setLoadingEnquiries(false);
+      }, (err) => {
+        console.warn('Firestore real-time lead listener error:', err);
+        setLoadingEnquiries(false);
+      });
+    }
+
+    // [OLD DJANGO BACKEND FETCH - CUT OFF / COMMENTED OUT]
+    /*
     const token = localStorage.getItem('access_token');
-    if (!token) return;
-    setLoadingEnquiries(true);
-    fetch(`${API_URL}/api/enquiries/list/`, {
-      headers: { 'Authorization': `Bearer ${token}` }
-    })
-      .then(res => {
-        if (res.ok) return res.json();
-        return [];
+    if (token) {
+      fetch(`${API_URL}/api/enquiries/list/`, {
+        headers: { 'Authorization': `Bearer ${token}` }
       })
-      .then(data => {
-        if (Array.isArray(data)) setEnquiries(data);
-      })
-      .catch(err => console.error('Failed to fetch enquiries', err))
-      .finally(() => setLoadingEnquiries(false));
+        .then(res => res.ok ? res.json() : [])
+        .then(data => { ... })
+        .catch(err => console.warn('API backend enquiry fetch warning:', err));
+    }
+    */
+
+    return () => {
+      unsubscribeFirestore();
+    };
   }, []);
 
-  useEffect(() => {
-    fetchEnquiries();
-  }, [fetchEnquiries]);
-
   const handleToggleLeadContacted = async (lead) => {
-    const token = localStorage.getItem('access_token');
-    if (!token) return;
     const newStatus = !lead.contacted;
-    try {
-      const res = await fetch(`${API_URL}/api/enquiries/${lead.id}/`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({ contacted: newStatus })
-      });
-      if (res.ok) {
-        setEnquiries(prev => prev.map(item => item.id === lead.id ? { ...item, contacted: newStatus } : item));
-        addToast(newStatus ? 'Marked lead as Contacted' : 'Marked lead as New', 'success');
-      } else {
-        addToast('Failed to update lead status', 'error');
-      }
-    } catch {
-      addToast('Error communicating with server', 'error');
+
+    // 1. Update in Firebase Firestore
+    if (isFirebaseConfigured) {
+      await toggleEnquiryContactedInFirestore(lead.id, lead.contacted);
     }
+
+    // [OLD DJANGO BACKEND PATCH - CUT OFF / COMMENTED OUT]
+    /*
+    const token = localStorage.getItem('access_token');
+    if (token) {
+      try {
+        await fetch(`${API_URL}/api/enquiries/${lead.id}/`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({ contacted: newStatus })
+        });
+      } catch (err) { ... }
+    }
+    */
+
+    setEnquiries(prev => prev.map(item => item.id === lead.id ? { ...item, contacted: newStatus } : item));
+    addToast(newStatus ? 'Marked lead as Contacted' : 'Marked lead as New', 'success');
   };
 
   const handleDeleteLead = async (leadId) => {
     if (!window.confirm('Are you sure you want to delete this customer enquiry?')) return;
+
+    // 1. Delete from Firebase Firestore
+    if (isFirebaseConfigured) {
+      await deleteEnquiryFromFirestore(leadId);
+    }
+
+    // [OLD DJANGO BACKEND DELETE - CUT OFF / COMMENTED OUT]
+    /*
     const token = localStorage.getItem('access_token');
-    if (!token) return;
+    if (token) {
+      try {
+        await fetch(`${API_URL}/api/enquiries/${leadId}/`, {
+          method: 'DELETE',
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+      } catch (err) { ... }
+    }
+    */
+
+    setEnquiries(prev => prev.filter(item => item.id !== leadId));
+    addToast('Enquiry deleted successfully', 'info');
+  };
+
+  const handleSyncPackagesToFirebase = async () => {
+    if (!isFirebaseConfigured) {
+      addToast('Firebase credentials missing in .env. Please add VITE_FIREBASE_* keys first.', 'error');
+      return;
+    }
+    setSyncingFirebase(true);
     try {
-      const res = await fetch(`${API_URL}/api/enquiries/${leadId}/`, {
-        method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      if (res.ok || res.status === 204) {
-        setEnquiries(prev => prev.filter(item => item.id !== leadId));
-        addToast('Enquiry deleted successfully', 'info');
-      } else {
-        addToast('Failed to delete enquiry', 'error');
-      }
-    } catch {
-      addToast('Error communicating with server', 'error');
+      const res = await syncPackagesToFirebase();
+      addToast(`Successfully synced ${res.count} packages to Firebase Firestore!`, 'success');
+    } catch (err) {
+      console.error('Firebase sync error:', err);
+      addToast(`Sync failed: ${err.message || 'Error occurred'}`, 'error');
+    } finally {
+      setSyncingFirebase(false);
     }
   };
 
@@ -431,11 +481,62 @@ export default function OwnerDashboard() {
             </button>
           ) : (
             <div className="catalog-header-actions-row">
-              <h2 className="catalog-heading">Trips Catalog</h2>
-              <button onClick={openCreateMode} className="btn-primary add-pkg-btn">
-                <Plus size={18} />
-                <span>Add new package</span>
-              </button>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <h2 className="catalog-heading" style={{ margin: 0 }}>Trips Catalog</h2>
+                <span
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    fontSize: '11px',
+                    fontWeight: 700,
+                    letterSpacing: '0.5px',
+                    padding: '4px 10px',
+                    borderRadius: '20px',
+                    backgroundColor: isFirebaseConnected ? 'rgba(42, 157, 143, 0.12)' : 'rgba(230, 57, 70, 0.1)',
+                    color: isFirebaseConnected ? '#2a9d8f' : '#e63946',
+                    border: `1px solid ${isFirebaseConnected ? 'rgba(42, 157, 143, 0.3)' : 'rgba(230, 57, 70, 0.2)'}`
+                  }}
+                  title={isFirebaseConnected ? 'Firebase Firestore is active' : 'Firebase not configured in .env'}
+                >
+                  <span
+                    style={{
+                      width: '6px',
+                      height: '6px',
+                      borderRadius: '50%',
+                      backgroundColor: isFirebaseConnected ? '#2a9d8f' : '#e63946'
+                    }}
+                  />
+                  {isFirebaseConnected ? '🔥 Firebase Live' : 'Firebase: Local Mode'}
+                </span>
+              </div>
+              <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                {isFirebaseConnected && (
+                  <button
+                    onClick={handleSyncPackagesToFirebase}
+                    disabled={syncingFirebase}
+                    className="btn-secondary"
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '6px',
+                      padding: '8px 14px',
+                      fontSize: '13px',
+                      fontWeight: 600,
+                      borderRadius: '8px',
+                      cursor: syncingFirebase ? 'not-allowed' : 'pointer'
+                    }}
+                    title="Upload all default catalog packages to Cloud Firestore"
+                  >
+                    <Database size={14} className={syncingFirebase ? 'spin' : ''} />
+                    <span>{syncingFirebase ? 'Syncing...' : 'Sync to Firebase'}</span>
+                  </button>
+                )}
+                <button onClick={openCreateMode} className="btn-primary add-pkg-btn">
+                  <Plus size={18} />
+                  <span>Add new package</span>
+                </button>
+              </div>
             </div>
           )}
         </div>

@@ -1,15 +1,16 @@
-import { API_URL } from '../utils/api';
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Lock, ArrowLeft, AlertCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import MagneticButton from '../components/animations/MagneticButton';
 import { useToast } from '../components/animations/Toast';
+import { verifyAndSyncOwnerInFirestore } from '../firebase';
 
 export default function OwnerLogin() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { addToast } = useToast();
 
@@ -24,28 +25,45 @@ export default function OwnerLogin() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setLoading(true);
+
+    const cleanUser = (username || '').trim();
+    const cleanPass = (password || '').trim();
+
+    // Check credentials immediately
+    const isUserValid = cleanUser.toLowerCase() === 'shabbir12';
+    const isPassValid = cleanPass === 'Snowcat#123';
+
+    if (!isUserValid || !isPassValid) {
+      setError('Invalid username or password. Please check your credentials.');
+      addToast('Invalid credentials', 'error');
+      setLoading(false);
+      return;
+    }
 
     try {
-      const res = await fetch(`${API_URL}/api/auth/login/`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username: username.trim(), password }),
+      // 1. Set local session immediately so access is instantaneous
+      const sessionToken = `fb_owner_${Date.now()}_${Math.random().toString(36).substr(2, 8)}`;
+      localStorage.setItem('access_token', sessionToken);
+      localStorage.setItem('snowcat_owner_session', JSON.stringify({
+        username: 'Shabbir12',
+        role: 'owner',
+        loginAt: new Date().toISOString()
+      }));
+
+      // 2. Sync record to Firebase Firestore
+      verifyAndSyncOwnerInFirestore(cleanUser, cleanPass).catch(err => {
+        console.warn('Firebase owner sync notice:', err);
       });
 
-      if (!res.ok) {
-        setError('Invalid username or password. Please try again.');
-        addToast('Invalid login credentials', 'error');
-        return;
-      }
-
-      const data = await res.json();
-      localStorage.setItem('access_token', data.access);
-      localStorage.setItem('refresh_token', data.refresh);
-      addToast('Welcome back!', 'success');
+      addToast('Welcome back, Shabbir!', 'success');
       navigate('/owner/dashboard');
-    } catch {
-      setError('Could not reach the server. Please try again.');
-      addToast('Login failed — server unreachable', 'error');
+    } catch (err) {
+      console.error('Owner authentication error:', err);
+      setError('An error occurred while logging in. Please try again.');
+      addToast('Authentication error', 'error');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -97,7 +115,7 @@ export default function OwnerLogin() {
                 id="username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                placeholder="Enter username"
+                placeholder="Shabbir12"
                 required
                 className="form-input"
               />
@@ -117,12 +135,12 @@ export default function OwnerLogin() {
             </div>
 
             <MagneticButton type="submit" className="btn-primary login-btn">
-              <span>Sign in to dashboard</span>
+              <span>{loading ? 'Authenticating...' : 'Sign in to dashboard'}</span>
               <span>&rarr;</span>
             </MagneticButton>
           </form>
 
-          <div style={{ marginTop: '20px', paddingTop: '16px', borderTop: '1px solid var(--border-color)', fontSize: '13px', color: 'var(--text-secondary)' }}>
+          <div style={{ marginTop: '24px', paddingTop: '18px', borderTop: '1px solid var(--border-color)', fontSize: '13px', color: 'var(--text-secondary)' }}>
             Looking for Traveller account? <Link to="/auth" style={{ color: 'var(--accent-teal)', fontWeight: 700 }}>Traveller Login &rarr;</Link>
           </div>
         </div>

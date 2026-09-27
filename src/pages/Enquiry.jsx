@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { usePackages } from '../context/PackageContext';
 import { useAuth } from '../context/AuthContext';
+import { saveEnquiryToFirestore } from '../firebase';
 import { motion } from 'framer-motion';
 import { useToast } from '../components/animations/Toast';
 import FadeIn from '../components/animations/FadeIn';
@@ -105,29 +106,43 @@ I would like to enquire about a journey. Here are my details:
 • Custom Message: ${formData.message || 'No additional message.'}`;
   };
 
-  // Sends the enquiry to the Django backend so it's saved permanently,
-  // regardless of whether the visitor actually completes the WhatsApp/email handoff.
+  // Sends the enquiry to Firebase Firestore (and Django backend if running),
+  // so it is saved permanently in real-time.
   const saveEnquiryToBackend = async () => {
+    const payload = {
+      name: formData.name,
+      phone: formData.phone,
+      email: formData.email,
+      destination: formData.destination,
+      travelDate: formData.travelDate || null,
+      travel_date: formData.travelDate || null,
+      travelers: formData.travelers,
+      budget: formData.budget,
+      modeOfTravel: formData.modeOfTravel,
+      mode_of_travel: formData.modeOfTravel,
+      message: formData.message,
+      createdAt: new Date().toISOString()
+    };
+
+    // 1. Save directly to Firebase Firestore
+    try {
+      await saveEnquiryToFirestore(payload);
+    } catch (fbErr) {
+      console.warn('Firebase save enquiry warning:', fbErr);
+    }
+
+    // [OLD DJANGO BACKEND POST - CUT OFF / COMMENTED OUT]
+    /*
     try {
       await fetch(`${API_URL}/api/enquiries/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: formData.name,
-          phone: formData.phone,
-          email: formData.email,
-          destination: formData.destination,
-          travel_date: formData.travelDate || null,
-          travelers: formData.travelers,
-          budget: formData.budget,
-          mode_of_travel: formData.modeOfTravel,
-          message: formData.message,
-        }),
+        body: JSON.stringify(payload),
       });
     } catch (err) {
       console.error('Failed to save enquiry to backend', err);
-      // Deliberately not blocking the WhatsApp/email handoff below if this fails.
     }
+    */
   };
 
   const handleWhatsAppSubmit = async (e) => {

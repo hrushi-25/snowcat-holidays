@@ -1,7 +1,15 @@
 import { API_URL } from '../utils/api';
-import React, { createContext, useState, useEffect, useContext } from 'react';
+import React, { createContext, useState, useEffect, useContext, useCallback } from 'react';
 import localDestinationsData from '../data/destinations_data.json';
 import { STATIC_PACKAGES } from '../data/staticPackages';
+import {
+  getPackagesFromFirestore,
+  savePackageToFirestore,
+  updatePackageInFirestore,
+  deletePackageFromFirestore,
+  seedPackagesToFirestore,
+  isFirebaseConfigured
+} from '../firebase';
 
 const PackageContext = createContext();
 
@@ -135,17 +143,39 @@ const INITIAL_PACKAGES = buildInitialPackages();
 
 export const PackageProvider = ({ children }) => {
   const [packages, setPackages] = useState(INITIAL_PACKAGES);
+  const [loadingFromFirebase, setLoadingFromFirebase] = useState(false);
 
-  // Background revalidation with live backend
-  useEffect(() => {
+  // Load packages from Firebase Firestore / Backend API
+  const refreshPackages = useCallback(async () => {
     let isMounted = true;
-    fetch(`${API_URL}/api/packages/`)
-      .then(res => {
-        if (!res.ok) throw new Error(`Status ${res.status}`);
-        return res.json();
-      })
-      .then(data => {
-        if (!isMounted) return;
+
+    // 1. Try Firebase Firestore first if configured
+    if (isFirebaseConfigured) {
+      try {
+        setLoadingFromFirebase(true);
+        const fbPackages = await getPackagesFromFirestore();
+        if (Array.isArray(fbPackages) && fbPackages.length > 0) {
+          const normalizedFb = fbPackages.map(normalizeFromApi);
+          const map = new Map();
+          INITIAL_PACKAGES.forEach(p => map.set(p.slug || p.id, p));
+          normalizedFb.forEach(p => map.set(p.slug || p.id, p));
+          setPackages(Array.from(map.values()));
+          setLoadingFromFirebase(false);
+          return;
+        }
+      } catch (fbErr) {
+        console.warn('Firebase package load warning:', fbErr);
+      } finally {
+        setLoadingFromFirebase(false);
+      }
+    }
+
+    // [OLD DJANGO BACKEND REVALIDATION - CUT OFF / COMMENTED OUT]
+    /*
+    try {
+      const res = await fetch(`${API_URL}/api/packages/`);
+      if (res.ok) {
+        const data = await res.json();
         if (Array.isArray(data) && data.length > 0) {
           const apiPkgs = data.map(normalizeFromApi);
           const map = new Map();
@@ -153,20 +183,36 @@ export const PackageProvider = ({ children }) => {
           apiPkgs.forEach(p => map.set(p.slug || p.id, p));
           setPackages(Array.from(map.values()));
         }
-      })
-      .catch(() => {
-        // Backend offline — instant local dataset remains active
-      });
-
-    return () => {
-      isMounted = false;
-    };
+      }
+    } catch {
+      // Backend offline
+    }
+    */
   }, []);
+
+  useEffect(() => {
+    refreshPackages();
+  }, [refreshPackages]);
 
   // Create
   const addPackage = async (pkg) => {
+    const slug = pkg.slug || generateSlug(pkg.name || pkg.packageName);
+    const normalizedNew = normalizeFromApi({
+      ...pkg,
+      id: pkg.id || slug || `pkg-${Date.now()}`,
+      slug: slug,
+      isActive: true
+    });
+
+    // 1. Save to Firebase Firestore
+    if (isFirebaseConfigured) {
+      await savePackageToFirestore(normalizedNew);
+    }
+
+    // [OLD DJANGO BACKEND POST - CUT OFF / COMMENTED OUT]
+    /*
     try {
-      const res = await fetch(`${API_URL}/api/packages/`, {
+      await fetch(`${API_URL}/api/packages/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -174,30 +220,29 @@ export const PackageProvider = ({ children }) => {
         },
         body: JSON.stringify(normalizeToApi(pkg)),
       });
-      if (res.ok) {
-        const saved = await res.json();
-        const newPkg = normalizeFromApi(saved);
-        setPackages(prev => [newPkg, ...prev]);
-        return newPkg;
-      }
     } catch (e) {
-      console.warn('Backend unavailable, saving package locally', e);
+      console.warn('API backend not reachable for addPackage', e);
     }
-    // Local fallback
-    const localPkg = {
-      ...pkg,
-      id: pkg.id || `local-${Date.now()}`,
-      slug: pkg.slug || generateSlug(pkg.name),
-      isActive: true
-    };
-    setPackages(prev => [localPkg, ...prev]);
-    return localPkg;
+    */
+
+    setPackages(prev => [normalizedNew, ...prev]);
+    return normalizedNew;
   };
 
   // Update
   const updatePackage = async (updatedPkg) => {
+    const norm = normalizeFromApi(updatedPkg);
+    const identifier = norm.slug || norm.id;
+
+    // 1. Update in Firebase Firestore
+    if (isFirebaseConfigured) {
+      await updatePackageInFirestore(identifier, norm);
+    }
+
+    // [OLD DJANGO BACKEND PUT - CUT OFF / COMMENTED OUT]
+    /*
     try {
-      const res = await fetch(`${API_URL}/api/packages/${updatedPkg.slug}/`, {
+      await fetch(`${API_URL}/api/packages/${identifier}/`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -205,30 +250,34 @@ export const PackageProvider = ({ children }) => {
         },
         body: JSON.stringify(normalizeToApi(updatedPkg)),
       });
-      if (res.ok) {
-        const saved = await res.json();
-        const normalized = normalizeFromApi(saved);
-        setPackages(prev => prev.map(p => (p.slug === normalized.slug || p.id === normalized.id ? normalized : p)));
-        return;
-      }
     } catch (e) {
-      console.warn('Backend unavailable, updating package locally', e);
+      console.warn('API backend not reachable for updatePackage', e);
     }
-    // Local update
-    setPackages(prev => prev.map(p => (p.slug === updatedPkg.slug || p.id === updatedPkg.id ? updatedPkg : p)));
+    */
+
+    setPackages(prev => prev.map(p => (p.slug === norm.slug || p.id === norm.id ? norm : p)));
   };
 
   // Delete
-  const deletePackage = async (slug) => {
+  const deletePackage = async (slugOrId) => {
+    // 1. Delete from Firebase Firestore
+    if (isFirebaseConfigured) {
+      await deletePackageFromFirestore(slugOrId);
+    }
+
+    // [OLD DJANGO BACKEND DELETE - CUT OFF / COMMENTED OUT]
+    /*
     try {
-      await fetch(`${API_URL}/api/packages/${slug}/`, {
+      await fetch(`${API_URL}/api/packages/${slugOrId}/`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${localStorage.getItem('access_token')}` },
       });
     } catch (e) {
-      console.warn('Backend unavailable, removing package locally', e);
+      console.warn('API backend not reachable for deletePackage', e);
     }
-    setPackages(prev => prev.filter(p => p.slug !== slug && p.id !== slug));
+    */
+
+    setPackages(prev => prev.filter(p => p.slug !== slugOrId && p.id !== slugOrId));
   };
 
   // Toggle Active
@@ -241,14 +290,27 @@ export const PackageProvider = ({ children }) => {
     await updatePackage({ ...pkg, isFeatured: !pkg.isFeatured });
   };
 
+  // Seed / Sync all current packages to Firebase Firestore
+  const syncPackagesToFirebase = async () => {
+    if (!isFirebaseConfigured) {
+      throw new Error('Firebase credentials not configured in .env file');
+    }
+    const result = await seedPackagesToFirestore(packages);
+    return result;
+  };
+
   return (
     <PackageContext.Provider value={{
       packages,
+      loadingFromFirebase,
+      isFirebaseConnected: isFirebaseConfigured,
+      refreshPackages,
       addPackage,
       updatePackage,
       deletePackage,
       togglePackageActive,
-      togglePackageFeatured
+      togglePackageFeatured,
+      syncPackagesToFirebase
     }}>
       {children}
     </PackageContext.Provider>
