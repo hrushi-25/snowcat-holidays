@@ -7,12 +7,12 @@ import {
   deleteDoc,
   query,
   orderBy,
-  writeBatch,
-  serverTimestamp
+  writeBatch
 } from 'firebase/firestore';
 import { db, isFirebaseConfigured } from './config';
 
 const PACKAGES_COLLECTION = 'packages';
+const DELETED_PACKAGES_COLLECTION = 'deleted_packages';
 
 /**
  * Recursively clean objects for Firestore by removing all `undefined` values.
@@ -39,7 +39,7 @@ export const cleanFirestorePayload = (data) => {
 };
 
 /**
- * Fetch all packages from Firestore 'packages' collection.
+ * Fetch all active packages from Firestore 'packages' collection.
  */
 export const getPackagesFromFirestore = async () => {
   if (!isFirebaseConfigured || !db) {
@@ -66,7 +66,7 @@ export const getPackagesFromFirestore = async () => {
 
     return fetchedPackages;
   } catch (error) {
-    console.error('Error fetching packages from Firestore:', error);
+    console.warn('Firestore fetch packages notice:', error.message || error);
     return null;
   }
 };
@@ -94,7 +94,7 @@ export const savePackageToFirestore = async (pkg) => {
     await setDoc(docRef, dataToSave, { merge: true });
     return { success: true, id: docId, data: dataToSave };
   } catch (error) {
-    console.error('Error saving package to Firestore:', error);
+    console.warn('Firestore save package notice:', error.message || error);
     return { success: false, error };
   }
 };
@@ -119,13 +119,13 @@ export const updatePackageInFirestore = async (pkgIdOrSlug, updates) => {
     await setDoc(docRef, dataToUpdate, { merge: true });
     return { success: true };
   } catch (error) {
-    console.error('Error updating package in Firestore:', error);
+    console.warn('Firestore update package notice:', error.message || error);
     return { success: false, error };
   }
 };
 
 /**
- * Delete a package from Firestore.
+ * Delete a package from active packages in Firestore.
  */
 export const deletePackageFromFirestore = async (pkgIdOrSlug) => {
   if (!isFirebaseConfigured || !db) {
@@ -138,24 +138,101 @@ export const deletePackageFromFirestore = async (pkgIdOrSlug) => {
     await deleteDoc(docRef);
     return { success: true };
   } catch (error) {
-    console.error('Error deleting package from Firestore:', error);
+    console.warn('Firestore delete package notice:', error.message || error);
     return { success: false, error };
   }
 };
 
 /**
- * Batch seed or sync a list of packages to Firestore in chunks of up to 400.
+ * Save deleted package to 'deleted_packages' history collection in Firestore.
+ */
+export const saveDeletedPackageToFirestore = async (pkg) => {
+  if (!isFirebaseConfigured || !db) {
+    return false;
+  }
+
+  try {
+    const docId = String(pkg.slug || pkg.id || `del-${Date.now()}`);
+    const docRef = doc(db, DELETED_PACKAGES_COLLECTION, docId);
+
+    const dataToSave = cleanFirestorePayload({
+      ...pkg,
+      id: docId,
+      originalSlug: pkg.slug || docId,
+      deletedAt: new Date().toISOString(),
+      deletedBy: 'Shabbir12'
+    });
+
+    await setDoc(docRef, dataToSave, { merge: true });
+    return { success: true };
+  } catch (error) {
+    console.warn('Firestore save deleted package notice:', error.message || error);
+    return { success: false, error };
+  }
+};
+
+/**
+ * Fetch all deleted packages history from Firestore.
+ */
+export const getDeletedPackagesFromFirestore = async () => {
+  if (!isFirebaseConfigured || !db) {
+    return [];
+  }
+
+  try {
+    const deletedRef = collection(db, DELETED_PACKAGES_COLLECTION);
+    const querySnapshot = await getDocs(deletedRef);
+
+    if (querySnapshot.empty) {
+      return [];
+    }
+
+    const list = [];
+    querySnapshot.forEach((docSnap) => {
+      list.push({
+        id: docSnap.id,
+        ...docSnap.data()
+      });
+    });
+
+    return list;
+  } catch (error) {
+    console.warn('Firestore fetch deleted packages notice:', error.message || error);
+    return [];
+  }
+};
+
+/**
+ * Permanently remove a record from deleted history in Firestore.
+ */
+export const removeDeletedPackageFromFirestore = async (docId) => {
+  if (!isFirebaseConfigured || !db) {
+    return false;
+  }
+
+  try {
+    const docRef = doc(db, DELETED_PACKAGES_COLLECTION, String(docId));
+    await deleteDoc(docRef);
+    return { success: true };
+  } catch (error) {
+    console.warn('Firestore remove deleted package notice:', error.message || error);
+    return { success: false, error };
+  }
+};
+
+/**
+ * Batch seed or sync a list of packages to Firestore in chunks.
  */
 export const seedPackagesToFirestore = async (packagesList) => {
   if (!isFirebaseConfigured || !db) {
-    throw new Error('Firebase is not configured yet. Please configure .env credentials.');
+    return { success: false, count: 0 };
   }
 
   if (!Array.isArray(packagesList) || packagesList.length === 0) {
-    throw new Error('No packages provided to seed.');
+    return { success: false, count: 0 };
   }
 
-  const chunkSize = 300;
+  const chunkSize = 250;
   let totalSaved = 0;
 
   for (let i = 0; i < packagesList.length; i += chunkSize) {

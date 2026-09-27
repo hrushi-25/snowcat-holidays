@@ -28,7 +28,9 @@ import {
   CheckCircle,
   Clock,
   RefreshCw,
-  Database,
+  History,
+  RotateCcw,
+  Archive,
   Check
 } from 'lucide-react';
 
@@ -45,15 +47,18 @@ export default function OwnerDashboard() {
   const { addToast } = useToast();
   const {
     packages,
+    deletedHistory,
     addPackage,
     updatePackage,
     deletePackage,
+    restorePackage,
+    permanentlyDeletePackage,
+    clearDeletedHistory,
     togglePackageActive,
-    syncPackagesToFirebase,
     isFirebaseConnected
   } = usePackages();
 
-  const [syncingFirebase, setSyncingFirebase] = useState(false);
+  const [showDeletedModal, setShowDeletedModal] = useState(false);
 
   // Active dashboard tab: 'catalog' | 'leads'
   const [activeTab, setActiveTab] = useState('catalog');
@@ -184,20 +189,33 @@ export default function OwnerDashboard() {
     addToast('Enquiry deleted successfully', 'info');
   };
 
-  const handleSyncPackagesToFirebase = async () => {
-    if (!isFirebaseConfigured) {
-      addToast('Firebase credentials missing in .env. Please add VITE_FIREBASE_* keys first.', 'error');
-      return;
-    }
-    setSyncingFirebase(true);
+  const handleRestorePackage = async (deletedPkg) => {
     try {
-      const res = await syncPackagesToFirebase();
-      addToast(`Successfully synced ${res.count} packages to Firebase Firestore!`, 'success');
+      await restorePackage(deletedPkg);
+      addToast(`Restored "${deletedPkg.name}" back to live catalog!`, 'success');
     } catch (err) {
-      console.error('Firebase sync error:', err);
-      addToast(`Sync failed: ${err.message || 'Error occurred'}`, 'error');
-    } finally {
-      setSyncingFirebase(false);
+      console.error('Failed to restore package:', err);
+      addToast('Failed to restore package', 'error');
+    }
+  };
+
+  const handlePermanentDelete = async (deletedPkg) => {
+    if (!window.confirm(`Permanently delete "${deletedPkg.name}" from history? This cannot be undone.`)) return;
+    try {
+      await permanentlyDeletePackage(deletedPkg.id || deletedPkg.slug);
+      addToast(`Permanently deleted "${deletedPkg.name}"`, 'info');
+    } catch (err) {
+      console.error('Failed to permanently delete package:', err);
+    }
+  };
+
+  const handleClearAllHistory = async () => {
+    if (!window.confirm('Are you sure you want to clear all deleted package history?')) return;
+    try {
+      await clearDeletedHistory();
+      addToast('Cleared all deleted package history', 'info');
+    } catch (err) {
+      console.error('Failed to clear history:', err);
     }
   };
 
@@ -511,27 +529,6 @@ export default function OwnerDashboard() {
                 </span>
               </div>
               <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-                {isFirebaseConnected && (
-                  <button
-                    onClick={handleSyncPackagesToFirebase}
-                    disabled={syncingFirebase}
-                    className="btn-secondary"
-                    style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '6px',
-                      padding: '8px 14px',
-                      fontSize: '13px',
-                      fontWeight: 600,
-                      borderRadius: '8px',
-                      cursor: syncingFirebase ? 'not-allowed' : 'pointer'
-                    }}
-                    title="Upload all default catalog packages to Cloud Firestore"
-                  >
-                    <Database size={14} className={syncingFirebase ? 'spin' : ''} />
-                    <span>{syncingFirebase ? 'Syncing...' : 'Sync to Firebase'}</span>
-                  </button>
-                )}
                 <button onClick={openCreateMode} className="btn-primary add-pkg-btn">
                   <Plus size={18} />
                   <span>Add new package</span>
@@ -958,95 +955,220 @@ export default function OwnerDashboard() {
               className="catalog-table-card"
             >
               {packages.length > 0 ? (
-                <div className="table-responsive">
-                  <table className="catalog-table">
-                    <thead>
-                      <tr>
-                        <th>Trip</th>
-                        <th>Destination</th>
-                        <th>Price</th>
-                        <th>Duration</th>
-                        <th>Status</th>
-                        <th className="text-right">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <AnimatePresence>
-                        {packages.map((pkg) => (
-                          <motion.tr
-                            key={pkg.slug || pkg.id}
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, height: 0 }}
-                            transition={{ duration: 0.2 }}
-                          >
-                            <td>
-                              <div className="table-package-cell">
-                                <img
-                                  src={pkg.images?.[0] || 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=120&q=80'}
-                                  alt={pkg.name}
-                                  className="table-pkg-thumb"
-                                />
-                                <div>
-                                  <div className="table-pkg-name">{pkg.name}</div>
-                                  <span className="table-pkg-cat">{pkg.category}</span>
+                <>
+                  <div className="table-responsive">
+                    <table className="catalog-table">
+                      <thead>
+                        <tr>
+                          <th>Trip</th>
+                          <th>Destination</th>
+                          <th>Price</th>
+                          <th>Duration</th>
+                          <th>Status</th>
+                          <th className="text-right">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <AnimatePresence>
+                          {packages.map((pkg) => (
+                            <motion.tr
+                              key={pkg.slug || pkg.id}
+                              initial={{ opacity: 0, y: 10 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              exit={{ opacity: 0, height: 0 }}
+                              transition={{ duration: 0.2 }}
+                            >
+                              <td>
+                                <div className="table-package-cell">
+                                  <img
+                                    src={pkg.images?.[0] || 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=120&q=80'}
+                                    alt={pkg.name}
+                                    className="table-pkg-thumb"
+                                  />
+                                  <div>
+                                    <div className="table-pkg-name">{pkg.name}</div>
+                                    <span className="table-pkg-cat">{pkg.category}</span>
+                                  </div>
                                 </div>
-                              </div>
-                            </td>
-                            <td>{pkg.destination}</td>
-                            <td>
-                              <strong>₹{Number(pkg.price || 0).toLocaleString('en-IN')}</strong>
-                            </td>
-                            <td>{pkg.days}D / {pkg.nights}N</td>
-                            <td>
-                              <button
-                                onClick={() => {
-                                  togglePackageActive(pkg);
-                                  addToast(`Status changed for ${pkg.name}`, 'info');
-                                }}
-                                className={`status-badge-btn ${pkg.isActive ? 'active' : 'inactive'}`}
-                                title="Click to toggle status"
-                              >
-                                {pkg.isActive ? <Power size={12} /> : <PowerOff size={12} />}
-                                <span>{pkg.isActive ? 'LIVE' : 'INACTIVE'}</span>
-                              </button>
-                            </td>
-                            <td className="text-right">
-                              <div className="actions-cell-flex">
+                              </td>
+                              <td>{pkg.destination}</td>
+                              <td>
+                                <strong>₹{Number(pkg.price || 0).toLocaleString('en-IN')}</strong>
+                              </td>
+                              <td>{pkg.days}D / {pkg.nights}N</td>
+                              <td>
                                 <button
-                                  onClick={() => openEditMode(pkg)}
-                                  className="action-icon-btn edit-btn"
-                                  title="Edit package"
-                                  aria-label={`Edit ${pkg.name}`}
+                                  onClick={() => {
+                                    togglePackageActive(pkg);
+                                    addToast(`Status changed for ${pkg.name}`, 'info');
+                                  }}
+                                  className={`status-badge-btn ${pkg.isActive ? 'active' : 'inactive'}`}
+                                  title="Click to toggle status"
                                 >
-                                  <Edit size={16} />
+                                  {pkg.isActive ? <Power size={12} /> : <PowerOff size={12} />}
+                                  <span>{pkg.isActive ? 'LIVE' : 'INACTIVE'}</span>
                                 </button>
-                                <button
-                                  onClick={() => handleConfirmDelete(pkg.slug || pkg.id, pkg.name)}
-                                  className="action-icon-btn delete-btn"
-                                  title="Delete package"
-                                  aria-label={`Delete ${pkg.name}`}
-                                >
-                                  <Trash2 size={16} />
-                                </button>
-                              </div>
-                            </td>
-                          </motion.tr>
-                        ))}
-                      </AnimatePresence>
-                    </tbody>
-                  </table>
-                </div>
+                              </td>
+                              <td className="text-right">
+                                <div className="actions-cell-flex">
+                                  <button
+                                    onClick={() => openEditMode(pkg)}
+                                    className="action-icon-btn edit-btn"
+                                    title="Edit package"
+                                    aria-label={`Edit ${pkg.name}`}
+                                  >
+                                    <Edit size={16} />
+                                  </button>
+                                  <button
+                                    onClick={() => handleConfirmDelete(pkg.slug || pkg.id, pkg.name)}
+                                    className="action-icon-btn delete-btn"
+                                    title="Delete package"
+                                    aria-label={`Delete ${pkg.name}`}
+                                  >
+                                    <Trash2 size={16} />
+                                  </button>
+                                </div>
+                              </td>
+                            </motion.tr>
+                          ))}
+                        </AnimatePresence>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  {/* Small button at the end of all the packages */}
+                  <div className="deleted-history-bottom-bar">
+                    <div className="packages-count-label">
+                      Total {packages.length} {packages.length === 1 ? 'journey' : 'journeys'} in catalog
+                    </div>
+                    <button
+                      onClick={() => setShowDeletedModal(true)}
+                      className="btn-deleted-history"
+                      title="View history of packages deleted by the owner"
+                    >
+                      <History size={14} />
+                      <span>Deleted Packages History ({deletedHistory.length})</span>
+                    </button>
+                  </div>
+                </>
               ) : (
                 <div className="empty-catalog text-center">
                   <Layers size={40} className="empty-icon" />
                   <p>Your package list is empty. Click "Add new package" above to create one.</p>
+                  {deletedHistory.length > 0 && (
+                    <div style={{ marginTop: '16px' }}>
+                      <button
+                        onClick={() => setShowDeletedModal(true)}
+                        className="btn-deleted-history"
+                      >
+                        <History size={14} />
+                        <span>View Deleted Packages History ({deletedHistory.length})</span>
+                      </button>
+                    </div>
+                  )}
                 </div>
               )}
             </motion.div>
           )}
         </AnimatePresence>
       </div>
+
+      {/* DELETED PACKAGES HISTORY MODAL */}
+      <AnimatePresence>
+        {showDeletedModal && (
+          <div className="modal-overlay" onClick={() => setShowDeletedModal(false)}>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              onClick={(e) => e.stopPropagation()}
+              className="deleted-modal-card"
+            >
+              <div className="deleted-modal-header">
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <div className="deleted-modal-icon">
+                    <History size={22} />
+                  </div>
+                  <div>
+                    <h3 className="deleted-modal-title">Deleted Packages History</h3>
+                    <p className="deleted-modal-subtitle">
+                      Review packages removed from the catalog. Click Restore to make any package live again.
+                    </p>
+                  </div>
+                </div>
+                <button onClick={() => setShowDeletedModal(false)} className="btn-close-modal" aria-label="Close modal">
+                  <X size={18} />
+                </button>
+              </div>
+
+              <div className="deleted-modal-body">
+                {deletedHistory && deletedHistory.length > 0 ? (
+                  <>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
+                      <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-secondary)' }}>
+                        {deletedHistory.length} deleted {deletedHistory.length === 1 ? 'journey' : 'journeys'} recorded
+                      </span>
+                      <button onClick={handleClearAllHistory} className="btn-clear-history">
+                        Clear All History
+                      </button>
+                    </div>
+
+                    <div className="deleted-packages-list">
+                      {deletedHistory.map((item) => (
+                        <div key={item.id || item.slug || Math.random()} className="deleted-package-item">
+                          <img
+                            src={item.images?.[0] || 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=120&q=80'}
+                            alt={item.name}
+                            className="deleted-pkg-thumb"
+                          />
+                          <div className="deleted-pkg-info">
+                            <h4 className="deleted-pkg-name">{item.name}</h4>
+                            <div className="deleted-pkg-meta">
+                              <span>📍 {item.destination}</span>
+                              <span>•</span>
+                              <span>₹{Number(item.price || 0).toLocaleString('en-IN')}</span>
+                              <span>•</span>
+                              <span>{item.days}D / {item.nights}N</span>
+                            </div>
+                            <div className="deleted-timestamp">
+                              Deleted: {item.deletedAt ? new Date(item.deletedAt).toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' }) : 'Recently'}
+                            </div>
+                          </div>
+                          <div className="deleted-pkg-actions">
+                            <button
+                              onClick={() => handleRestorePackage(item)}
+                              className="btn-restore-package"
+                              title="Restore back to active catalog"
+                            >
+                              <RotateCcw size={14} />
+                              <span>Restore</span>
+                            </button>
+                            <button
+                              onClick={() => handlePermanentDelete(item)}
+                              className="btn-perm-delete"
+                              title="Delete permanently"
+                            >
+                              <Trash2 size={14} />
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </>
+                ) : (
+                  <div className="empty-deleted-history">
+                    <Archive size={42} style={{ color: 'var(--text-tertiary)', marginBottom: '12px' }} />
+                    <h4 style={{ margin: '0 0 6px 0', fontSize: '16px', fontWeight: 700 }}>No Deleted Packages</h4>
+                    <p style={{ margin: 0, fontSize: '13px', color: 'var(--text-secondary)' }}>
+                      When you delete any package from your catalog, it will be saved here in history so you can restore it anytime.
+                    </p>
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
 
       <style>{`
         /* Top Brand Header styles */
@@ -1884,6 +2006,255 @@ export default function OwnerDashboard() {
           .btn-cancel-editor, .btn-save-package-editor {
             flex: 0 1 200px;
           }
+        }
+
+        /* Deleted Packages History Styles */
+        .deleted-history-bottom-bar {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 16px 20px;
+          border-top: 1px solid var(--border-color);
+          background-color: var(--bg-secondary);
+          border-bottom-left-radius: var(--radius-lg);
+          border-bottom-right-radius: var(--radius-lg);
+          gap: 12px;
+          flex-wrap: wrap;
+        }
+
+        .packages-count-label {
+          font-size: 13px;
+          color: var(--text-secondary);
+          font-weight: 500;
+        }
+
+        .btn-deleted-history {
+          display: inline-flex;
+          align-items: center;
+          gap: 7px;
+          background: #FFFFFF;
+          border: 1px solid var(--border-color);
+          padding: 8px 14px;
+          border-radius: 8px;
+          font-size: 13px;
+          font-weight: 600;
+          color: var(--text-secondary);
+          cursor: pointer;
+          transition: all var(--transition-fast);
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+        }
+
+        .btn-deleted-history:hover {
+          color: var(--text-primary);
+          border-color: #CBD5E1;
+          background-color: #F8FAFC;
+          transform: translateY(-1px);
+        }
+
+        /* Modal Overlay & Card */
+        .modal-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: rgba(15, 23, 42, 0.6);
+          backdrop-filter: blur(4px);
+          z-index: 9999;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 20px;
+        }
+
+        .deleted-modal-card {
+          background: #FFFFFF;
+          border-radius: 16px;
+          width: 100%;
+          max-width: 650px;
+          max-height: 85vh;
+          display: flex;
+          flex-direction: column;
+          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+          overflow: hidden;
+        }
+
+        .deleted-modal-header {
+          padding: 20px 24px;
+          border-bottom: 1px solid var(--border-color);
+          display: flex;
+          align-items: flex-start;
+          justify-content: space-between;
+          background: var(--bg-primary);
+        }
+
+        .deleted-modal-icon {
+          width: 40px;
+          height: 40px;
+          border-radius: 10px;
+          background: rgba(42, 157, 143, 0.12);
+          color: var(--accent-teal);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-shrink: 0;
+        }
+
+        .deleted-modal-title {
+          font-size: 18px;
+          font-weight: 800;
+          color: var(--text-primary);
+          margin: 0 0 2px 0;
+        }
+
+        .deleted-modal-subtitle {
+          font-size: 12px;
+          color: var(--text-secondary);
+          margin: 0;
+        }
+
+        .btn-close-modal {
+          background: transparent;
+          border: none;
+          color: var(--text-secondary);
+          cursor: pointer;
+          padding: 6px;
+          border-radius: 6px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .btn-close-modal:hover {
+          background: rgba(0, 0, 0, 0.05);
+          color: var(--text-primary);
+        }
+
+        .deleted-modal-body {
+          padding: 20px 24px;
+          overflow-y: auto;
+          flex: 1;
+        }
+
+        .btn-clear-history {
+          background: transparent;
+          border: none;
+          color: #e63946;
+          font-size: 12px;
+          font-weight: 600;
+          cursor: pointer;
+          padding: 4px 8px;
+          border-radius: 4px;
+        }
+
+        .btn-clear-history:hover {
+          background: rgba(230, 57, 70, 0.08);
+        }
+
+        .deleted-packages-list {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+        }
+
+        .deleted-package-item {
+          display: flex;
+          align-items: center;
+          gap: 14px;
+          padding: 12px 14px;
+          background: var(--bg-primary);
+          border: 1px solid var(--border-color);
+          border-radius: 12px;
+          transition: border-color var(--transition-fast);
+        }
+
+        .deleted-package-item:hover {
+          border-color: #CBD5E1;
+        }
+
+        .deleted-pkg-thumb {
+          width: 54px;
+          height: 54px;
+          border-radius: 8px;
+          object-fit: cover;
+          flex-shrink: 0;
+        }
+
+        .deleted-pkg-info {
+          flex: 1;
+          min-width: 0;
+        }
+
+        .deleted-pkg-name {
+          font-size: 14px;
+          font-weight: 700;
+          color: var(--text-primary);
+          margin: 0 0 3px 0;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .deleted-pkg-meta {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          font-size: 12px;
+          color: var(--text-secondary);
+          margin-bottom: 3px;
+        }
+
+        .deleted-timestamp {
+          font-size: 11px;
+          color: var(--text-tertiary);
+        }
+
+        .deleted-pkg-actions {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          flex-shrink: 0;
+        }
+
+        .btn-restore-package {
+          display: inline-flex;
+          align-items: center;
+          gap: 5px;
+          background: var(--accent-teal);
+          color: #FFFFFF;
+          border: none;
+          padding: 7px 12px;
+          border-radius: 6px;
+          font-size: 12px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: background-color var(--transition-fast);
+        }
+
+        .btn-restore-package:hover {
+          background: var(--accent-teal-hover);
+        }
+
+        .btn-perm-delete {
+          background: transparent;
+          border: 1px solid rgba(230, 57, 70, 0.25);
+          color: #e63946;
+          padding: 6px;
+          border-radius: 6px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          transition: all var(--transition-fast);
+        }
+
+        .btn-perm-delete:hover {
+          background: rgba(230, 57, 70, 0.1);
+        }
+
+        .empty-deleted-history {
+          text-align: center;
+          padding: 40px 20px;
         }
       `}</style>
     </div>

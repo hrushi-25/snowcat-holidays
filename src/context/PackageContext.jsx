@@ -1,4 +1,3 @@
-import { API_URL } from '../utils/api';
 import React, { createContext, useState, useEffect, useContext, useCallback } from 'react';
 import localDestinationsData from '../data/destinations_data.json';
 import { STATIC_PACKAGES } from '../data/staticPackages';
@@ -7,6 +6,9 @@ import {
   savePackageToFirestore,
   updatePackageInFirestore,
   deletePackageFromFirestore,
+  saveDeletedPackageToFirestore,
+  getDeletedPackagesFromFirestore,
+  removeDeletedPackageFromFirestore,
   seedPackagesToFirestore,
   isFirebaseConfigured
 } from '../firebase';
@@ -78,35 +80,7 @@ const normalizeFromApi = (apiPkg) => {
   };
 };
 
-const normalizeToApi = (pkg) => ({
-  name: pkg.name || pkg.packageName,
-  package_name: pkg.packageName || pkg.name,
-  category: pkg.category,
-  destination: pkg.destination,
-  country: pkg.country,
-  days: pkg.days || 1,
-  nights: pkg.nights || 0,
-  duration: pkg.duration || `${pkg.nights || 0} Nights / ${pkg.days || 1} Days`,
-  price: pkg.pricing?.discountedPrice ?? pkg.price,
-  starting_price: pkg.pricing?.startingPrice ?? pkg.startingPrice ?? pkg.price,
-  discounted_price: pkg.pricing?.discountedPrice ?? pkg.discountedPrice ?? pkg.price,
-  currency: pkg.pricing?.currency ?? pkg.currency ?? 'INR',
-  short_description: pkg.shortDescription || pkg.short_description,
-  hotel_details: pkg.hotelDetails || pkg.hotel_details,
-  meals: pkg.meals,
-  transportation: pkg.modeOfTransport || pkg.transportation,
-  mode_of_transport: pkg.modeOfTransport || pkg.transportation,
-  sightseeing: pkg.sightseeing,
-  special_offer: pkg.specialOffer || pkg.special_offer,
-  inclusions: pkg.inclusions || [],
-  exclusions: pkg.exclusions || [],
-  itinerary: pkg.itinerary || [],
-  photos: pkg.photos || pkg.images || [],
-  is_featured: pkg.isFeatured,
-  is_active: pkg.isActive,
-});
-
-// Build rich initial packages synchronously for 0ms initial load
+// Build rich initial packages synchronously for instant initial load
 const buildInitialPackages = () => {
   const map = new Map();
 
@@ -143,13 +117,18 @@ const INITIAL_PACKAGES = buildInitialPackages();
 
 export const PackageProvider = ({ children }) => {
   const [packages, setPackages] = useState(INITIAL_PACKAGES);
+  const [deletedHistory, setDeletedHistory] = useState(() => {
+    try {
+      const saved = localStorage.getItem('snowcat_deleted_history');
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
   const [loadingFromFirebase, setLoadingFromFirebase] = useState(false);
 
-  // Load packages from Firebase Firestore / Backend API
+  // Load active packages and deleted history from Firebase Firestore
   const refreshPackages = useCallback(async () => {
-    let isMounted = true;
-
-    // 1. Try Firebase Firestore first if configured
     if (isFirebaseConfigured) {
       try {
         setLoadingFromFirebase(true);
@@ -160,8 +139,18 @@ export const PackageProvider = ({ children }) => {
           INITIAL_PACKAGES.forEach(p => map.set(p.slug || p.id, p));
           normalizedFb.forEach(p => map.set(p.slug || p.id, p));
           setPackages(Array.from(map.values()));
-          setLoadingFromFirebase(false);
-          return;
+        } else if (Array.isArray(fbPackages) && fbPackages.length === 0) {
+          // Auto-seed initial packages to Firestore in background
+          seedPackagesToFirestore(INITIAL_PACKAGES).catch(err => {
+            console.warn('Auto-seed initial packages notice:', err);
+          });
+        }
+
+        // Fetch deleted packages history
+        const fbDeleted = await getDeletedPackagesFromFirestore();
+        if (Array.isArray(fbDeleted) && fbDeleted.length > 0) {
+          setDeletedHistory(fbDeleted);
+          localStorage.setItem('snowcat_deleted_history', JSON.stringify(fbDeleted));
         }
       } catch (fbErr) {
         console.warn('Firebase package load warning:', fbErr);
@@ -169,32 +158,13 @@ export const PackageProvider = ({ children }) => {
         setLoadingFromFirebase(false);
       }
     }
-
-    // [OLD DJANGO BACKEND REVALIDATION - CUT OFF / COMMENTED OUT]
-    /*
-    try {
-      const res = await fetch(`${API_URL}/api/packages/`);
-      if (res.ok) {
-        const data = await res.json();
-        if (Array.isArray(data) && data.length > 0) {
-          const apiPkgs = data.map(normalizeFromApi);
-          const map = new Map();
-          INITIAL_PACKAGES.forEach(p => map.set(p.slug || p.id, p));
-          apiPkgs.forEach(p => map.set(p.slug || p.id, p));
-          setPackages(Array.from(map.values()));
-        }
-      }
-    } catch {
-      // Backend offline
-    }
-    */
   }, []);
 
   useEffect(() => {
     refreshPackages();
   }, [refreshPackages]);
 
-  // Create
+  // Create package
   const addPackage = async (pkg) => {
     const slug = pkg.slug || generateSlug(pkg.name || pkg.packageName);
     const normalizedNew = normalizeFromApi({
@@ -204,80 +174,102 @@ export const PackageProvider = ({ children }) => {
       isActive: true
     });
 
-    // 1. Save to Firebase Firestore
+    // Save to Firebase Firestore
     if (isFirebaseConfigured) {
-      await savePackageToFirestore(normalizedNew);
+      savePackageToFirestore(normalizedNew).catch(err => console.warn('Firestore add package notice:', err));
     }
-
-    // [OLD DJANGO BACKEND POST - CUT OFF / COMMENTED OUT]
-    /*
-    try {
-      await fetch(`${API_URL}/api/packages/`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
-        },
-        body: JSON.stringify(normalizeToApi(pkg)),
-      });
-    } catch (e) {
-      console.warn('API backend not reachable for addPackage', e);
-    }
-    */
 
     setPackages(prev => [normalizedNew, ...prev]);
     return normalizedNew;
   };
 
-  // Update
+  // Update package
   const updatePackage = async (updatedPkg) => {
     const norm = normalizeFromApi(updatedPkg);
     const identifier = norm.slug || norm.id;
 
-    // 1. Update in Firebase Firestore
+    // Update in Firebase Firestore
     if (isFirebaseConfigured) {
-      await updatePackageInFirestore(identifier, norm);
+      updatePackageInFirestore(identifier, norm).catch(err => console.warn('Firestore update package notice:', err));
     }
-
-    // [OLD DJANGO BACKEND PUT - CUT OFF / COMMENTED OUT]
-    /*
-    try {
-      await fetch(`${API_URL}/api/packages/${identifier}/`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
-        },
-        body: JSON.stringify(normalizeToApi(updatedPkg)),
-      });
-    } catch (e) {
-      console.warn('API backend not reachable for updatePackage', e);
-    }
-    */
 
     setPackages(prev => prev.map(p => (p.slug === norm.slug || p.id === norm.id ? norm : p)));
   };
 
-  // Delete
+  // Delete package (moves to Deleted History)
   const deletePackage = async (slugOrId) => {
-    // 1. Delete from Firebase Firestore
-    if (isFirebaseConfigured) {
-      await deletePackageFromFirestore(slugOrId);
-    }
+    const target = packages.find(p => p.slug === slugOrId || p.id === slugOrId);
 
-    // [OLD DJANGO BACKEND DELETE - CUT OFF / COMMENTED OUT]
-    /*
-    try {
-      await fetch(`${API_URL}/api/packages/${slugOrId}/`, {
-        method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${localStorage.getItem('access_token')}` },
+    if (target) {
+      const deletedRecord = {
+        ...target,
+        deletedAt: new Date().toISOString(),
+        deletedBy: 'Shabbir12'
+      };
+
+      // 1. Save to Deleted History in Firestore
+      if (isFirebaseConfigured) {
+        saveDeletedPackageToFirestore(deletedRecord).catch(err => console.warn('Firestore save deleted notice:', err));
+        deletePackageFromFirestore(slugOrId).catch(err => console.warn('Firestore delete notice:', err));
+      }
+
+      // 2. Update local deleted history
+      setDeletedHistory(prev => {
+        const updated = [deletedRecord, ...prev.filter(d => (d.slug || d.id) !== slugOrId)];
+        localStorage.setItem('snowcat_deleted_history', JSON.stringify(updated));
+        return updated;
       });
-    } catch (e) {
-      console.warn('API backend not reachable for deletePackage', e);
     }
-    */
 
     setPackages(prev => prev.filter(p => p.slug !== slugOrId && p.id !== slugOrId));
+  };
+
+  // Restore package from Deleted History back to active catalog
+  const restorePackage = async (deletedPkg) => {
+    const identifier = deletedPkg.slug || deletedPkg.id;
+    const restoredPkg = normalizeFromApi({
+      ...deletedPkg,
+      isActive: true
+    });
+
+    // 1. Re-add to active packages in Firestore & remove from deleted history collection
+    if (isFirebaseConfigured) {
+      savePackageToFirestore(restoredPkg).catch(err => console.warn('Firestore restore notice:', err));
+      removeDeletedPackageFromFirestore(deletedPkg.id || identifier).catch(err => console.warn('Firestore remove deleted notice:', err));
+    }
+
+    // 2. Update local states
+    setPackages(prev => [restoredPkg, ...prev]);
+    setDeletedHistory(prev => {
+      const updated = prev.filter(d => (d.slug || d.id) !== identifier && d.id !== deletedPkg.id);
+      localStorage.setItem('snowcat_deleted_history', JSON.stringify(updated));
+      return updated;
+    });
+
+    return restoredPkg;
+  };
+
+  // Permanently delete a package from history
+  const permanentlyDeletePackage = async (docIdOrSlug) => {
+    if (isFirebaseConfigured) {
+      removeDeletedPackageFromFirestore(docIdOrSlug).catch(err => console.warn('Firestore perm delete notice:', err));
+    }
+    setDeletedHistory(prev => {
+      const updated = prev.filter(d => (d.id || d.slug) !== docIdOrSlug);
+      localStorage.setItem('snowcat_deleted_history', JSON.stringify(updated));
+      return updated;
+    });
+  };
+
+  // Clear all deleted history
+  const clearDeletedHistory = async () => {
+    if (isFirebaseConfigured) {
+      deletedHistory.forEach(d => {
+        removeDeletedPackageFromFirestore(d.id || d.slug).catch(() => {});
+      });
+    }
+    setDeletedHistory([]);
+    localStorage.removeItem('snowcat_deleted_history');
   };
 
   // Toggle Active
@@ -290,27 +282,21 @@ export const PackageProvider = ({ children }) => {
     await updatePackage({ ...pkg, isFeatured: !pkg.isFeatured });
   };
 
-  // Seed / Sync all current packages to Firebase Firestore
-  const syncPackagesToFirebase = async () => {
-    if (!isFirebaseConfigured) {
-      throw new Error('Firebase credentials not configured in .env file');
-    }
-    const result = await seedPackagesToFirestore(packages);
-    return result;
-  };
-
   return (
     <PackageContext.Provider value={{
       packages,
+      deletedHistory,
       loadingFromFirebase,
       isFirebaseConnected: isFirebaseConfigured,
       refreshPackages,
       addPackage,
       updatePackage,
       deletePackage,
+      restorePackage,
+      permanentlyDeletePackage,
+      clearDeletedHistory,
       togglePackageActive,
-      togglePackageFeatured,
-      syncPackagesToFirebase
+      togglePackageFeatured
     }}>
       {children}
     </PackageContext.Provider>
