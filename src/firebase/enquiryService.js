@@ -7,10 +7,10 @@ import {
   deleteDoc,
   query,
   orderBy,
-  onSnapshot,
-  serverTimestamp
+  onSnapshot
 } from 'firebase/firestore';
 import { db, isFirebaseConfigured } from './config';
+import { cleanFirestorePayload } from './packageService';
 
 const ENQUIRIES_COLLECTION = 'enquiries';
 
@@ -23,14 +23,15 @@ export const saveEnquiryToFirestore = async (enquiryData) => {
   }
 
   try {
-    const docRef = await addDoc(collection(db, ENQUIRIES_COLLECTION), {
+    const payload = cleanFirestorePayload({
       ...enquiryData,
       contacted: false,
       status: 'pending',
-      createdAt: serverTimestamp(),
+      createdAt: new Date().toISOString(),
       created_at: new Date().toISOString()
     });
 
+    const docRef = await addDoc(collection(db, ENQUIRIES_COLLECTION), payload);
     return { success: true, id: docRef.id };
   } catch (error) {
     console.error('Error saving enquiry to Firestore:', error);
@@ -62,7 +63,6 @@ export const getEnquiriesFromFirestore = async () => {
     return enquiries;
   } catch (error) {
     console.error('Error fetching enquiries from Firestore:', error);
-    // Fallback if orderBy index isn't ready
     try {
       const basicSnapshot = await getDocs(collection(db, ENQUIRIES_COLLECTION));
       const list = [];
@@ -104,7 +104,6 @@ export const subscribeToEnquiries = (onData, onError) => {
       },
       (error) => {
         console.warn('Realtime enquiry listener fallback:', error);
-        // Fallback to unordered subscription if index is pending
         const unsubBasic = onSnapshot(collection(db, ENQUIRIES_COLLECTION), (basicSnap) => {
           const list = [];
           basicSnap.forEach((docSnap) => {
@@ -134,7 +133,7 @@ export const toggleEnquiryContactedInFirestore = async (enquiryId, currentContac
     await updateDoc(docRef, {
       contacted: !currentContactedStatus,
       status: !currentContactedStatus ? 'contacted' : 'pending',
-      updatedAt: serverTimestamp()
+      updatedAt: new Date().toISOString()
     });
     return true;
   } catch (error) {

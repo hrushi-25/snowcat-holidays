@@ -15,6 +15,30 @@ import { db, isFirebaseConfigured } from './config';
 const PACKAGES_COLLECTION = 'packages';
 
 /**
+ * Recursively clean objects for Firestore by removing all `undefined` values.
+ */
+export const cleanFirestorePayload = (data) => {
+  if (data === null || data === undefined) {
+    return null;
+  }
+  if (typeof data !== 'object') {
+    return data;
+  }
+  if (Array.isArray(data)) {
+    return data
+      .filter((item) => item !== undefined)
+      .map((item) => cleanFirestorePayload(item));
+  }
+  const cleaned = {};
+  for (const [key, value] of Object.entries(data)) {
+    if (value !== undefined) {
+      cleaned[key] = cleanFirestorePayload(value);
+    }
+  }
+  return cleaned;
+};
+
+/**
  * Fetch all packages from Firestore 'packages' collection.
  */
 export const getPackagesFromFirestore = async () => {
@@ -60,12 +84,12 @@ export const savePackageToFirestore = async (pkg) => {
     const docRef = doc(db, PACKAGES_COLLECTION, docId);
     
     // Clean package data for Firestore
-    const dataToSave = {
+    const dataToSave = cleanFirestorePayload({
       ...pkg,
       id: docId,
       slug: pkg.slug || docId,
-      updatedAt: serverTimestamp()
-    };
+      updatedAt: new Date().toISOString()
+    });
 
     await setDoc(docRef, dataToSave, { merge: true });
     return { success: true, id: docId, data: dataToSave };
@@ -87,10 +111,10 @@ export const updatePackageInFirestore = async (pkgIdOrSlug, updates) => {
     const docId = String(pkgIdOrSlug);
     const docRef = doc(db, PACKAGES_COLLECTION, docId);
 
-    const dataToUpdate = {
+    const dataToUpdate = cleanFirestorePayload({
       ...updates,
-      updatedAt: serverTimestamp()
-    };
+      updatedAt: new Date().toISOString()
+    });
 
     await setDoc(docRef, dataToUpdate, { merge: true });
     return { success: true };
@@ -120,7 +144,7 @@ export const deletePackageFromFirestore = async (pkgIdOrSlug) => {
 };
 
 /**
- * Batch seed or sync a list of packages to Firestore in chunks of up to 500 (Firestore batch limit).
+ * Batch seed or sync a list of packages to Firestore in chunks of up to 400.
  */
 export const seedPackagesToFirestore = async (packagesList) => {
   if (!isFirebaseConfigured || !db) {
@@ -131,7 +155,7 @@ export const seedPackagesToFirestore = async (packagesList) => {
     throw new Error('No packages provided to seed.');
   }
 
-  const chunkSize = 400;
+  const chunkSize = 300;
   let totalSaved = 0;
 
   for (let i = 0; i < packagesList.length; i += chunkSize) {
@@ -141,12 +165,15 @@ export const seedPackagesToFirestore = async (packagesList) => {
     chunk.forEach((pkg) => {
       const docId = String(pkg.slug || pkg.id || `pkg-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`);
       const docRef = doc(db, PACKAGES_COLLECTION, docId);
-      batch.set(docRef, {
+      
+      const cleanedData = cleanFirestorePayload({
         ...pkg,
         id: docId,
         slug: pkg.slug || docId,
-        syncedAt: serverTimestamp()
-      }, { merge: true });
+        syncedAt: new Date().toISOString()
+      });
+
+      batch.set(docRef, cleanedData, { merge: true });
       totalSaved++;
     });
 
