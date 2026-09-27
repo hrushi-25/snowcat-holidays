@@ -201,9 +201,17 @@ export default function Catalog() {
   // Helper check for international
   const isInternational = (pkg) => {
     if (!pkg) return false;
+    const tripType = (pkg.tripType || '').toLowerCase();
     const cat = (pkg.category || '').toLowerCase();
+    const country = (pkg.country || '').toLowerCase();
     const dest = (pkg.destination || '').toLowerCase();
     const name = (pkg.name || '').toLowerCase();
+
+    if (tripType === 'international') return true;
+    if (tripType === 'national') return false;
+    if (country && country !== 'india') return true;
+    if (country === 'india') return false;
+
     return cat === 'international' ||
       dest.includes('dubai') || dest.includes('switzerland') || dest.includes('singapore') ||
       dest.includes('thailand') || dest.includes('maldives') || dest.includes('bali') ||
@@ -222,10 +230,13 @@ export default function Catalog() {
     const indiaPkgs = activePackages.filter(p => !isInternational(p));
     INDIA_STATES.forEach(st => {
       counts[st.id] = indiaPkgs.filter(p => {
+        const sid = (p.stateId || '').toLowerCase();
+        const s = (p.state || '').toLowerCase();
+        if (sid && (sid === st.id || sid.includes(st.id) || st.id.includes(sid))) return true;
+        if (s && s === st.name.toLowerCase()) return true;
         const d = (p.destination || '').toLowerCase();
         const n = (p.name || '').toLowerCase();
-        const s = (p.state || '').toLowerCase();
-        return st.destKeywords.some(kw => d.includes(kw) || n.includes(kw) || s.includes(kw));
+        return st.destKeywords.some(kw => d.includes(kw) || n.includes(kw) || s.includes(kw) || sid.includes(kw));
       }).length;
     });
     return counts;
@@ -260,11 +271,14 @@ export default function Catalog() {
       if (activeTab === 'india' && selectedState !== 'all') {
         const stateObj = INDIA_STATES.find(s => s.id === selectedState);
         if (stateObj) {
+          const sidLower = (pkg.stateId || '').toLowerCase();
+          const stateLower = (pkg.state || '').toLowerCase();
+          if (sidLower && (sidLower === stateObj.id || sidLower.includes(stateObj.id) || stateObj.id.includes(sidLower))) return true;
+          if (stateLower && stateLower === stateObj.name.toLowerCase()) return true;
           const destLower = (pkg.destination || '').toLowerCase();
           const nameLower = (pkg.name || '').toLowerCase();
-          const stateLower = (pkg.state || '').toLowerCase();
           const matchesState = stateObj.destKeywords.some(kw => 
-            destLower.includes(kw) || nameLower.includes(kw) || stateLower.includes(kw)
+            destLower.includes(kw) || nameLower.includes(kw) || stateLower.includes(kw) || sidLower.includes(kw)
           );
           if (!matchesState) return false;
         }

@@ -32,8 +32,83 @@ import {
   History,
   RotateCcw,
   Archive,
-  Check
+  Check,
+  Globe,
+  Map,
+  MapPin
 } from 'lucide-react';
+
+const INDIAN_STATES = [
+  { id: 'andaman', name: 'Andaman & Nicobar' },
+  { id: 'andhra-pradesh', name: 'Andhra Pradesh' },
+  { id: 'arunachal-pradesh', name: 'Arunachal Pradesh' },
+  { id: 'assam', name: 'Assam' },
+  { id: 'bihar', name: 'Bihar' },
+  { id: 'chhattisgarh', name: 'Chhattisgarh' },
+  { id: 'delhi', name: 'Delhi NCR' },
+  { id: 'goa', name: 'Goa' },
+  { id: 'gujarat', name: 'Gujarat' },
+  { id: 'himachal-pradesh', name: 'Himachal Pradesh' },
+  { id: 'jammu-kashmir', name: 'Jammu & Kashmir' },
+  { id: 'jharkhand', name: 'Jharkhand' },
+  { id: 'karnataka', name: 'Karnataka' },
+  { id: 'kerala', name: 'Kerala' },
+  { id: 'ladakh', name: 'Ladakh' },
+  { id: 'madhya-pradesh', name: 'Madhya Pradesh' },
+  { id: 'maharashtra', name: 'Maharashtra' },
+  { id: 'meghalaya', name: 'Meghalaya' },
+  { id: 'odisha', name: 'Odisha' },
+  { id: 'pondicherry', name: 'Pondicherry' },
+  { id: 'punjab', name: 'Punjab' },
+  { id: 'rajasthan', name: 'Rajasthan' },
+  { id: 'sikkim-darjeeling', name: 'Sikkim & North East' },
+  { id: 'tamil-nadu', name: 'Tamil Nadu' },
+  { id: 'telangana', name: 'Telangana' },
+  { id: 'uttarakhand', name: 'Uttarakhand' },
+  { id: 'uttar-pradesh', name: 'Uttar Pradesh' },
+  { id: 'west-bengal', name: 'West Bengal' }
+];
+
+const PACKAGE_TYPES = [
+  'Honeymoon & Romantic',
+  'Family Vacation',
+  'Adventure & Trekking',
+  'Hill Station Retreat',
+  'Beach & Coastal Getaway',
+  'Luxury & Wellness',
+  'Cultural & Heritage',
+  'Pilgrimage & Spiritual',
+  'Wildlife Safari',
+  'Weekend Getaway',
+  'Road Trip & Exploration',
+  'Leisure & Sightseeing',
+  'Group Tour',
+  'Custom Holiday'
+];
+
+const INTERNATIONAL_COUNTRIES = [
+  'Switzerland',
+  'United Arab Emirates (Dubai)',
+  'Thailand',
+  'Maldives',
+  'Indonesia (Bali)',
+  'Singapore',
+  'France',
+  'United Kingdom',
+  'Egypt',
+  'Vietnam',
+  'Malaysia',
+  'Mauritius',
+  'Japan',
+  'Turkey',
+  'Sri Lanka',
+  'Georgia',
+  'Italy',
+  'Greece',
+  'Australia',
+  'New Zealand',
+  'Other Country'
+];
 
 const PRESET_IMAGES = [
   { name: 'Mountain Peak', url: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80' },
@@ -80,9 +155,13 @@ export default function OwnerDashboard() {
 
   // Form Fields State
   const [name, setName] = useState('');
+  const [tripType, setTripType] = useState('National'); // 'National' | 'International'
+  const [selectedState, setSelectedState] = useState('Maharashtra');
+  const [selectedCountry, setSelectedCountry] = useState('Switzerland');
+  const [customCountry, setCustomCountry] = useState('');
   const [destination, setDestination] = useState('');
   const [daysNightsText, setDaysNightsText] = useState(''); // e.g. "6 Days / 5 Nights"
-  const [category, setCategory] = useState('Leisure');
+  const [category, setCategory] = useState('Honeymoon & Romantic');
   const [price, setPrice] = useState('0');
   const [shortDescription, setShortDescription] = useState('');
   const [hotelDetails, setHotelDetails] = useState('');
@@ -299,9 +378,13 @@ export default function OwnerDashboard() {
   const openCreateMode = () => {
     setEditingId(null);
     setName('');
+    setTripType('National');
+    setSelectedState('Maharashtra');
+    setSelectedCountry('Switzerland');
+    setCustomCountry('');
     setDestination('');
     setDaysNightsText('');
-    setCategory('Leisure');
+    setCategory('Honeymoon & Romantic');
     setPrice('0');
     setShortDescription('');
     setHotelDetails('');
@@ -320,22 +403,50 @@ export default function OwnerDashboard() {
 
   // Open full-screen editor in EDIT mode
   const openEditMode = (pkg) => {
-    setEditingId(pkg.slug);
-    setName(pkg.name);
-    setDestination(pkg.destination);
-    setDaysNightsText(`${pkg.days} Days / ${pkg.nights} Nights`);
-    setCategory(pkg.category || 'Leisure');
-    setPrice(pkg.price.toString());
+    setEditingId(pkg.slug || pkg.id);
+    setName(pkg.name || pkg.packageName || '');
+
+    // Determine if National or International
+    const isIntl = (pkg.tripType || '').toLowerCase() === 'international' ||
+                   (pkg.category || '').toLowerCase() === 'international' ||
+                   (pkg.country && pkg.country.toLowerCase() !== 'india');
+
+    if (isIntl) {
+      setTripType('International');
+      const countryVal = pkg.country || pkg.destination || 'Switzerland';
+      if (INTERNATIONAL_COUNTRIES.includes(countryVal)) {
+        setSelectedCountry(countryVal);
+        setCustomCountry('');
+      } else {
+        setSelectedCountry('Other Country');
+        setCustomCountry(countryVal);
+      }
+      setSelectedState('');
+    } else {
+      setTripType('National');
+      const foundState = INDIAN_STATES.find(s =>
+        (pkg.state && s.name.toLowerCase() === pkg.state.toLowerCase()) ||
+        (pkg.stateId && s.id === pkg.stateId.toLowerCase())
+      );
+      setSelectedState(foundState ? foundState.name : (pkg.state || 'Maharashtra'));
+      setSelectedCountry('Switzerland');
+      setCustomCountry('');
+    }
+
+    setDestination(pkg.destination || pkg.subName || '');
+    setDaysNightsText(`${pkg.days || 1} Days / ${pkg.nights || 0} Nights`);
+    setCategory(pkg.category || 'Honeymoon & Romantic');
+    setPrice((pkg.price || 0).toString());
     setShortDescription(pkg.shortDescription || '');
     setHotelDetails(pkg.hotelDetails || '');
     setMeals(pkg.meals || '');
-    setTransportation(pkg.transportation || '');
+    setTransportation(pkg.transportation || pkg.modeOfTransport || '');
     setSightseeing(pkg.sightseeing || '');
     setSpecialOffer(pkg.specialOffer || '');
     setItineraryText(getItineraryTextString(pkg.itinerary));
     setInclusionsText(pkg.inclusions ? pkg.inclusions.join('\n') : 'Accommodation');
     setExclusionsText(pkg.exclusions ? pkg.exclusions.join('\n') : 'Flights');
-    setImageUrls(pkg.images || []);
+    setImageUrls(pkg.images || pkg.photos || []);
     setIsFeatured(pkg.isFeatured || false);
     setIsActive(pkg.isActive !== false);
     setShowEditor(true);
@@ -365,9 +476,36 @@ export default function OwnerDashboard() {
 
   const handleSavePackageSubmit = async (e) => {
     e.preventDefault();
-    if (!name || !destination || !price || !daysNightsText) {
-      addToast('Please fill in required fields: Name, Destination, Days/nights, and Price.', 'error');
+    if (!name.trim()) {
+      addToast('Please provide a package name.', 'error');
       return;
+    }
+    if (!price || !daysNightsText) {
+      addToast('Please fill in required fields: Price and Days/Nights.', 'error');
+      return;
+    }
+
+    const isIntl = tripType === 'International';
+
+    let finalCountry = 'India';
+    let finalState = '';
+    let finalStateId = '';
+
+    if (isIntl) {
+      finalCountry = selectedCountry === 'Other Country' ? (customCountry.trim() || 'International') : selectedCountry;
+      finalState = '';
+      finalStateId = '';
+    } else {
+      finalCountry = 'India';
+      finalState = selectedState || 'Maharashtra';
+      const stateObj = INDIAN_STATES.find(s => s.name.toLowerCase() === finalState.toLowerCase());
+      finalStateId = stateObj ? stateObj.id : finalState.toLowerCase().replace(/[^\w\s-]/g, '').replace(/[\s_-]+/g, '-');
+    }
+
+    // Determine clean destination string
+    let finalDestination = destination.trim();
+    if (!finalDestination) {
+      finalDestination = isIntl ? finalCountry : finalState;
     }
 
     const { days, nights } = parseDaysNights(daysNightsText);
@@ -390,21 +528,30 @@ export default function OwnerDashboard() {
     }
 
     const payload = {
-      name,
-      destination,
-      category,
+      name: name.trim(),
+      packageName: name.trim(),
+      destination: finalDestination,
+      subName: finalDestination,
+      category: category || 'Leisure & Sightseeing',
+      tripType: isIntl ? 'International' : 'National',
+      country: finalCountry,
+      state: finalState,
+      stateId: finalStateId,
       price: Number(price) || 0,
       days,
       nights,
+      duration: `${days} Days / ${nights} Nights`,
       shortDescription,
       hotelDetails,
       meals,
       transportation,
+      modeOfTransport: transportation,
       sightseeing,
       specialOffer,
       inclusions,
       exclusions,
       images,
+      photos: images,
       itinerary,
       isFeatured,
       isActive
@@ -412,7 +559,7 @@ export default function OwnerDashboard() {
 
     try {
       if (editingId) {
-        await updatePackage({ ...payload, slug: editingId });
+        await updatePackage({ ...payload, slug: editingId, id: editingId });
         addToast(`Updated package "${name}" successfully.`, 'success');
       } else {
         await addPackage(payload);
@@ -667,31 +814,158 @@ export default function OwnerDashboard() {
 
               <form onSubmit={handleSavePackageSubmit} className="editor-inputs-form">
                 <div className="editor-form-group">
-                  <label className="editor-label">Package name</label>
+                  <label className="editor-label">Package name <span className="req-star">*</span></label>
                   <input
                     type="text"
                     required
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    placeholder="e.g. Kashmir in bloom"
+                    placeholder="e.g. Kashmir in bloom or Swiss Alps Explorer"
                     className="editor-input-field"
                   />
                 </div>
 
+                {/* Package Type Dropdown List */}
                 <div className="editor-form-group">
-                  <label className="editor-label">Destination</label>
-                  <input
-                    type="text"
+                  <label className="editor-label">Package Type <span className="req-star">*</span></label>
+                  <select
                     required
-                    value={destination}
-                    onChange={(e) => setDestination(e.target.value)}
-                    placeholder="e.g. Kashmir"
-                    className="editor-input-field"
-                  />
+                    value={category}
+                    onChange={(e) => setCategory(e.target.value)}
+                    className="editor-input-field editor-select-field"
+                  >
+                    {PACKAGE_TYPES.map((t) => (
+                      <option key={t} value={t}>
+                        {t}
+                      </option>
+                    ))}
+                    {!PACKAGE_TYPES.includes(category) && category && (
+                      <option value={category}>{category}</option>
+                    )}
+                  </select>
                 </div>
 
+                {/* National vs International Toggle Selector */}
+                <div className="editor-form-group full-width-group scope-selection-container">
+                  <label className="editor-label">Destination Type <span className="req-star">*</span></label>
+                  <div className="scope-toggle-grid">
+                    <button
+                      type="button"
+                      className={`scope-toggle-card ${tripType === 'National' ? 'active' : ''}`}
+                      onClick={() => setTripType('National')}
+                    >
+                      <div className="scope-icon-box">
+                        <Map size={22} />
+                      </div>
+                      <div className="scope-card-text">
+                        <strong className="scope-card-title">National (India)</strong>
+                        <span className="scope-card-sub">Select Indian state to put the package directly into that state</span>
+                      </div>
+                      {tripType === 'National' && (
+                        <span className="scope-check-badge"><Check size={14} /></span>
+                      )}
+                    </button>
+
+                    <button
+                      type="button"
+                      className={`scope-toggle-card ${tripType === 'International' ? 'active' : ''}`}
+                      onClick={() => setTripType('International')}
+                    >
+                      <div className="scope-icon-box">
+                        <Globe size={22} />
+                      </div>
+                      <div className="scope-card-text">
+                        <strong className="scope-card-title">International</strong>
+                        <span className="scope-card-sub">Global country destination (no state required)</span>
+                      </div>
+                      {tripType === 'International' && (
+                        <span className="scope-check-badge"><Check size={14} /></span>
+                      )}
+                    </button>
+                  </div>
+                </div>
+
+                {/* DYNAMIC DESTINATION FIELDS: National (State dropdown + City) VS International (Country dropdown + City, NO STATE) */}
+                {tripType === 'National' ? (
+                  <>
+                    <div className="editor-form-group">
+                      <label className="editor-label">
+                        Indian State <span className="req-star">*</span>
+                      </label>
+                      <select
+                        required
+                        value={selectedState}
+                        onChange={(e) => setSelectedState(e.target.value)}
+                        className="editor-input-field editor-select-field"
+                      >
+                        <option value="">-- Choose Indian State --</option>
+                        {INDIAN_STATES.map((st) => (
+                          <option key={st.id} value={st.name}>
+                            {st.name}
+                          </option>
+                        ))}
+                      </select>
+                      <p className="editor-field-hint">Directly maps the package to this particular state in the catalog.</p>
+                    </div>
+
+                    <div className="editor-form-group">
+                      <label className="editor-label">City / Destination / Circuit</label>
+                      <input
+                        type="text"
+                        value={destination}
+                        onChange={(e) => setDestination(e.target.value)}
+                        placeholder="e.g. Alibaug or Munnar, Alleppey & Thekkady"
+                        className="editor-input-field"
+                      />
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="editor-form-group">
+                      <label className="editor-label">
+                        Country <span className="req-star">*</span>
+                      </label>
+                      <select
+                        required
+                        value={selectedCountry}
+                        onChange={(e) => setSelectedCountry(e.target.value)}
+                        className="editor-input-field editor-select-field"
+                      >
+                        {INTERNATIONAL_COUNTRIES.map((c) => (
+                          <option key={c} value={c}>
+                            {c}
+                          </option>
+                        ))}
+                      </select>
+                      {selectedCountry === 'Other Country' && (
+                        <input
+                          type="text"
+                          required
+                          value={customCountry}
+                          onChange={(e) => setCustomCountry(e.target.value)}
+                          placeholder="Type country name (e.g. Iceland)"
+                          className="editor-input-field"
+                          style={{ marginTop: '8px' }}
+                        />
+                      )}
+                      <p className="editor-field-hint">International journey — classified directly by country.</p>
+                    </div>
+
+                    <div className="editor-form-group">
+                      <label className="editor-label">City / Region / Destination</label>
+                      <input
+                        type="text"
+                        value={destination}
+                        onChange={(e) => setDestination(e.target.value)}
+                        placeholder="e.g. Zurich, Lucerne & Jungfraujoch or Dubai Marina"
+                        className="editor-input-field"
+                      />
+                    </div>
+                  </>
+                )}
+
                 <div className="editor-form-group">
-                  <label className="editor-label">Days / nights</label>
+                  <label className="editor-label">Days / nights <span className="req-star">*</span></label>
                   <input
                     type="text"
                     required
@@ -703,19 +977,7 @@ export default function OwnerDashboard() {
                 </div>
 
                 <div className="editor-form-group">
-                  <label className="editor-label">Package type</label>
-                  <input
-                    type="text"
-                    required
-                    value={category}
-                    onChange={(e) => setCategory(e.target.value)}
-                    placeholder="Leisure"
-                    className="editor-input-field"
-                  />
-                </div>
-
-                <div className="editor-form-group">
-                  <label className="editor-label">Price per person (₹)</label>
+                  <label className="editor-label">Price per person (₹) <span className="req-star">*</span></label>
                   <input
                     type="number"
                     required
@@ -962,7 +1224,14 @@ export default function OwnerDashboard() {
                                   />
                                   <div>
                                     <div className="table-pkg-name">{pkg.name}</div>
-                                    <span className="table-pkg-cat">{pkg.category}</span>
+                                    <div style={{ display: 'flex', gap: '6px', alignItems: 'center', marginTop: '3px', flexWrap: 'wrap' }}>
+                                      <span className="table-pkg-cat">{pkg.category}</span>
+                                      {pkg.state ? (
+                                        <span className="table-pkg-badge-national"><MapPin size={10} /> {pkg.state}</span>
+                                      ) : (
+                                        pkg.country && <span className="table-pkg-badge-intl"><Globe size={10} /> {pkg.country}</span>
+                                      )}
+                                    </div>
                                   </div>
                                 </div>
                               </td>
@@ -2225,6 +2494,149 @@ export default function OwnerDashboard() {
 
         .btn-perm-delete:hover {
           background: rgba(230, 57, 70, 0.1);
+        }
+
+        .editor-select-field {
+          cursor: pointer;
+          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23087C8D' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+          background-repeat: no-repeat;
+          background-position: right 14px center;
+          background-size: 16px;
+          padding-right: 40px;
+          appearance: none;
+          -webkit-appearance: none;
+          -moz-appearance: none;
+        }
+
+        .scope-selection-container {
+          margin-bottom: 6px;
+        }
+
+        .scope-toggle-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 16px;
+          margin-top: 8px;
+        }
+
+        @media (max-width: 640px) {
+          .scope-toggle-grid {
+            grid-template-columns: 1fr;
+          }
+        }
+
+        .scope-toggle-card {
+          display: flex;
+          align-items: center;
+          gap: 14px;
+          padding: 16px 18px;
+          border-radius: var(--radius-md);
+          border: 2px solid var(--border-color);
+          background-color: #FFFFFF;
+          cursor: pointer;
+          text-align: left;
+          transition: all var(--transition-fast);
+          position: relative;
+        }
+
+        .scope-toggle-card:hover {
+          border-color: #92CAD4;
+          background-color: #F8FCFD;
+        }
+
+        .scope-toggle-card.active {
+          border-color: var(--accent-teal);
+          background-color: #EBF8FA;
+          box-shadow: 0 4px 14px rgba(8, 124, 141, 0.12);
+        }
+
+        .scope-icon-box {
+          width: 44px;
+          height: 44px;
+          border-radius: var(--radius-sm);
+          background-color: var(--bg-primary);
+          color: var(--text-secondary);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-shrink: 0;
+          transition: all var(--transition-fast);
+        }
+
+        .scope-toggle-card.active .scope-icon-box {
+          background-color: var(--accent-teal);
+          color: #FFFFFF;
+        }
+
+        .scope-card-text {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+        }
+
+        .scope-card-title {
+          font-size: 15px;
+          font-weight: 700;
+          color: var(--text-primary);
+        }
+
+        .scope-card-sub {
+          font-size: 12px;
+          color: var(--text-secondary);
+          line-height: 1.3;
+        }
+
+        .scope-check-badge {
+          position: absolute;
+          top: 10px;
+          right: 10px;
+          width: 22px;
+          height: 22px;
+          border-radius: 50%;
+          background-color: var(--accent-teal);
+          color: #FFFFFF;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 2px 6px rgba(8, 124, 141, 0.3);
+        }
+
+        .editor-field-hint {
+          font-size: 12px;
+          color: var(--text-secondary);
+          margin: 6px 0 0 0;
+          line-height: 1.4;
+        }
+
+        .req-star {
+          color: #E63946;
+          font-weight: bold;
+          margin-left: 2px;
+        }
+
+        .table-pkg-badge-national {
+          display: inline-flex;
+          align-items: center;
+          gap: 3px;
+          font-size: 11px;
+          font-weight: 600;
+          color: #087C8D;
+          background: #E8F5F7;
+          padding: 2px 7px;
+          border-radius: 4px;
+        }
+
+        .table-pkg-badge-intl {
+          display: inline-flex;
+          align-items: center;
+          gap: 3px;
+          font-size: 11px;
+          font-weight: 600;
+          color: #7B2CBF;
+          background: #F3E8FF;
+          padding: 2px 7px;
+          border-radius: 4px;
         }
 
         .empty-deleted-history {

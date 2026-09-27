@@ -27,9 +27,10 @@ const generateSlug = (text) => {
 };
 
 const normalizeFromApi = (apiPkg) => {
-  const isIntl = (apiPkg.category || '').toLowerCase() === 'international' || 
+  const isIntl = (apiPkg.tripType || '').toLowerCase() === 'international' ||
+                 (apiPkg.category || '').toLowerCase() === 'international' || 
                  (apiPkg.country && apiPkg.country.toLowerCase() !== 'india');
-  const cat = isIntl ? 'International' : 'India';
+  const cat = apiPkg.category || apiPkg.packageType || (isIntl ? 'International' : 'Leisure');
   const discPrice = apiPkg.pricing?.discountedPrice ?? apiPkg.discounted_price ?? apiPkg.price ?? 0;
   const startPrice = apiPkg.pricing?.startingPrice ?? apiPkg.starting_price ?? discPrice;
   const currency = apiPkg.pricing?.currency ?? apiPkg.currency ?? 'INR';
@@ -47,11 +48,12 @@ const normalizeFromApi = (apiPkg) => {
     name: apiPkg.packageName || apiPkg.name,
     packageName: apiPkg.packageName || apiPkg.name,
     category: cat,
-    destination: apiPkg.destination || apiPkg.country || apiPkg.subName,
-    country: apiPkg.country || (isIntl ? apiPkg.destination : 'India'),
-    subName: apiPkg.subName,
-    state: apiPkg.state || apiPkg.stateName,
-    stateId: apiPkg.stateId,
+    tripType: isIntl ? 'International' : 'National',
+    destination: apiPkg.destination || apiPkg.country || apiPkg.subName || '',
+    country: apiPkg.country || (isIntl ? (apiPkg.destination || 'International') : 'India'),
+    subName: apiPkg.subName || apiPkg.destination || '',
+    state: isIntl ? '' : (apiPkg.state || apiPkg.stateName || ''),
+    stateId: isIntl ? '' : (apiPkg.stateId || (apiPkg.state ? apiPkg.state.toLowerCase().replace(/[^\w\s-]/g, '').replace(/[\s_-]+/g, '-') : '')),
     days: apiPkg.days || 1,
     nights: apiPkg.nights || 0,
     duration: apiPkg.duration || `${apiPkg.nights || 0} Nights / ${apiPkg.days || 1} Days`,
@@ -62,13 +64,13 @@ const normalizeFromApi = (apiPkg) => {
       currency: currency,
       perPerson: true
     },
-    shortDescription: apiPkg.short_description || apiPkg.shortDescription,
+    shortDescription: apiPkg.short_description || apiPkg.shortDescription || '',
     hotelDetails: apiPkg.hotel_details || apiPkg.hotelDetails || '3-Star Deluxe & 5-Star Luxury Resort options available',
     meals: apiPkg.meals || 'Daily Breakfast included',
-    transportation: apiPkg.mode_of_transport || apiPkg.modeOfTransport || apiPkg.transportation,
-    modeOfTransport: apiPkg.mode_of_transport || apiPkg.modeOfTransport || apiPkg.transportation,
-    sightseeing: apiPkg.sightseeing,
-    specialOffer: apiPkg.special_offer || apiPkg.specialOffer,
+    transportation: apiPkg.mode_of_transport || apiPkg.modeOfTransport || apiPkg.transportation || '',
+    modeOfTransport: apiPkg.mode_of_transport || apiPkg.modeOfTransport || apiPkg.transportation || '',
+    sightseeing: apiPkg.sightseeing || '',
+    specialOffer: apiPkg.special_offer || apiPkg.specialOffer || '',
     negotiableText: 'Price is negotiable for every destination',
     inclusions: Array.isArray(apiPkg.inclusions) ? apiPkg.inclusions : [],
     exclusions: Array.isArray(apiPkg.exclusions) ? apiPkg.exclusions : [],
