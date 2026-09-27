@@ -139,9 +139,11 @@ export const PackageProvider = ({ children }) => {
           INITIAL_PACKAGES.forEach(p => map.set(p.slug || p.id, p));
           normalizedFb.forEach(p => map.set(p.slug || p.id, p));
           setPackages(Array.from(map.values()));
-        } else if (Array.isArray(fbPackages) && fbPackages.length === 0) {
-          // Auto-seed initial packages to Firestore in background
-          seedPackagesToFirestore(INITIAL_PACKAGES).catch(err => {
+        } else {
+          // Auto-seed initial packages to Firestore
+          seedPackagesToFirestore(INITIAL_PACKAGES).then(res => {
+            console.info(`Auto-populated ${res.count} packages into Cloud Firestore.`);
+          }).catch(err => {
             console.warn('Auto-seed initial packages notice:', err);
           });
         }

@@ -6,6 +6,7 @@ import {
   subscribeToEnquiries,
   toggleEnquiryContactedInFirestore,
   deleteEnquiryFromFirestore,
+  ensureOwnerInFirestore,
   isFirebaseConfigured
 } from '../firebase';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -63,11 +64,13 @@ export default function OwnerDashboard() {
   // Active dashboard tab: 'catalog' | 'leads'
   const [activeTab, setActiveTab] = useState('catalog');
 
-  // Authentication check
+  // Authentication check & Firestore admin sync
   useEffect(() => {
     const isLoggedIn = !!localStorage.getItem('access_token');
     if (!isLoggedIn) {
       navigate('/owner');
+    } else {
+      ensureOwnerInFirestore().catch(() => {});
     }
   }, [navigate]);
 
@@ -499,35 +502,7 @@ export default function OwnerDashboard() {
             </button>
           ) : (
             <div className="catalog-header-actions-row">
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                <h2 className="catalog-heading" style={{ margin: 0 }}>Trips Catalog</h2>
-                <span
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                    fontSize: '11px',
-                    fontWeight: 700,
-                    letterSpacing: '0.5px',
-                    padding: '4px 10px',
-                    borderRadius: '20px',
-                    backgroundColor: isFirebaseConnected ? 'rgba(42, 157, 143, 0.12)' : 'rgba(230, 57, 70, 0.1)',
-                    color: isFirebaseConnected ? '#2a9d8f' : '#e63946',
-                    border: `1px solid ${isFirebaseConnected ? 'rgba(42, 157, 143, 0.3)' : 'rgba(230, 57, 70, 0.2)'}`
-                  }}
-                  title={isFirebaseConnected ? 'Firebase Firestore is active' : 'Firebase not configured in .env'}
-                >
-                  <span
-                    style={{
-                      width: '6px',
-                      height: '6px',
-                      borderRadius: '50%',
-                      backgroundColor: isFirebaseConnected ? '#2a9d8f' : '#e63946'
-                    }}
-                  />
-                  {isFirebaseConnected ? '🔥 Firebase Live' : 'Firebase: Local Mode'}
-                </span>
-              </div>
+              <h2 className="catalog-heading" style={{ margin: 0 }}>Trips Catalog</h2>
               <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
                 <button onClick={openCreateMode} className="btn-primary add-pkg-btn">
                   <Plus size={18} />

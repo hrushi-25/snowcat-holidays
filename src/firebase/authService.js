@@ -84,7 +84,28 @@ export const loginWithFirebase = async (email, password) => {
 };
 
 /**
- * Verify owner credentials instantly and sync owner document in Firestore non-blockingly.
+ * Ensure owner document exists in Firestore.
+ */
+export const ensureOwnerInFirestore = async () => {
+  if (isFirebaseConfigured && db) {
+    try {
+      const adminDocRef = doc(db, 'admin_users', 'shabbir12');
+      await setDoc(adminDocRef, {
+        username: 'Shabbir12',
+        role: 'owner',
+        portal: 'Snowcat Holidays Owner Portal',
+        status: 'active',
+        createdAt: new Date().toISOString(),
+        lastActive: new Date().toISOString()
+      }, { merge: true });
+    } catch (err) {
+      console.warn('Firestore admin_users sync notice:', err);
+    }
+  }
+};
+
+/**
+ * Verify owner credentials instantly and sync owner document in Firestore.
  */
 export const verifyAndSyncOwnerInFirestore = async (username, password) => {
   const cleanUser = (username || '').trim();
@@ -97,21 +118,9 @@ export const verifyAndSyncOwnerInFirestore = async (username, password) => {
     return { success: false, message: 'Invalid username or password' };
   }
 
-  // Non-blocking background Firestore sync with 1.5s timeout guard so UI never hangs
+  // Sync owner in Firestore
   if (isFirebaseConfigured && db) {
-    const savePromise = setDoc(doc(db, 'admin_users', 'shabbir12'), {
-      username: 'Shabbir12',
-      role: 'owner',
-      portal: 'Snowcat Holidays Owner Portal',
-      lastLogin: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      status: 'active'
-    }, { merge: true }).catch(err => {
-      console.warn('Firestore admin_users background sync warning:', err);
-    });
-
-    const timeoutPromise = new Promise(resolve => setTimeout(resolve, 800));
-    await Promise.race([savePromise, timeoutPromise]);
+    ensureOwnerInFirestore().catch(() => {});
   }
 
   return {
